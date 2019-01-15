@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>学生列表</title>
+    <style>
+        table{width:800px; border: 1px solid #ccc;margin:0 auto; text-align: center;}
+        td{height:35px;}
+    </style>
+</head>
+<body>
+{notempty name="data"}
+<table>
+    <tr><th>编号</th><th>学生姓名</th><th>邮箱</th><th>手机号</th><th>性别</th><th>入学时间</th></tr>
+    {foreach $data as $row}
+    <tr>
+        <td>{$row.id}</td><td>{$row.name}</td><td>{$row.email}</td>
+        <td>{$row.mobile}</td><td>{$row.gender}</td><td>{$row.admiss_date}</td>
+    </tr>
+    {/foreach}
+</table>
+{else/}
+学生数据不存在！
+{/notempty}
+</body>
+</html>
