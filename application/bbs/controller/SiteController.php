@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: qiaozhiming
- * Date: 2019/1/15
- * Time: 下午10:25
- */
-
 namespace app\bbs\controller;
 
 use app\bbs\common\ResponseCode;
@@ -13,7 +6,7 @@ use app\bbs\exception\LoginException;
 use app\bbs\service\UserService;
 use app\bbs\validate\RegisterValidate;
 use think\Controller;
-use think\Request;
+
 
 class SiteController extends Controller
 {
@@ -26,12 +19,12 @@ class SiteController extends Controller
     // 用户登录
     public function Login()
     {
+
         $name = $this->request->post('name','','htmlspecialchars,strip_tags,trim');
         $password = $this->request->post('password','','htmlspecialchars,strip_tags,trim');
-//        if (empty($name) || empty($password)) {
-//            throw new LoginException('用户名和密码不能为空', ResponseCode::$NAME_PASSWORD_IS_NULL);
-//        }
-
+        if (empty($name) || empty($password)) {
+            throw new LoginException('用户名和密码不能为空', ResponseCode::$NAME_PASSWORD_IS_NULL);
+        }
         $validate = new RegisterValidate();
         if (!$validate->check(['name' => $name, 'password' => $password])) {
             throw new LoginException($validate->getError(), 1000);
