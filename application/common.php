@@ -39,16 +39,7 @@ function send_mail($toemail, $name, $subject = '', $body = '') {
     return $mail->Send() ? true : $mail->ErrorInfo;
 }
 
-function get_salt($len)
-{
-    $salt = '';
-    $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";//大小写字母以及数字
-    $max = strlen($str)-1;
-    for($i=0;$i<$len;$i++){
-        $salt.=$str[rand(0,$max)];
-    }
-    return md5($salt);
-}
+
 
 
 

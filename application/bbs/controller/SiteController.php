@@ -4,30 +4,27 @@ namespace app\bbs\controller;
 use app\bbs\common\ResponseCode;
 use app\bbs\exception\LoginException;
 use app\bbs\service\UserService;
-use app\bbs\validate\RegisterValidate;
+use app\bbs\validate\UserValidate;
 use think\Controller;
-
 
 class SiteController extends Controller
 {
-
     public function Index()
     {
-        echo '后续这里显示前端页面';    
+        echo '后续这里显示前端页面';
     }
 
     // 用户登录
     public function Login()
     {
+        // 获取并过滤登录的用户名和密码
+        $name = $this->request->post('name', '', 'htmlspecialchars,strip_tags,trim');
+        $password = $this->request->post('password', '', 'htmlspecialchars,strip_tags,trim');
 
-        $name = $this->request->post('name','','htmlspecialchars,strip_tags,trim');
-        $password = $this->request->post('password','','htmlspecialchars,strip_tags,trim');
-        if (empty($name) || empty($password)) {
-            throw new LoginException('用户名和密码不能为空', ResponseCode::$NAME_PASSWORD_IS_NULL);
-        }
-        $validate = new RegisterValidate();
+        // 利用UserValidate验证器验证用户名和密码是否符合指定的规范
+        $validate = new UserValidate();
         if (!$validate->check(['name' => $name, 'password' => $password])) {
-            throw new LoginException($validate->getError(), 1000);
+            throw new LoginException($validate->getError(), ResponseCode::$USER_NOT_STANDARD);
         }
 
         $user_service = new UserService();
@@ -51,7 +48,6 @@ class SiteController extends Controller
         if (!$user) {
             throw new LoginException('未登录', ResponseCode::$USER_NOT_LOGIN);
         }
-        return ResponseCode::success();
+        return ResponseCode::success($user);
     }
-
 }
