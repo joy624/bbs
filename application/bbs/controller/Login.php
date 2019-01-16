@@ -3,7 +3,7 @@ namespace app\bbs\controller;
 
 use think\Controller;
 use think\Facade\Request;
-use app\bbs\service\User as UserService;
+use app\bbs\service\UserModel as UserService;
 use think\Facade\Session;
 use app\bbs\common\ResultCodeMsg;
 
