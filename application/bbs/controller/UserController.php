@@ -38,8 +38,11 @@ class UserController extends Controller
         $new_password = $this->request->post('new_password', '', 'htmlspecialchars,strip_tags,trim');
 
         // 验证对应用户的密码是否正确
+        $user_service = new UserService();
+        $user_service->verifyPassword($id, $old_password);
 
         // 重置用户密码
-
+        $user_service->resetPassword($id, $new_password);
+        return ResponseCode::success(true);
     }
 }

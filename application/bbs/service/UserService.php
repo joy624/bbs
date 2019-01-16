@@ -96,4 +96,30 @@ class UserService
             return false;
         }
     }
+
+    // 验证指定用户的密码是否正确
+    public function verifyPassword($id,$old_password)
+    {
+        // 获取指定用户的password和salt
+        $data = UserModel::field('password, salt')->where('id',$id)->find();
+       if($data->password !== md5(md5($old_password).$data->salt)) {
+           throw new RegisterException('密码输入错误',ResponseCode::$PASSWORD_ERROR);
+       }
+    }
+
+    // 重置用户密码
+    public function resetPassword($id, $new_password)
+    {
+        $salt = $this->getSalt(5);
+        $password = md5(md5($new_password).$salt);
+        $user = new UserModel;
+        $res = $user->save([
+            'salt'  => $salt,
+            'password' => $password
+        ],['id' => $id]);
+        if(!$res){
+            throw new RegisterException('重置密码失败',ResponseCode::$RESETPASSWORD_ERROR);
+        }
+        return $res;
+    }
 }

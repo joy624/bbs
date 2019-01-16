@@ -17,5 +17,5 @@ class ResponseCode
     public static $USER_NOT_STANDARD = 30001;   // 用户的信息不符合规范，如密码、用户名、邮箱
     public static $REGISTER_ERROR = 3002;       // 注册用户错误
     public static $USERNAME_EXIST = 3003;       // 用户名已经存在
-
+    public static $RESETPASSWORD_ERROR = 3004;  // 重置密码失败
 }
