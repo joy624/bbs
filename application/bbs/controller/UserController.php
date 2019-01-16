@@ -1,12 +1,13 @@
 <?php
 namespace app\bbs\controller;
 
+use app\bbs\exception\UserException;
+use app\bbs\validate\ResetPasswordValidate;
 use think\Controller;
 use app\bbs\validate\UserValidate;
 use app\bbs\exception\RegisterException;
 use app\bbs\common\ResponseCode;
 use app\bbs\service\UserService;
-use app\bbs\controller\EmailController;
 
 class UserController extends Controller
 {
@@ -26,8 +27,8 @@ class UserController extends Controller
 
         // 添加用户
         $user_service = new UserService();
-        $data = $user_service->add($name, $password,$email);
-        return ResponseCode::success($data);
+        $user = $user_service->add($name, $password,$email);
+        return ResponseCode::success($user);
     }
 
     // 重置密码
@@ -38,12 +39,17 @@ class UserController extends Controller
         $old_password = $this->request->post('old_password', '', 'htmlspecialchars,strip_tags,trim');
         $new_password = $this->request->post('new_password', '', 'htmlspecialchars,strip_tags,trim');
 
+        $validate = new ResetPasswordValidate();
+        if (!$validate->check(['id' => $id, 'old_password' => $old_password, 'new_password' => $new_password])) {
+            throw new UserException($validate->getError(), ResponseCode::$RESETPASSWORD_ERROR);
+        }
+
         // 验证对应用户的密码是否正确
         $user_service = new UserService();
         $user_service->verifyPassword($id, $old_password);
 
         // 重置用户密码
-        $user_service->resetPassword($id, $new_password);
+        $user_service->updatePassword($id, $new_password);
         return ResponseCode::success(true);
     }
 
@@ -67,9 +73,9 @@ class UserController extends Controller
 
         // 修改用户密码
         $user_service = new UserService();
-        $data = $user_service->estimateUserExist($name);
+        $user = $user_service->getUserByName($name);
 
-        $user_service->resetPassword($data->id, $new_password);
+        $user_service->updatePassword($user->id, $new_password);
         return ResponseCode::success(true);
     }
 

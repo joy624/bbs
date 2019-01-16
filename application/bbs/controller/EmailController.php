@@ -7,6 +7,7 @@
  */
 namespace app\bbs\controller;
 
+use app\bbs\exception\UserException;
 use think\Controller;
 use PHPMailer\PHPMailer\PHPMailer;
 use app\bbs\common\ResponseCode;
@@ -16,7 +17,7 @@ use app\bbs\exception\RegisterException;
 class EmailController extends Controller
 {
     // 发送邮件
-    public function sendEmail($toemail, $name, $subject = '', $body = '')
+    private function sendEmail($toemail, $name, $subject = '', $body = '')
     {
         $mail = new PHPMailer();        // 实例化PHPMailer对象
 
@@ -43,8 +44,8 @@ class EmailController extends Controller
     }
 
     // 向邮箱发送激活码链接
-    public function sendEmailURL($id,$email,$name){
-        $subject='用户帐号激活';
+    public function sendEmailURL($id, $email, $name){
+        $subject = '用户帐号激活';
         // 设置账户激活码
         $token_exptime = time();
         $token = md5($name.$token_exptime.mt_rand(100000,999999));
@@ -62,7 +63,7 @@ class EmailController extends Controller
             $user_service->addToken($id,$token,$token_exptime);
             return ResponseCode::success(true);
         }else{
-
+            throw new UserException('邮件发送失败，请重试', ResponseCode::$EMAIL_SEND_FAILED);
         }
     }
 

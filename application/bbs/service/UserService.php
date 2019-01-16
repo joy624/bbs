@@ -11,6 +11,7 @@ namespace app\bbs\service;
 use app\bbs\common\ResponseCode;
 use app\bbs\exception\LoginException;
 use app\bbs\exception\RegisterException;
+use app\bbs\exception\UserException;
 use app\bbs\model\UserModel;
 use http\Env\Response;
 use think\db\Where;
@@ -23,7 +24,7 @@ class UserService
     {
         // 根据用户名称获取登录信息
         $user = UserModel::field('id,name,password,salt')
-            ->where('name', 'eq', $name)
+            ->where('name', $name)
             ->find();
         // 判断登录的用户是否存在
         if ($user) {
@@ -58,12 +59,12 @@ class UserService
     public function add($name,$password,$email)
     {
         // 判断注册的用户名是否已经存在
-        if($this->estimateUserExist($name)){
+        if($this->getUserByName($name)){
             throw new RegisterException('此用户名已经存在,请重新设置', ResponseCode::$USERNAME_EXIST);
         }
         // 加密salt和密码
-        $salt = $this->getSalt(5);
-        $password = md5(md5($password).$salt);
+        $salt = $this->generateSalt();
+        $password = md5(md5($password) . $salt);
 
         $user = UserModel::create([
             'name'  =>  $name,
@@ -78,7 +79,7 @@ class UserService
     }
 
     // 获取加密的随机salt
-    public function getSalt($len)
+    private function generateSalt($len = 32)
     {
         $salt = '';
         $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";//大小写字母以及数字
@@ -86,34 +87,36 @@ class UserService
         for($i=0;$i<$len;$i++){
             $salt.=$str[rand(0,$max)];
         }
-        return md5($salt);
+        return $salt;
     }
 
     // 判断用户是否存在
-    public function estimateUserExist($name){
-        return UserModel::field('id')->where('name',$name)->find();
+    public function getUserByName($name){
+        return UserModel::field(UserModel::getSafeAttrs())->where('name',$name)->find();
     }
 
     // 验证指定用户的密码是否正确
-    public function verifyPassword($id,$old_password)
+    public function verifyPassword($id, $old_password)
     {
-        // 获取指定用户的password和salt
-        $data = UserModel::field('password, salt')->where('id',$id)->find();
-       if($data->password !== md5(md5($old_password).$data->salt)) {
-           throw new RegisterException('密码输入错误',ResponseCode::$PASSWORD_ERROR);
-       }
+        $user = UserModel::field('password, salt')->where('id',$id)->find();
+        if (!$user) {
+            throw new UserException('用户不存在', ResponseCode::$USER_NOT_EXIST);
+        }
+        if($user->password !== md5(md5($old_password) . $user->salt)) {
+            throw new RegisterException('密码输入错误',ResponseCode::$PASSWORD_ERROR);
+        }
     }
 
     // 重置用户密码
-    public function resetPassword($id, $new_password)
+    public function updatePassword($id, $new_password)
     {
-        $salt = $this->getSalt(5);
-        $password = md5(md5($new_password).$salt);
+        $salt = $this->generateSalt();
+        $password = md5(md5($new_password) . $salt);
         $user = new UserModel;
         $res = $user->save([
             'salt'  => $salt,
             'password' => $password
-        ],['id' => $id]);
+        ], ['id' => $id]);
         if(!$res){
             throw new RegisterException('重置密码失败',ResponseCode::$RESETPASSWORD_ERROR);
         }
