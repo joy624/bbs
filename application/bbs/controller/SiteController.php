@@ -23,7 +23,7 @@ class SiteController extends Controller
 
         // 利用UserValidate验证器验证用户名和密码是否符合指定的规范
         $validate = new UserValidate();
-        if (!$validate->check(['name' => $name, 'password' => $password])) {
+        if (!$validate->scene('login')->check(['name' => $name, 'password' => $password])) {
             throw new LoginException($validate->getError(), ResponseCode::$USER_NOT_STANDARD);
         }
 

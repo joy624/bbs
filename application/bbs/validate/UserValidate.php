@@ -30,4 +30,8 @@ class UserValidate extends Validate
         'password.regex'   => '密码可以英文字母和数字开头，由字母、数字和_组成'
     ];
 
+    protected $scene = [
+        'register' => ['name', 'email', 'password'],
+        'login' => ['name', 'password']
+    ];
 }
