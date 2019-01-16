@@ -32,6 +32,14 @@ class UserController extends Controller
     // 重置密码
     public  function resetPassword()
     {
+        // 接收并过滤重置密码的用户id、旧密码、新密码
+        $id = $this->request->post('id', '', 'htmlspecialchars,strip_tags,trim');
+        $old_password = $this->request->post('old_password', '', 'htmlspecialchars,strip_tags,trim');
+        $new_password = $this->request->post('new_password', '', 'htmlspecialchars,strip_tags,trim');
+
+        // 验证对应用户的密码是否正确
+
+        // 重置用户密码
 
     }
 }
