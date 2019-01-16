@@ -13,6 +13,7 @@ use app\bbs\exception\LoginException;
 use app\bbs\exception\RegisterException;
 use app\bbs\model\UserModel;
 use http\Env\Response;
+use think\db\Where;
 use think\facade\Session;
 
 class UserService
@@ -90,11 +91,7 @@ class UserService
 
     // 判断用户是否存在
     public function estimateUserExist($name){
-        if(UserModel::where('name',$name)->find()){
-            return true;
-        }else{
-            return false;
-        }
+        return UserModel::field('id')->where('name',$name)->find();
     }
 
     // 验证指定用户的密码是否正确
@@ -122,4 +119,47 @@ class UserService
         }
         return $res;
     }
+
+    // 保存激活码和有效期
+    public function addToken($id,$token,$token_exptime)
+    {
+        $user = new UserModel;
+        $res = $user->save([
+            'token'  => $token,
+            'token_exptime' => $token_exptime
+        ],['id' => $id]);
+        if(!$res){
+            throw new RegisterException('保存激活码和激活码有效性失败',ResponseCode::$TOKEN_ERROR);
+        }
+        return $res;
+    }
+
+    // 激活用户
+    public function validateToken($token)
+    {
+        $data = UserModel::field('token_exptime,is_active')->where('token',$token)->find();
+
+        // 检测用户是否存在
+        if(!$data){
+            throw new RegisterException('用户不存在',ResponseCode::$USER_NOT_EXIST);
+        }
+        // 检测激活码是否过期
+        if((time()-$data->token_exptime)>24*60*60){
+            throw new RegisterException('激活码过期',ResponseCode::$TOKEN_EXPTIME);
+        }
+        // 检测用户是否激活
+        if($data->is_active){
+            throw new RegisterException('用户已激活',ResponseCode::$USER_ACTIVATED);
+        }
+        $user = new UserModel;
+        $res = $user->save([
+            'is_active'=> 1
+        ],['token' => $token]);
+        if(!$res){
+            throw new RegisterException('激活用户失败',ResponseCode::$USER_ACTIVATED_ERROR);
+        }
+        return $res;
+    }
+
+
 }

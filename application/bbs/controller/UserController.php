@@ -6,6 +6,7 @@ use app\bbs\validate\UserValidate;
 use app\bbs\exception\RegisterException;
 use app\bbs\common\ResponseCode;
 use app\bbs\service\UserService;
+use app\bbs\controller\EmailController;
 
 class UserController extends Controller
 {
@@ -45,4 +46,36 @@ class UserController extends Controller
         $user_service->resetPassword($id, $new_password);
         return ResponseCode::success(true);
     }
+
+    // 忘记密码
+    public function findPassword()
+    {
+        $name =  $this->request->post('name', '', 'htmlspecialchars,strip_tags,trim');
+        $email =  $this->request->post('email', '', 'htmlspecialchars,strip_tags,trim');
+        $new_password=  $this->request->post('new_password', '', 'htmlspecialchars,strip_tags,trim');
+        $code =  $this->request->post('code', '', 'htmlspecialchars,strip_tags,trim');
+
+        // 利用UserValidate验证器验证用户名、密码和邮箱是否符合指定的规范
+        $validate = new UserValidate();
+        if (!$validate->check(['name' => $name, 'password' => $new_password, 'email'=>$email])) {
+            throw new RegisterException($validate->getError(), ResponseCode::$USER_NOT_STANDARD);
+        }
+        // 判断邮箱验证码是否正确
+        if( session('emailCode') !== (int)$code) {
+            return ResponseCode::$CAPTCHA_ERROR;
+        }
+
+        // 修改用户密码
+        $user_service = new UserService();
+        $data = $user_service->estimateUserExist($name);
+
+        $user_service->resetPassword($data->id, $new_password);
+        return ResponseCode::success(true);
+    }
+
+    // 上传头像
+    public function headPortrait()
+    {
+    }
+
 }
