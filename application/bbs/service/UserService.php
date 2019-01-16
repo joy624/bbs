@@ -73,6 +73,7 @@ class UserService
         if(!$user){
             throw new RegisterException('注册用户出错',ResponseCode::$REGISTER_ERROR);
         }
+        return $user;
     }
 
     // 获取加密的随机salt

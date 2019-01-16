@@ -25,8 +25,13 @@ class UserController extends Controller
 
         // 添加用户
         $user_service = new UserService();
-        $user_service->add($name, $password,$email);
-        return ResponseCode::success(true);
+        $data = $user_service->add($name, $password,$email);
+        return ResponseCode::success($data);
     }
 
+    // 重置密码
+    public  function resetPassword()
+    {
+
+    }
 }
