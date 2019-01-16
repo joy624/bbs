@@ -17,6 +17,12 @@ use think\Request;
 
 class SiteController extends Controller
 {
+
+    public function Index()
+    {
+        echo '后续这里显示前端页面';    
+    }
+
     // 用户登录
     public function Login()
     {
