@@ -7,6 +7,6 @@ class UserModel extends Model
 {
     public static function getSafeAttrs()
     {
-        return ['id', 'name', 'email', 'mobile', 'role', 'img_url', 'reg_time'];
+        return ['id', 'name', 'email', 'role', 'img_url', 'reg_time', 'is_active', 'update_time'];
     }
 }

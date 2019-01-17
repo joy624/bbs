@@ -54,42 +54,36 @@ class UserService
     }
 
     // 注册用户
-    public function add($name,$password,$email)
+    public function add($name, $password, $email)
     {
         // 判断注册的用户名是否已经存在
         if($this->getUserByName($name)){
             throw new RegisterException('此用户名已经存在,请重新设置', ResponseCode::$USERNAME_EXIST);
         }
+        if($this->getUserByEmail($email)){
+            throw new RegisterException('此邮箱已经存在,请重新设置', ResponseCode::$EMAIL_EXIST);
+        }
+
         // 加密salt和密码
-        $salt = $this->generateSalt();
+        $secure_service = new SecureService();
+        $salt = $secure_service->genRandomString();
         $password = md5(md5($password) . $salt);
 
-        $user = UserModel::create([
-            'name'  =>  $name,
-            'password'=> $password,
-            'email' =>  $email,
-            'salt'=>$salt
-        ], ['name', 'password', 'email','salt']);
-        if(!$user){
+        $user = new UserModel();
+        if(!$user->save(['name'  =>  $name, 'password'=> $password, 'email' =>  $email, 'salt'=>$salt])){
             throw new RegisterException('注册用户出错',ResponseCode::$REGISTER_ERROR);
         }
-        return $user;
+
+        return UserModel::field(UserModel::getSafeAttrs())->get($user->id);
     }
 
-    // 获取加密的随机salt
-    private function generateSalt($len = 32)
-    {
-        $salt = '';
-        $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";//大小写字母以及数字
-        $max = strlen($str)-1;
-        for($i=0;$i<$len;$i++){
-            $salt.=$str[rand(0,$max)];
-        }
-        return $salt;
-    }
 
     public function getUserByName($name){
         return UserModel::field(UserModel::getSafeAttrs())->where('name',$name)->find();
+    }
+
+    public function getUserByEmail($email){
+        return UserModel::field(UserModel::getSafeAttrs())->where('email',$email)->find();
     }
 
     // 验证指定用户的密码是否正确
@@ -107,7 +101,8 @@ class UserService
     // 重置用户密码
     public function updatePassword($id, $new_password)
     {
-        $salt = $this->generateSalt();
+        $secure_service = new SecureService();
+        $salt = $secure_service->genRandomString();
         $password = md5(md5($new_password) . $salt);
         $user = new UserModel;
         $res = $user->save([
@@ -117,7 +112,6 @@ class UserService
         if(!$res){
             throw new RegisterException('重置密码失败',ResponseCode::$RESETPASSWORD_ERROR);
         }
-        return $res;
     }
 
     // 保存激活码和有效期
@@ -127,7 +121,7 @@ class UserService
         $res = $user->save([
             'token'  => $token,
             'token_exptime' => $token_exptime
-        ],['id' => $id]);
+        ], ['id' => $id]);
         if(!$res){
             throw new RegisterException('保存激活码和激活码有效性失败',ResponseCode::$TOKEN_ERROR);
         }
@@ -166,7 +160,7 @@ class UserService
         if(!UserModel::get($id)){
             throw new RegisterException('用户不存在',ResponseCode::$USER_NOT_EXIST);
         }
-        $user = new UserModel;
+        $user = new UserModel();
         $res = $user->save([
             'img_url'  => $thumb_path
         ], ['id' => $id]);

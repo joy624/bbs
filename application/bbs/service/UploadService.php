@@ -10,7 +10,6 @@ namespace app\bbs\service;
 
 use app\bbs\common\ResponseCode;
 use app\bbs\exception\UserException;
-use app\bbs\model\UserModel;
 use think\Image;
 
 class UploadService
