@@ -31,4 +31,13 @@ class ResponseCode
     public static $THUMB_URL_SAVE_ERROR = 3014;  // 在数据库中保存头像缩略图路径错误
     public static $EMAILNAME_EXIST = 3015;        // 邮箱已存在
     public static $EDIT_ERROR = 3016;        // 修改错误
+
+    // 分类相关
+    public static $CATE_NAME_IS_NULL = 40001;  // 分类名称为空
+    public static $CATE_NAME_IS_EXIST = 40002; // 分类名称已经存在
+    public static $CATE_FAILD = 40003;         // 操作分类失败
+    public static $CATE_NOT_EXIST = 40004;     // 分类不存在
+    public static $CATE_SORT_ERROR = 40005;    // 分类名不能为空，排序值必须为非负整数
+
+
 }
