@@ -34,20 +34,23 @@ CREATE TABLE `bbs_topic` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-# 创建回复表，将回复的1楼 作为 主题id对应的内容，其余作为回复内容
+# 创建回复表 将回复的1楼 作为 主题id对应的内容 其余作为回复内容
 CREATE TABLE `bbs_reply` (
  `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT '回复id',
  `topic_id` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '主题id',
  `category_id` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '分类id',
  `content` TEXT NOT NULL COMMENT '回复内容',
  `user_id` INT UNSIGNED NOT NULL DEFAULT 0  COMMENT '用户id',
- `is_show` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否显示',
+ `is_show` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否显示',
  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
  `hits` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '点击量',
  `likenum` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '点赞量',
  `is_report` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否被举报'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 
 INSERT INTO `bbs_user`(`name`,`password`,`salt`,`email`,`mobile`,`role`) VALUES
 ('admin',MD5(CONCAT(MD5('123456'), MD5('AXVED'))),MD5('AXVED'),'990198829@qq.com','15801604181','admin');

@@ -39,5 +39,9 @@ class ResponseCode
     public static $CATE_NOT_EXIST = 40004;     // 分类不存在
     public static $CATE_SORT_ERROR = 40005;    // 分类名不能为空，排序值必须为非负整数
 
+    // 主题相关
+    public static $TOPIC_CATE_IS_MUST = 50001;  // 标题和分类是必须的
+    public static $TOPIC_TITLE_FAILD = 50002;  // 操作主题标题失败
+    public static $TOPIC_REPLY_FAILD = 50003;  // 操作主题内容和回复失败
 
 }

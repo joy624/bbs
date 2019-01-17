@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
         $validate = new CateValidate();
         if (!$validate->scene('add')->check(['name' => $name])) {
-            throw new CategoryException('分类名称不能为空',ResponseCode::$CATE_NAME_IS_NULL);
+            throw new CategoryException($validate->getError(),ResponseCode::$CATE_NAME_IS_NULL);
         }
 
         $cate_service = new CategoryService;
@@ -36,7 +36,7 @@ class CategoryController extends Controller
 
         $validate = new CateValidate();
         if (!$validate->scene('edit')->check(['name' => $name,'sort' => $sort])) {
-            throw new CategoryException('分类名不能为空，排序值必须为非负整数',ResponseCode::$CATE_SORT_ERROR);
+            throw new CategoryException($validate->getError(),ResponseCode::$CATE_SORT_ERROR);
         }
 
         $cate_service = new CategoryService;
