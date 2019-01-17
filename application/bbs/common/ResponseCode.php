@@ -26,5 +26,9 @@ class ResponseCode
     public static $USER_ACTIVATED_ERROR = 3009;  // 激活用户失败
     public static $SEND_EMAIL_CODE_ERROR = 3010; // 发送邮箱验证码失败
     public static $CAPTCHA_ERROR = 3011;         // 邮箱验证码验证失败
-
+    public static $FILE_NOT_FOUND = 3012;        // 未找到上传文件
+    public static $UPLOAD_ERROR = 3013;          // 上传文件失败
+    public static $THUMB_URL_SAVE_ERROR = 3014;  // 在数据库中保存头像缩略图路径错误
+    public static $EMAILNAME_EXIST = 3015;        // 邮箱已存在
+    public static $EDIT_ERROR = 3016;        // 修改错误
 }

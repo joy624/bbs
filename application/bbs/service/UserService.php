@@ -13,8 +13,6 @@ use app\bbs\exception\LoginException;
 use app\bbs\exception\RegisterException;
 use app\bbs\exception\UserException;
 use app\bbs\model\UserModel;
-use http\Env\Response;
-use think\db\Where;
 use think\facade\Session;
 
 class UserService
@@ -90,7 +88,6 @@ class UserService
         return $salt;
     }
 
-    // 判断用户是否存在
     public function getUserByName($name){
         return UserModel::field(UserModel::getSafeAttrs())->where('name',$name)->find();
     }
@@ -164,5 +161,53 @@ class UserService
         return $res;
     }
 
+    public function saveThumb($id, $thumb_path)
+    {
+        if(!UserModel::get($id)){
+            throw new RegisterException('用户不存在',ResponseCode::$USER_NOT_EXIST);
+        }
+        $user = new UserModel;
+        $res = $user->save([
+            'img_url'  => $thumb_path
+        ], ['id' => $id]);
+        if(!$res){
+            throw new RegisterException('保存头像路径错误',ResponseCode::$THUMB_URL_SAVE_ERROR);
+        }
+    }
 
+
+    public function modifyEmail($id, $email)
+    {
+        if(!UserModel::get($id)){
+            throw new RegisterException('用户不存在',ResponseCode::$USER_NOT_EXIST);
+        }
+        if(UserModel::whereEmail('=',$email)->find()){
+            throw new RegisterException('已存在，请重新设置',ResponseCode::$USER_NOT_EXIST);
+        }
+        $user = new UserModel;
+        $res = $user->save([
+            'email'  => $email,
+            'is_active'=>0
+        ], ['id' => $id]);
+        if(!$res){
+            throw new RegisterException('修改错误',ResponseCode::$EDIT_ERROR);
+        }
+    }
+
+    public function modifyName($id, $name)
+    {
+        if(!UserModel::get($id)){
+            throw new RegisterException('用户不存在',ResponseCode::$USER_NOT_EXIST);
+        }
+        if(UserModel::whereName('=',$name)->find()){
+            throw new RegisterException('已存在，请重新设置',ResponseCode::$USER_NOT_EXIST);
+        }
+        $user = new UserModel;
+        $res = $user->save([
+            'name'  => $name
+        ], ['id' => $id]);
+        if(!$res){
+            throw new RegisterException('修改错误',ResponseCode::$EDIT_ERROR);
+        }
+    }
 }
