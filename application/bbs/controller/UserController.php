@@ -38,7 +38,7 @@ class UserController extends Controller
         return ResponseCode::success($user);
     }
 
-    // 重置密码
+    // 根据老密码重置密码
     public function resetPassword()
     {
         // 接收并过滤重置密码的用户id、旧密码、新密码
@@ -97,7 +97,7 @@ http://bbs.com/bbs/user/updatePwd?key=".$key."<br />如果您的邮箱不支持�
 
     }
 
-    //
+    // 根据邮件连接更新密码
     public function updatePwd()
     {
         if($this->request->isPost()){

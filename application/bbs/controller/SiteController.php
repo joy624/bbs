@@ -3,7 +3,7 @@ namespace app\bbs\controller;
 
 use app\bbs\common\ResponseCode;
 use app\bbs\exception\LoginException;
-use app\bbs\service\UserService;
+use app\bbs\service\AuthService;
 use app\bbs\validate\UserValidate;
 use think\Controller;
 
@@ -27,23 +27,23 @@ class SiteController extends Controller
             throw new LoginException($validate->getError(), ResponseCode::$USER_NOT_STANDARD);
         }
 
-        $user_service = new UserService();
+        $user_service = new AuthService();
         $user_service->login($name, $password);
         return ResponseCode::success(true);
     }
 
     // 退出登录
-    public function logout()
+    public function Logout()
     {
-        $user_service = new UserService();
+        $user_service = new AuthService();
         $user_service->logout();
         return ResponseCode::success(true);
     }
 
     // 获取当前登录人信息
-    public function user()
+    public function User()
     {
-        $user_service = new UserService();
+        $user_service = new AuthService();
         $user = $user_service->getLoginUser();
         if (!$user) {
             throw new LoginException('未登录', ResponseCode::$USER_NOT_LOGIN);
