@@ -11,5 +11,4 @@ use think\Model;
 
 class ReplyModel extends Model
 {
-
 }

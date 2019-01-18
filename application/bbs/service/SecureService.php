@@ -21,7 +21,7 @@ class SecureService
     public function genRandomString($len = 32)
     {
         $salt = '';
-        $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";//大小写字母以及数字
+        $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
         $max = strlen($str)-1;
         for($i=0;$i<$len;$i++){
             $salt.=$str[rand(0,$max)];

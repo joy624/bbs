@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: qzm
- * Date: 2019-1-17
- * Time: 15:03
- */
 namespace app\bbs\controller;
 
 use think\Controller;
@@ -17,7 +11,7 @@ class CategoryController extends Controller
 {
     public function add()
     {
-        $name = $this->request->post('name', '', 'htmlspecialchars,strip_tags,trim');
+        $name = $this->request->post('name');
 
         $validate = new CateValidate();
         if (!$validate->scene('add')->check(['name' => $name])) {
@@ -30,9 +24,9 @@ class CategoryController extends Controller
     }
     public function edit()
     {
-        $id = $this->request->post('id', '', 'htmlspecialchars,strip_tags,trim');
-        $name = $this->request->post('name', '', 'htmlspecialchars,strip_tags,trim');
-        $sort = $this->request->post('sort', '', 'htmlspecialchars,strip_tags,trim');
+        $id = $this->request->post('id');
+        $name = $this->request->post('name');
+        $sort = $this->request->post('sort');
 
         $validate = new CateValidate();
         if (!$validate->scene('edit')->check(['name' => $name,'sort' => $sort])) {
@@ -45,7 +39,7 @@ class CategoryController extends Controller
     }
     public function delete()
     {
-        $id = $this->request->post('id', '', 'htmlspecialchars,strip_tags,trim');
+        $id = $this->request->post('id');
 
         $cate_service = new CategoryService;
         $cate_service->deleteCate($id);

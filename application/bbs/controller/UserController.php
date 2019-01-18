@@ -2,6 +2,7 @@
 namespace app\bbs\controller;
 
 use app\bbs\exception\UserException;
+use app\bbs\model\UserModel;
 use app\bbs\service\EmailService;
 use app\bbs\service\SecureService;
 use app\bbs\validate\ResetPasswordValidate;
@@ -30,11 +31,41 @@ class UserController extends Controller
 
         // 添加用户
         $user_service = new UserService();
-        $user = $user_service->add(
+        $user = $user_service->addUser(
             $params['name'],
             $params['password'],
             $params['email']
         );
+
+        // 注册用户后，向用户的邮箱中发送激活链接
+        $subject = '用户帐号激活';
+        $secure_service = new SecureService();
+        $key = $secure_service->genRandomString();
+        $body = "亲爱的".$params['name']."：<br/>感谢您在我站注册了新帐号。<br/>请点击链接激活您的帐号。<br/> 
+    <a href='http://my.test.tp/bbs/user/activateAccount?key=".$key."' target='_blank'> http://my.test.tp/bbs/user/activateAccount?key=".$key."</a><br/> 
+    如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接24小时内有效。";
+
+        $email_service = new EmailService();
+        $email_service->sendEmailURL($params['email'], $params['name'], $subject, $body, $key);
+
+        if(!Cache::set('activate_email_url_'.$key, $user->id, 24*60*60)){
+            throw new SystemException('账户激活发送失败，请重试或联系管理员',ResponseCode::$ACTIVATE_ACCOUNT_ERROR);
+        }
+
+        return ResponseCode::success($user);
+    }
+
+    // 激活账户
+    public function activateAccount()
+    {
+        $key = $this->request->get('key');
+        $id = Cache::get('activate_email_url_'.$key);
+        if(!$id){
+            throw new UserException('激活链接已过期或非法输入，请重新激活账户',ResponseCode::$ACTIVATE_ACCOUNT_ERROR);
+        }
+        $flag = 1;
+        $user_service = new UserService();
+        $user = $user_service->editActiveFlag($id,$flag);
         return ResponseCode::success($user);
     }
 
@@ -42,7 +73,6 @@ class UserController extends Controller
     public function resetPassword()
     {
         // 接收并过滤重置密码的用户id、旧密码、新密码
-
         $id = $this->request->post('id');
         $old_password = $this->request->post('old_password');
         $new_password = $this->request->post('new_password');
@@ -80,13 +110,12 @@ class UserController extends Controller
         }
 
         $subject = '找回密码邮件';
-        // 设置账户激活码
         $secure_service = new SecureService();
         $key = $secure_service->genRandomString();
 
         $body = "亲爱的".$user->name."：<br />请点击下面的链接来重置您的密码。<br />
-http://bbs.com/bbs/user/updatePwd?key=".$key."<br />如果您的邮箱不支持链接点击，请将以上链接地址拷贝到你的浏览器地址栏中。<br />
-该验证邮件有效期为30分钟，超时请重新发送邮件。";
+ <a href='http://my.test.tp/bbs/user/updatePwd?key=".$key."' target='_blank'>http://my.test.tp/bbs/user/updatePwd?key=".$key."</a><br/> 
+如果您的邮箱不支持链接点击，请将以上链接地址拷贝到你的浏览器地址栏中。<br />该验证邮件有效期为30分钟，超时请重新发送邮件。";
 
         $email_service = new EmailService();
         $email_service->sendEmailURL($email, $user->name, $subject, $body, $key);
@@ -94,10 +123,9 @@ http://bbs.com/bbs/user/updatePwd?key=".$key."<br />如果您的邮箱不支持�
        if(!Cache::set('validate_email_url_'.$key, $user->id, 30*60)){
            throw new SystemException('找回密码失败，请重试或联系管理员',ResponseCode::$FIND_PASSWORD_ERROR);
        }
-
     }
 
-    // 根据邮件连接更新密码
+    // 根据邮件链接更新密码
     public function updatePwd()
     {
         if($this->request->isPost()){
@@ -144,7 +172,7 @@ http://bbs.com/bbs/user/updatePwd?key=".$key."<br />如果您的邮箱不支持�
         return ResponseCode::success($thumb_path);
     }
 
-    // 修改用户
+    // 修改用户名
     public function editName()
     {
         $id = $this->request->post('id');
@@ -157,25 +185,68 @@ http://bbs.com/bbs/user/updatePwd?key=".$key."<br />如果您的邮箱不支持�
 
         // 修改用户信息
         $user_service = new UserService();
-        $user = $user_service->modifyName($id, $name);
-        return ResponseCode::success($user);
+        $user_service->modifyName($id, $name);
+        return ResponseCode::success(true);
     }
 
-//    // 修改用户邮箱
-//    public function editEmail()
-//    {
-//
-//        $id = $this->request->post('id');
-//        $email = $this->request->post('email');
-//
-//        $res = $this->validate(['email' => $email],'app\bbs\validate\UserValidate.editEmail');
-//        if (true !== $res) {
-//            throw new UserException($res, ResponseCode::$USER_NOT_STANDARD);
-//        }
-//
-//        // 修改用户信息
-//        $user_service = new UserService();
-//        $user_service->modifyEmail($id, $email);
-//        return ResponseCode::success(true);
-//    }
+    // 修改用户邮箱
+    public function editEmail()
+    {
+
+        $id = $this->request->post('id');
+        $email = $this->request->post('email');
+        $res = $this->validate(['email' => $email],'app\bbs\validate\UserValidate.editEmail');
+        if (true !== $res) {
+            throw new UserException($res, ResponseCode::$USER_NOT_STANDARD);
+        }
+
+        // 向用户的邮箱中发送验证链接
+        $subject = '修改用户邮箱链接';
+        $secure_service = new SecureService();
+        $key = $secure_service->genRandomString();
+        $body = "亲爱的用户：<br/>若想要修改邮箱，请点击以下链接。<br/> 
+    <a href='http://my.test.tp/bbs/user/updateEmail?key=".$key."' target='_blank'> http://my.test.tp/bbs/user/updateEmail?key=".$key."</a><br/> 
+    如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接30分钟内有效。";
+
+        $email_service = new EmailService();
+        $email_service->sendEmailURL($email, '', $subject, $body, $key);
+
+        if(!Cache::set('update_email_url_'.$key, $id, 30*60)){
+            throw new SystemException('发送修改链接失败，请重试或联系管理员',ResponseCode::$EMAIL_SEND_FAILED);
+        }
+    }
+    public function updateEmail()
+    {
+        $key = $this->request->get('key');
+        $id = Cache::get('update_email_url_'.$key);
+        if(!$id){
+            throw new UserException('验证信息已过期或非法输入，请重新找回密码',ResponseCode::$EMAIL_CODE_ERROR);
+        }
+
+        $email = $this->request->post('email');
+        $res = $this->validate(['email' => $email],'app\bbs\validate\UserValidate.editEmail');
+        if (true !== $res) {
+            throw new UserException($res, ResponseCode::$USER_NOT_STANDARD);
+        }
+
+        $user_service = new UserService();
+        $user_service->modifyEmail($id, $email);
+
+        // 修改邮箱后激活账户
+        $subject = '用户帐号激活';
+        $secure_service = new SecureService();
+        $key = $secure_service->genRandomString();
+        $body = "亲爱的用户：<br/>请点击链接激活您的帐号。<br/> 
+    <a href='http://my.test.tp/bbs/user/activateAccount?key=".$key."' target='_blank'> http://my.test.tp/bbs/user/activateAccount?key=".$key."</a><br/> 
+    如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接24小时内有效。";
+
+        $email_service = new EmailService();
+        $email_service->sendEmailURL($email, '', $subject, $body, $key);
+
+        if(!Cache::set('activate_email_url_'.$key, $id, 24*60*60)){
+            throw new SystemException('账户激活发送失败，请重试或联系管理员',ResponseCode::$ACTIVATE_ACCOUNT_ERROR);
+        }
+
+        return ResponseCode::success(true);
+    }
 }

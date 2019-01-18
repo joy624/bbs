@@ -18,7 +18,7 @@ use think\facade\Session;
 class UserService
 {
     // 注册用户
-    public function add($name, $password, $email)
+    public function addUser($name, $password, $email)
     {
         // 判断注册的用户名是否已经存在
         if($this->getUserByName($name)){
@@ -42,6 +42,14 @@ class UserService
     }
 
 
+    public function editActiveFlag($id,$flag)
+    {
+        $user = new UserModel();
+        if(!$user->save(['is_active'  => $flag,], ['id' => $id])){
+            throw new UserException('激活账户失败',ResponseCode::$ACTIVATE_FLAG_ERROR);
+        }
+        return UserModel::field(UserModel::getSafeAttrs())->get($id);
+    }
     public function getUserByName($name){
         return UserModel::field(UserModel::getSafeAttrs())->where('name',$name)->find();
     }
@@ -78,46 +86,46 @@ class UserService
         }
     }
 
-    // 保存激活码和有效期
-    public function addToken($id,$token,$token_exptime)
-    {
-        $user = new UserModel;
-        $res = $user->save([
-            'token'  => $token,
-            'token_exptime' => $token_exptime
-        ], ['id' => $id]);
-        if(!$res){
-            throw new RegisterException('保存激活码和激活码有效性失败',ResponseCode::$TOKEN_ERROR);
-        }
-        return $res;
-    }
+//    // 保存激活码和有效期
+//    public function addToken($id,$token,$token_exptime)
+//    {
+//        $user = new UserModel;
+//        $res = $user->save([
+//            'token'  => $token,
+//            'token_exptime' => $token_exptime
+//        ], ['id' => $id]);
+//        if(!$res){
+//            throw new RegisterException('保存激活码和激活码有效性失败',ResponseCode::$TOKEN_ERROR);
+//        }
+//        return $res;
+//    }
 
-    // 激活用户
-    public function validateToken($token)
-    {
-        $data = UserModel::field('token_exptime,is_active')->where('token',$token)->find();
-
-        // 检测用户是否存在
-        if(!$data){
-            throw new RegisterException('用户不存在',ResponseCode::$USER_NOT_EXIST);
-        }
-        // 检测激活码是否过期
-        if((time()-$data->token_exptime)>24*60*60){
-            throw new RegisterException('激活码过期',ResponseCode::$TOKEN_EXPTIME);
-        }
-        // 检测用户是否激活
-        if($data->is_active){
-            throw new RegisterException('用户已激活',ResponseCode::$USER_ACTIVATED);
-        }
-        $user = new UserModel;
-        $res = $user->save([
-            'is_active'=> 1
-        ],['token' => $token]);
-        if(!$res){
-            throw new RegisterException('激活用户失败',ResponseCode::$USER_ACTIVATED_ERROR);
-        }
-        return $res;
-    }
+//    // 激活用户
+//    public function validateToken($token)
+//    {
+//        $data = UserModel::field('token_exptime,is_active')->where('token',$token)->find();
+//
+//        // 检测用户是否存在
+//        if(!$data){
+//            throw new RegisterException('用户不存在',ResponseCode::$USER_NOT_EXIST);
+//        }
+//        // 检测激活码是否过期
+//        if((time()-$data->token_exptime)>24*60*60){
+//            throw new RegisterException('激活码过期',ResponseCode::$TOKEN_EXPTIME);
+//        }
+//        // 检测用户是否激活
+//        if($data->is_active){
+//            throw new RegisterException('用户已激活',ResponseCode::$USER_ACTIVATED);
+//        }
+//        $user = new UserModel;
+//        $res = $user->save([
+//            'is_active'=> 1
+//        ],['token' => $token]);
+//        if(!$res){
+//            throw new RegisterException('激活用户失败',ResponseCode::$USER_ACTIVATED_ERROR);
+//        }
+//        return $res;
+//    }
 
     public function saveThumb($id, $thumb_path)
     {
@@ -136,9 +144,6 @@ class UserService
 
     public function modifyEmail($id, $email)
     {
-        if(!UserModel::get($id)){
-            throw new RegisterException('用户不存在',ResponseCode::$USER_NOT_EXIST);
-        }
         if(UserModel::whereEmail('=',$email)->find()){
             throw new RegisterException('已存在，请重新设置',ResponseCode::$USER_NOT_EXIST);
         }
@@ -161,10 +166,7 @@ class UserService
             throw new RegisterException('已存在，请重新设置',ResponseCode::$USER_NOT_EXIST);
         }
         $user = new UserModel;
-        $res = $user->save([
-            'name'  => $name
-        ], ['id' => $id]);
-        if(!$res){
+        if(! $user->save(['name'  => $name], ['id' => $id])){
             throw new RegisterException('修改错误',ResponseCode::$EDIT_ERROR);
         }
     }

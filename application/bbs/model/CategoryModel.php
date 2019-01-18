@@ -9,7 +9,7 @@ namespace app\bbs\model;
 
 use think\Model;
 
-class TopicCategoryModel extends Model
+class CategoryModel extends Model
 {
 
 }

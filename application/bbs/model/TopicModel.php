@@ -11,5 +11,8 @@ use think\Model;
 
 class TopicModel extends Model
 {
-
+    public function user()
+    {
+        return $this->belongsTo('UserModel','user_id');
+    }
 }

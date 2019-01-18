@@ -9,4 +9,5 @@ class UserModel extends Model
     {
         return ['id', 'name', 'email', 'role', 'img_url', 'reg_time', 'is_active', 'update_time'];
     }
+
 }

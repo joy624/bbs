@@ -1,18 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: qzm
- * Date: 2019-1-16
- * Time: 17:36
- */
 namespace app\bbs\controller;
 
-use app\bbs\exception\UserException;
 use think\Controller;
 use PHPMailer\PHPMailer\PHPMailer;
-use app\bbs\common\ResponseCode;
-use app\bbs\service\UserService;
-use app\bbs\exception\RegisterException;
 
 class EmailController extends Controller
 {
