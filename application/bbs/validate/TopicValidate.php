@@ -13,6 +13,7 @@ use think\Validate;
 class TopicValidate extends Validate
 {
     protected $rule = [
+        'id' => ['require', 'number'],
         'title'         =>  ['require'],
         'category_id'   =>  ['require', 'number'],
         'user_id'       =>  ['require', 'number'],
@@ -28,6 +29,7 @@ class TopicValidate extends Validate
         'content.require' => '内容是必须的'
     ];
     protected $scene = [
-        'add'=>['title','category_id','user_id','content']
+        'add'=>['title', 'category_id', 'user_id', 'content'],
+        'edit' => ['id', 'title', 'category_id', 'user_id', 'content']
     ];
 }

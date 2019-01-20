@@ -32,6 +32,7 @@ class TopicController extends Controller
         $topic = $topic_service->addTopic($data);
         return  ResponseCode::success($topic);
     }
+
     public function edit()
     {
         $data['id'] = $this->request->post('id');
@@ -41,7 +42,7 @@ class TopicController extends Controller
         $data['content'] = $this->request->post('content');
 
         $validate = new TopicValidate();
-        if (!$validate->scene('add')->check($data)) {
+        if (!$validate->scene('edit')->check($data)) {
             throw new TopicException($validate->getError(),ResponseCode::$TOPIC_TITLE_CATE_CONTENT_IS_MUST);
         }
 
@@ -49,6 +50,7 @@ class TopicController extends Controller
         $topic = $topic_service->editTopic($data);
         return  ResponseCode::success($topic);
     }
+
     public function delete()
     {
         $id = $this->request->post('id');
@@ -58,42 +60,41 @@ class TopicController extends Controller
     }
 
     // 根据分类获取主题列表
-    public function list()
+    public function index()
     {
-        $category_id = $this->request->post('category_id',1);
-
-        $topic_service = new TopicService();
-        $topics = $topic_service->cateTopic($category_id);
-        return  ResponseCode::success($topics);
-    }
-    // 分页展示主题列表
-    public function listPage()
-    {
+        $category_id = $this->request->get('category_id',1);
         $page = $this->request->get('page',1);
 
         $topic_service = new TopicService();
-        $topics = $topic_service->pageTopic($page);
+        $topics = $topic_service->pageTopic($category_id, $page);
         return  ResponseCode::success($topics);
     }
 
-    // 获取某个主题信息
-    public function topic()
+    // 获取某个主题信息，点击量加1
+    public function view()
     {
-        $id = $this->request->post('id');
-
+        $id = $this->request->get('id');
         $topic_service = new TopicService();
         $topic = $topic_service->getTopic($id);
-        // 将此主题的点击量加1
-        $topic_service->addHits($id);
+        $topic_service->incrHits($id);
         return ResponseCode::success($topic);
     }
 
-    // 点赞量
+    // 点赞操作
     public function likeNum()
     {
         $id = $this->request->post('id');
         $topic_service = new TopicService();
-        $num = $topic_service->addLike($id);
+        $num = $topic_service->incrLike($id);
+        return ResponseCode::success($num);
+    }
+
+    // 取消点赞
+    public function cancelLikeNum()
+    {
+        $id = $this->request->post('id');
+        $topic_service = new TopicService();
+        $num = $topic_service->decrLike($id);
         return ResponseCode::success($num);
     }
 }

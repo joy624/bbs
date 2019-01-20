@@ -7,61 +7,66 @@
  */
 namespace app\bbs\controller;
 
-use app\bbs\model\TopicModel;
 use think\Controller;
-use app\bbs\validate\ReplyValidate;
 use app\bbs\service\ReplyService;
 use app\bbs\exception\ReplyException;
 use app\bbs\common\ResponseCode;
 
 class ReplyController extends Controller
 {
+
+    // 添加回复
     public function add()
     {
-        $data['topic_id'] = $this->request->post('topic_id');
-        $data['content']  = $this->request->post('content');
-        $data['user_id'] = $this->request->post('user_id');
-
-        $validate = new ReplyValidate();
-        if (!$validate->scene('add')->check($data)) {
-            throw new ReplyException($validate->getError(),ResponseCode::$REPLY_IS_MUST);
-        }
+        $params['topic_id'] = $this->request->post('topic_id');
+        $params['content']  = $this->request->post('content');
 
         $reply_service = new ReplyService();
-        $reply = $reply_service->addReply($data);
+        $reply = $reply_service->addReply($params);
         return  ResponseCode::success($reply);
     }
+
+    // 编辑回复
     public function edit()
     {
-        $data['id'] = $this->request->post('id');
-        $data['topic_id'] = $this->request->post('topic_id');
-        $data['content']  = $this->request->post('content');
-        $data['user_id'] = $this->request->post('user_id');
+        $id = $this->request->post('id');
+        $content = $this->request->post('content');
 
         $validate = new ReplyService();
-        if (!$validate->scene('add')->check($data)) {
+        if (!$validate->scene('edit')->check(['id' => $id, 'content' => $content])) {
             throw new ReplyException($validate->getError(),ResponseCode::$REPLY_IS_MUST);
         }
 
         $reply_service = new ReplyService();
-        $reply = $reply_service->editReply($data);
+        $reply = $reply_service->editReply($id, $content);
         return  ResponseCode::success($reply);
     }
+
+    // 删除回复
     public function delete()
     {
         $id = $this->request->post('id');
-        $topic_service = new TopicService;
-        $topic_service->deleteTopic($id);
+        $reply_service = new ReplyService;
+        $reply_service->deleteReply($id);
         return  ResponseCode::success(true);
     }
 
-    // 根据对应主题的回复列表
-    public function list()
+    // 查看单个回复内容
+    public function view()
     {
-        $category_id = $this->request->post('category_id',1);
+        $id = $this->request->get('id');
+        $reply_service = new ReplyService();
+        $reply = $reply_service->getReply($id);
+        return ResponseCode::success($reply);
+    }
 
-        $topic_service = new TopicService();
-        $topics = $topic_service->cateTopic($category_id);
+    // 根据对应主题的回复列表
+    public function index()
+    {
+        $topic_id = $this->request->post('topic_id');
+
+        $reply_service = new ReplyService();
+        $topics = $reply_service->getTopicReply($topic_id);
         return  ResponseCode::success($topics);
     }
 

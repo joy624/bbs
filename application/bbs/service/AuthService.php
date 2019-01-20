@@ -52,9 +52,10 @@ class AuthService
     }
 
     // 获取登录用户信息
-    public function getLoginUser($id)
+    public function getLoginUser()
     {
         $id = Session::get('id');
         return UserModel::field(UserModel::getSafeAttrs())->get($id);
     }
+
 }

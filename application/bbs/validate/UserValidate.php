@@ -13,14 +13,14 @@ use think\Validate;
 class UserValidate extends Validate
 {
     protected $rule = [
-        'name'     =>  ['require','min'=>5, 'max' => 25, 'regex' => '/^[a-zA-Z]\w+/'],
+        'name'     =>  ['require','min'=>3, 'max' => 25, 'regex' => '/^[a-zA-Z]\w+/'],
         'email'    =>  ['require','email'],
         'password' => ['require','min'=>6, 'max' => 18, 'regex' => '/^[a-zA-Z0-9]\w+/']
     ];
 
     protected $message  =   [
         'name.require' => '名称是必须的',
-        'name.min'     => '名称最少不能少于5个字符',
+        'name.min'     => '名称最少不能少于3个字符',
         'name.max'     => '名称最多不能超过25个字符',
         'name.regex'   => '名称以英文字母开头，由字母、数字和_组成',
         'email.require'      => '邮箱是必须的',

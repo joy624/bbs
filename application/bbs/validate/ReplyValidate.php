@@ -14,8 +14,9 @@ class ReplyValidate extends Validate
 {
     protected $rule = [
         'topic_id'   =>  ['require', 'number'],
-        'content'       =>  ['require'],
-        'user_id'       =>  ['require', 'number']
+        'content'    =>  ['require'],
+        'user_id'    =>  ['require', 'number'],
+        'id'         =>  ['require', 'number'],
     ];
 
     protected $message  =   [
@@ -26,6 +27,7 @@ class ReplyValidate extends Validate
         'user_id.number'   => '用户id必须是非负整数'
     ];
     protected $scene = [
-        'add'=>['topic_id','user_id','content']
+        'add' => ['topic_id','user_id','content'],
+        'edit' => ['id', 'content']
     ];
 }
