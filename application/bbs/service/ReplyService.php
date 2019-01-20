@@ -21,7 +21,7 @@ class ReplyService
     public function addReply($data)
     {
         // 判断用户是否登录（登录的用户一定是激活的用户）
-        if((int)$data['user_id'] !== Session::get('id_'.$data['user_id'])){
+        if((int)$data['user_id'] !== Session::get('id')){
             throw new LoginException('未登录', ResponseCode::$USER_NOT_LOGIN);
         }
 

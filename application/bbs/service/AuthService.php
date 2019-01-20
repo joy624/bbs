@@ -40,21 +40,21 @@ class AuthService
         if ($user['password'] !== $new_password) {
             throw new LoginException('密码错误', ResponseCode::$PASSWORD_ERROR);
         }
-        Session::set('id_'.$user['id'], $user['id']);
-        Session::set('name_'.$name, $name);
+        Session::set('id', $user['id']);
+        Session::set('name', $name);
     }
 
     // 用户退出
-    public function logout($id,$name)
+    public function logout()
     {
-        Session::delete('id_'.$id);
-        Session::delete('name_'.$name);
+        Session::delete('id');
+        Session::delete('name');
     }
 
     // 获取登录用户信息
     public function getLoginUser($id)
     {
-        $id = Session::get('id_'.$id);
+        $id = Session::get('id');
         return UserModel::field(UserModel::getSafeAttrs())->get($id);
     }
 }
