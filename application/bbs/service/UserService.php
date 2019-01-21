@@ -1,19 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: qiaozhiming
- * Date: 2019/1/15
- * Time: 下午11:25
- */
-
 namespace app\bbs\service;
 
-use app\bbs\common\ResponseCode;
-use app\bbs\exception\LoginException;
-use app\bbs\exception\RegisterException;
-use app\bbs\exception\UserException;
 use app\bbs\model\UserModel;
-use think\facade\Session;
+use app\bbs\common\ResponseCode;
+use app\bbs\exception\UserException;
 
 class UserService
 {
@@ -22,10 +12,10 @@ class UserService
     {
         // 判断注册的用户名是否已经存在
         if($this->getUserByName($name)){
-            throw new RegisterException('此用户名已经存在,请重新设置', ResponseCode::$USERNAME_EXIST);
+            throw new UserException('此用户名已经存在,请重新设置', ResponseCode::$USER_NAME_EXIST);
         }
         if($this->getUserByEmail($email)){
-            throw new RegisterException('此邮箱已经存在,请重新设置', ResponseCode::$EMAIL_EXIST);
+            throw new UserException('此邮箱已经存在,请重新设置', ResponseCode::$USER_EMAIL_EXIST);
         }
 
         // 加密salt和密码
@@ -35,27 +25,30 @@ class UserService
 
         $user = new UserModel();
         if(!$user->save(['name'  =>  $name, 'password'=> $password, 'email' =>  $email, 'salt'=>$salt])){
-            throw new RegisterException('注册用户出错',ResponseCode::$REGISTER_ERROR);
+            throw new UserException('注册用户出错',ResponseCode::$USER_REGISTER_FAILED);
         }
 
         return UserModel::field(UserModel::getSafeAttrs())->get($user->id);
     }
 
-
-    public function editActiveFlag($id,$flag)
-    {
-        $user = new UserModel();
-        if(!$user->save(['is_active'  => $flag,], ['id' => $id])){
-            throw new UserException('激活账户失败',ResponseCode::$ACTIVATE_FLAG_ERROR);
-        }
-        return UserModel::field(UserModel::getSafeAttrs())->get($id);
-    }
+    // 通过用户名获取用户信息
     public function getUserByName($name){
         return UserModel::field(UserModel::getSafeAttrs())->where('name',$name)->find();
     }
 
+    // 通过邮箱获取用户信息
     public function getUserByEmail($email){
         return UserModel::field(UserModel::getSafeAttrs())->where('email',$email)->find();
+    }
+
+    // 编辑用户的激活码，1表示激活，0表示未激活
+    public function editActiveFlag($id,$flag)
+    {
+        $user = new UserModel();
+        if(!$user->save(['is_active'  => $flag,], ['id' => $id])){
+            throw new UserException('激活账户失败',ResponseCode::$USER_ACTIVATE_FAILED);
+        }
+        return UserModel::field(UserModel::getSafeAttrs())->get($id);
     }
 
     // 验证指定用户的密码是否正确
@@ -66,7 +59,7 @@ class UserService
             throw new UserException('用户不存在', ResponseCode::$USER_NOT_EXIST);
         }
         if($user->password !== md5(md5($old_password) . $user->salt)) {
-            throw new RegisterException('密码输入错误',ResponseCode::$PASSWORD_ERROR);
+            throw new UserException('密码输入错误',ResponseCode::$USER_PASSWORD_ERROR);
         }
     }
 
@@ -82,70 +75,31 @@ class UserService
             'password' => $password
         ], ['id' => $id]);
         if(!$res){
-            throw new RegisterException('重置密码失败',ResponseCode::$RESETPASSWORD_ERROR);
+            throw new UserException('重置密码失败',ResponseCode::$USER_RESETPASSWORD_FAILED);
         }
     }
 
-//    // 保存激活码和有效期
-//    public function addToken($id,$token,$token_exptime)
-//    {
-//        $user = new UserModel;
-//        $res = $user->save([
-//            'token'  => $token,
-//            'token_exptime' => $token_exptime
-//        ], ['id' => $id]);
-//        if(!$res){
-//            throw new RegisterException('保存激活码和激活码有效性失败',ResponseCode::$TOKEN_ERROR);
-//        }
-//        return $res;
-//    }
-
-//    // 激活用户
-//    public function validateToken($token)
-//    {
-//        $data = UserModel::field('token_exptime,is_active')->where('token',$token)->find();
-//
-//        // 检测用户是否存在
-//        if(!$data){
-//            throw new RegisterException('用户不存在',ResponseCode::$USER_NOT_EXIST);
-//        }
-//        // 检测激活码是否过期
-//        if((time()-$data->token_exptime)>24*60*60){
-//            throw new RegisterException('激活码过期',ResponseCode::$TOKEN_EXPTIME);
-//        }
-//        // 检测用户是否激活
-//        if($data->is_active){
-//            throw new RegisterException('用户已激活',ResponseCode::$USER_ACTIVATED);
-//        }
-//        $user = new UserModel;
-//        $res = $user->save([
-//            'is_active'=> 1
-//        ],['token' => $token]);
-//        if(!$res){
-//            throw new RegisterException('激活用户失败',ResponseCode::$USER_ACTIVATED_ERROR);
-//        }
-//        return $res;
-//    }
-
+    // 保存用户头像地址
     public function saveThumb($id, $thumb_path)
     {
         if(!UserModel::get($id)){
-            throw new RegisterException('用户不存在',ResponseCode::$USER_NOT_EXIST);
+            throw new UserException('用户不存在',ResponseCode::$USER_NOT_EXIST);
         }
         $user = new UserModel();
         $res = $user->save([
             'img_url'  => $thumb_path
         ], ['id' => $id]);
         if(!$res){
-            throw new RegisterException('保存头像路径错误',ResponseCode::$THUMB_URL_SAVE_ERROR);
+            throw new UserException('上传头像失败',ResponseCode::$USER_SAVE_IMG_FAILED);
         }
     }
 
 
+    // 修改用户邮箱
     public function modifyEmail($id, $email)
     {
         if(UserModel::whereEmail('=',$email)->find()){
-            throw new RegisterException('已存在，请重新设置',ResponseCode::$USER_NOT_EXIST);
+            throw new UserException('已存在，请重新设置',ResponseCode::$USER_NOT_EXIST);
         }
         $user = new UserModel;
         $res = $user->save([
@@ -153,21 +107,22 @@ class UserService
             'is_active'=>0
         ], ['id' => $id]);
         if(!$res){
-            throw new RegisterException('修改错误',ResponseCode::$EDIT_ERROR);
+            throw new UserException('修改错误',ResponseCode::$EDIT_ERROR);
         }
     }
 
+    // 修改用户名
     public function modifyName($id, $name)
     {
         if(!UserModel::get($id)){
-            throw new RegisterException('用户不存在',ResponseCode::$USER_NOT_EXIST);
+            throw new UserException('用户不存在',ResponseCode::$USER_NOT_EXIST);
         }
-        if(UserModel::whereName('=',$name)->find()){
-            throw new RegisterException('已存在，请重新设置',ResponseCode::$USER_NOT_EXIST);
+        if($this->getUserByName($name)){
+            throw new UserException('此用户名已经存在,请重新设置', ResponseCode::$USER_NOT_EXIST);
         }
         $user = new UserModel;
         if(! $user->save(['name'  => $name], ['id' => $id])){
-            throw new RegisterException('修改错误',ResponseCode::$EDIT_ERROR);
+            throw new UserException('修改错误',ResponseCode::$USER_EDIT_ERROR);
         }
     }
 }

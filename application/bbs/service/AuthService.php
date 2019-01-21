@@ -1,17 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: qiaozhiming
- * Date: 2019/1/18
- * Time: 上午12:36
- */
-
 namespace app\bbs\service;
 
-use app\bbs\common\ResponseCode;
-use app\bbs\exception\LoginException;
 use app\bbs\model\UserModel;
 use think\facade\Session;
+use app\bbs\common\ResponseCode;
+use app\bbs\exception\UserException;
 
 class AuthService
 {
@@ -26,19 +19,19 @@ class AuthService
 
         // 判断账户是否激活
         if(!$user->is_active){
-            throw new LoginException('账户未激活，请到个人中心激活', ResponseCode::$USER_NOT_ACTIVE);
+            throw new UserException('账户未激活，请到个人中心激活', ResponseCode::$USER_NOT_ACTIVE);
         }
         // 判断登录的用户是否存在
         if (!$user) {
-            throw new LoginException('用户不存在', ResponseCode::$USER_NOT_EXIST);
+            throw new UserException('用户不存在', ResponseCode::$USER_NOT_EXIST);
         }
 
         $salt = $user['salt'];
-        $new_password = md5(md5($password).$salt);
+        $register_password = md5(md5($password).$salt);
 
         // 判断登录密码是否正确
-        if ($user['password'] !== $new_password) {
-            throw new LoginException('密码错误', ResponseCode::$PASSWORD_ERROR);
+        if ($user['password'] !== $register_password) {
+            throw new UserException('用户密码错误', ResponseCode::$USER_PASSWORD_ERROR);
         }
         Session::set('id', $user['id']);
         Session::set('name', $name);
@@ -47,15 +40,18 @@ class AuthService
     // 用户退出
     public function logout()
     {
-        Session::delete('id');
-        Session::delete('name');
+         Session::delete('id');
+         Session::delete('name');
     }
 
     // 获取登录用户信息
-    public function getLoginUser()
+   public function getLoginUser()
     {
+        // 判断当前用户是否已登录
         $id = Session::get('id');
+        if (!$id) {
+            throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
+        }
         return UserModel::field(UserModel::getSafeAttrs())->get($id);
     }
-
 }

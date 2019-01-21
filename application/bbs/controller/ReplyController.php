@@ -1,28 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: qzm
- * Date: 2019-1-17
- * Time: 15:03
- */
 namespace app\bbs\controller;
 
 use think\Controller;
+use app\bbs\validate\ReplyValidate;
 use app\bbs\service\ReplyService;
-use app\bbs\exception\ReplyException;
 use app\bbs\common\ResponseCode;
+use app\bbs\exception\UserException;
 
 class ReplyController extends Controller
 {
-
     // 添加回复
     public function add()
     {
-        $params['topic_id'] = $this->request->post('topic_id');
-        $params['content']  = $this->request->post('content');
+        $topic_id = $this->request->post('topic_id');
+        $content  = $this->request->post('content');
 
         $reply_service = new ReplyService();
-        $reply = $reply_service->addReply($params);
+        $reply = $reply_service->addReply($topic_id, $content);
         return  ResponseCode::success($reply);
     }
 
@@ -32,9 +26,9 @@ class ReplyController extends Controller
         $id = $this->request->post('id');
         $content = $this->request->post('content');
 
-        $validate = new ReplyService();
+        $validate = new ReplyValidate();
         if (!$validate->scene('edit')->check(['id' => $id, 'content' => $content])) {
-            throw new ReplyException($validate->getError(),ResponseCode::$REPLY_IS_MUST);
+            throw new UserException($validate->getError(),ResponseCode::$REPLY_IS_MUST);
         }
 
         $reply_service = new ReplyService();

@@ -1,18 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: qzm
- * Date: 2019-1-17
- * Time: 15:03
- */
 namespace app\bbs\controller;
 
-use app\bbs\model\TopicModel;
 use think\Controller;
 use app\bbs\validate\TopicValidate;
 use app\bbs\service\TopicService;
-use app\bbs\exception\TopicException;
 use app\bbs\common\ResponseCode;
+use app\bbs\exception\UserException;
 
 class TopicController extends Controller
 {
@@ -25,11 +18,11 @@ class TopicController extends Controller
 
         $validate = new TopicValidate();
         if (!$validate->scene('add')->check($data)) {
-            throw new TopicException($validate->getError(),ResponseCode::$TOPIC_TITLE_CATE_CONTENT_IS_MUST);
+            throw new UserException($validate->getError(), ResponseCode::$TOPIC_TITLE_CATE_CONTENT_IS_MUST);
         }
 
         $topic_service = new TopicService;
-        $topic = $topic_service->addTopic($data);
+        $topic = $topic_service->addTopic($data['title'], $data['category_id'], $data['user_id'], $data['content']);
         return  ResponseCode::success($topic);
     }
 
@@ -43,11 +36,11 @@ class TopicController extends Controller
 
         $validate = new TopicValidate();
         if (!$validate->scene('edit')->check($data)) {
-            throw new TopicException($validate->getError(),ResponseCode::$TOPIC_TITLE_CATE_CONTENT_IS_MUST);
+            throw new UserException($validate->getError(), ResponseCode::$TOPIC_TITLE_CATE_CONTENT_IS_MUST);
         }
 
         $topic_service = new TopicService;
-        $topic = $topic_service->editTopic($data);
+        $topic = $topic_service->editTopic($data['id'], $data['title'], $data['category_id'], $data['user_id'], $data['content']);
         return  ResponseCode::success($topic);
     }
 
@@ -62,8 +55,8 @@ class TopicController extends Controller
     // 根据分类获取主题列表
     public function index()
     {
-        $category_id = $this->request->get('category_id',1);
-        $page = $this->request->get('page',1);
+        $category_id = $this->request->get('category_id', 1);
+        $page = $this->request->get('page', 1);
 
         $topic_service = new TopicService();
         $topics = $topic_service->pageTopic($category_id, $page);

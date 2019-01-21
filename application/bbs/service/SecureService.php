@@ -1,23 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: qiaozhiming
- * Date: 2019/1/15
- * Time: 下午11:25
- */
-
 namespace app\bbs\service;
-
-use app\bbs\common\ResponseCode;
-use app\bbs\exception\LoginException;
-use app\bbs\exception\RegisterException;
-use app\bbs\exception\UserException;
-use app\bbs\model\UserModel;
-use think\facade\Session;
 
 class SecureService
 {
-    // 获取加密的随机salt
+    // 获取加密的随机salt,默认返回32位随机字符串
     public function genRandomString($len = 32)
     {
         $salt = '';

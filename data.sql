@@ -53,8 +53,8 @@ CREATE TABLE `bbs_reply` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-INSERT INTO `bbs_user`(`name`,`password`,`salt`,`email`,`role`) VALUES
-('admin',MD5(CONCAT(MD5('123456'), MD5('AXVED'))),MD5('AXVED'),'990198829@qq.com','admin');
+INSERT INTO `bbs_user`(`name`,`password`,`salt`,`email`,`is_active`,`role`) VALUES
+('admin',MD5(CONCAT(MD5('123456'), MD5('AXVED'))),MD5('AXVED'),'990198829@qq.com',1 ,'admin');
 
 
 

@@ -10,7 +10,7 @@ namespace app\bbs\exception;
 
 use app\common\exception\BBSException;
 
-class CategoryException extends BBSException
+class SystemException extends BBSException
 {
 
 }

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: qiaozhiming
- * Date: 2019/1/16
- * Time: 上午12:21
- */
-
 namespace app\bbs\validate;
 
 use think\Validate;
@@ -15,7 +8,8 @@ class UserValidate extends Validate
     protected $rule = [
         'name'     =>  ['require','min'=>3, 'max' => 25, 'regex' => '/^[a-zA-Z]\w+/'],
         'email'    =>  ['require','email'],
-        'password' => ['require','min'=>6, 'max' => 18, 'regex' => '/^[a-zA-Z0-9]\w+/']
+        'password' =>  ['require','min'=>6, 'max' => 18, 'regex' => '/^[a-zA-Z0-9]\w+/'],
+        'id'       =>  ['require']
     ];
 
     protected $message  =   [
@@ -28,7 +22,8 @@ class UserValidate extends Validate
         'password.require'   => '密码是必须的',
         'password.min'       => '密码最少不能少于6个字符',
         'password.max'       => '密码最多不能超过18个字符',
-        'password.regex'     => '密码可以英文字母和数字开头，由字母、数字和_组成'
+        'password.regex'     => '密码可以英文字母和数字开头，由字母、数字和_组成',
+        'id.require'         => '用户是必须的'
     ];
 
     protected $scene = [
@@ -36,6 +31,7 @@ class UserValidate extends Validate
         'login'         => ['name', 'password'],
         'editEmail'     => ['email'],
         'editName'      => ['name'],
-        'updatePwd'     => ['password']
+        'updatePwd'     => ['password'],
+        'user'          => ['id'],
     ];
 }

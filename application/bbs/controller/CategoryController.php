@@ -4,8 +4,8 @@ namespace app\bbs\controller;
 use think\Controller;
 use app\bbs\validate\CateValidate;
 use app\bbs\service\CategoryService;
-use app\bbs\exception\CategoryException;
 use app\bbs\common\ResponseCode;
+use app\bbs\exception\UserException;
 
 class CategoryController extends Controller
 {
@@ -15,7 +15,7 @@ class CategoryController extends Controller
 
         $validate = new CateValidate();
         if (!$validate->scene('add')->check(['name' => $name])) {
-            throw new CategoryException($validate->getError(),ResponseCode::$CATE_NAME_IS_NULL);
+            throw new UserException($validate->getError(),ResponseCode::$CATE_NAME_IS_NULL);
         }
 
         $cate_service = new CategoryService;
@@ -30,7 +30,7 @@ class CategoryController extends Controller
 
         $validate = new CateValidate();
         if (!$validate->scene('edit')->check(['name' => $name,'sort' => $sort])) {
-            throw new CategoryException($validate->getError(),ResponseCode::$CATE_SORT_ERROR);
+            throw new UserException($validate->getError(),ResponseCode::$CATE_SORT_ERROR);
         }
 
         $cate_service = new CategoryService;

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: qiaozhiming
- * Date: 2019/1/16
- * Time: 上午12:21
- */
-
 namespace app\bbs\validate;
 
 use think\Validate;
@@ -14,7 +7,7 @@ class CateValidate extends Validate
 {
     protected $rule = [
         'name'  =>  ['require'],
-        'sort'  =>  ['number'],
+        'sort'  =>  ['number']
     ];
 
     protected $message  =   [
@@ -22,7 +15,7 @@ class CateValidate extends Validate
         'sort.number'  => '排序值为非负整数'
     ];
     protected $scene = [
-        'add' => ['name'],
-        'edit' => ['name', 'sort']
+        'add'   => ['name'],
+        'edit'  => ['name', 'sort']
     ];
 }
