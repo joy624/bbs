@@ -9,10 +9,9 @@ class SecureService
         $salt = '';
         $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
         $max = strlen($str)-1;
-        for($i=0;$i<$len;$i++){
-            $salt.=$str[rand(0,$max)];
+        for ($i=0;$i<$len;$i++) {
+            $salt.=$str[rand(0, $max)];
         }
         return $salt;
     }
-
 }

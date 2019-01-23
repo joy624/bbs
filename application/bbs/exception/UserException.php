@@ -12,5 +12,4 @@ use app\common\exception\BBSException;
 
 class UserException extends BBSException
 {
-
 }

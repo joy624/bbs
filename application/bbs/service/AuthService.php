@@ -17,13 +17,13 @@ class AuthService
             ->where('name', $name)
             ->find();
 
-        // 判断账户是否激活
-        if(!$user->is_active){
-            throw new UserException('账户未激活，请到个人中心激活', ResponseCode::$USER_NOT_ACTIVE);
-        }
         // 判断登录的用户是否存在
         if (!$user) {
             throw new UserException('用户不存在', ResponseCode::$USER_NOT_EXIST);
+        }
+        // 判断账户是否激活
+        if (!$user->is_active) {
+            throw new UserException('账户未激活，请到个人中心激活', ResponseCode::$USER_NOT_ACTIVE);
         }
 
         $salt = $user['salt'];
@@ -40,12 +40,12 @@ class AuthService
     // 用户退出
     public function logout()
     {
-         Session::delete('id');
-         Session::delete('name');
+        Session::delete('id');
+        Session::delete('name');
     }
 
     // 获取登录用户信息
-   public function getLoginUser()
+    public function getLoginUser()
     {
         // 判断当前用户是否已登录
         $id = Session::get('id');

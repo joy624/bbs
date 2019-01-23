@@ -15,7 +15,7 @@ class CategoryController extends Controller
 
         $validate = new CateValidate();
         if (!$validate->scene('add')->check(['name' => $name])) {
-            throw new UserException($validate->getError(),ResponseCode::$CATE_NAME_IS_NULL);
+            throw new UserException($validate->getError(), ResponseCode::$CATE_NAME_IS_NULL);
         }
 
         $cate_service = new CategoryService;
@@ -30,11 +30,11 @@ class CategoryController extends Controller
 
         $validate = new CateValidate();
         if (!$validate->scene('edit')->check(['name' => $name,'sort' => $sort])) {
-            throw new UserException($validate->getError(),ResponseCode::$CATE_SORT_ERROR);
+            throw new UserException($validate->getError(), ResponseCode::$CATE_SORT_ERROR);
         }
 
         $cate_service = new CategoryService;
-        $cate_service->editCate($id,$name,$sort);
+        $cate_service->editCate($id, $name, $sort);
         return  ResponseCode::success(true);
     }
     public function delete()

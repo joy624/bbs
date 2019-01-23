@@ -4,7 +4,8 @@ namespace app\bbs\common;
 class ResponseCode
 {
     // 执行成功，返回的成功信息
-    public static function success($data) {
+    public static function success($data)
+    {
         return json(['code' => 200, 'msg' => null, 'data' => $data]);
     }
 

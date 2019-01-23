@@ -12,13 +12,11 @@ use app\bbs\validate\ResetPasswordValidate;
 use app\bbs\common\ResponseCode;
 use app\bbs\exception\UserException;
 
-
 class UserController extends Controller
 {
     // 用户注册
     public function register()
     {
-
         $params['name'] = $this->request->post('name');
         $params['password'] = $this->request->post('password');
         $params['email'] = $this->request->post('email');
@@ -48,8 +46,8 @@ class UserController extends Controller
         $email_service = new EmailService();
         $email_service->sendEmailURL($params['email'], $params['name'], $subject, $body);
 
-        if(!Cache::set('activate_email_url_'.$key, $user->id, 24*60*60)){
-            throw new SystemException('账户激活发送失败，请重试或联系管理员',ResponseCode::$EMAIL_ACTIVATE_KEY_SAVE_FAILED);
+        if (!Cache::set('activate_email_url_'.$key, $user->id, 24*60*60)) {
+            throw new SystemException('账户激活发送失败，请重试或联系管理员', ResponseCode::$EMAIL_ACTIVATE_KEY_SAVE_FAILED);
         }
 
         return ResponseCode::success($user);
@@ -60,12 +58,12 @@ class UserController extends Controller
     {
         $key = $this->request->get('key');
         $id = Cache::get('activate_email_url_'.$key);
-        if(!$id){
-            throw new UserException('激活链接已过期或非法输入，请重新激活账户',ResponseCode::$USER_ACTIVATE_KEY_ERROR);
+        if (!$id) {
+            throw new UserException('激活链接已过期或非法输入，请重新激活账户', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
         }
         $flag = 1;
         $user_service = new UserService();
-        $user = $user_service->editActiveFlag($id,$flag);
+        $user = $user_service->editActiveFlag($id, $flag);
         return ResponseCode::success($user);
     }
 
@@ -105,7 +103,7 @@ class UserController extends Controller
         // 根据邮箱获取用户名
         $user_service = new UserService();
         $user = $user_service->getUserByEmail($email);
-        if(!$user){
+        if (!$user) {
             throw new UserException('邮箱未注册', ResponseCode::$USER_NOT_EXIST);
         }
 
@@ -119,16 +117,16 @@ class UserController extends Controller
         $email_service = new EmailService();
         $email_service->sendEmailURL($email, $user->name, $subject, $body);
 
-       if(!Cache::set('validate_email_url_'.$key, $user->id, 30*60)){
-           throw new SystemException('找回密码失败，请重试或联系管理员',ResponseCode::$FIND_PASSWORD_FAILED);
-       }
+        if (!Cache::set('validate_email_url_'.$key, $user->id, 30*60)) {
+            throw new SystemException('找回密码失败，请重试或联系管理员', ResponseCode::$FIND_PASSWORD_FAILED);
+        }
     }
 
     // 根据邮件链接更新密码
     public function updatePwd()
     {
         // get请求，获取邮箱码，重置密码；post请求，重置用户密码
-        if($this->request->isPost()){
+        if ($this->request->isPost()) {
             $id = $this->request->post('id');
             $password = $this->request->post('password');
 
@@ -142,12 +140,11 @@ class UserController extends Controller
             // 重置用户密码
             $user_service->updatePassword($id, $password);
             return ResponseCode::success(true);
-
-        }else{
+        } else {
             $key = $this->request->get('key');
             $id = Cache::get('validate_email_url_'.$key);
-            if(!$id){
-                throw new UserException('验证信息已过期或非法输入，请重新找回密码',ResponseCode::$USER_ACTIVATE_KEY_ERROR);
+            if (!$id) {
+                throw new UserException('验证信息已过期或非法输入，请重新找回密码', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
             }
             return ResponseCode::success($id);//todo html
         }
@@ -214,14 +211,14 @@ class UserController extends Controller
         $email_service = new EmailService();
         $email_service->sendEmailURL($email, '', $subject, $body);
 
-        if(!Cache::set('update_email_url_'.$key, $id, 30*60)){
-            throw new SystemException('发送修改链接失败，请重试或联系管理员',ResponseCode::$EMAIL_SEND_FAILED);
+        if (!Cache::set('update_email_url_'.$key, $id, 30*60)) {
+            throw new SystemException('发送修改链接失败，请重试或联系管理员', ResponseCode::$EMAIL_SEND_FAILED);
         }
     }
     // 验证用户链接，修改用户邮箱并发送激活链接
     public function updateEmail()
     {
-        if($this->request->isPost()) {
+        if ($this->request->isPost()) {
             $id = $this->request->post('id');
             $email = $this->request->post('email');
 
@@ -246,16 +243,16 @@ class UserController extends Controller
             $email_service = new EmailService();
             $email_service->sendEmailURL($email, '', $subject, $body);
 
-            if(!Cache::set('activate_email_url_'.$key, $id, 24*60*60)){
-                throw new SystemException('账户激活发送失败，请重试或联系管理员',ResponseCode::$EMAIL_ACTIVATE_KEY_SAVE_FAILED);
+            if (!Cache::set('activate_email_url_'.$key, $id, 24*60*60)) {
+                throw new SystemException('账户激活发送失败，请重试或联系管理员', ResponseCode::$EMAIL_ACTIVATE_KEY_SAVE_FAILED);
             }
 
             return ResponseCode::success(true);
-        }else{
+        } else {
             $key = $this->request->get('key');
             $id = Cache::get('update_email_url_'.$key);
-            if(!$id){
-                throw new UserException('验证信息已过期或非法输入，请重新激活账户',ResponseCode::$USER_ACTIVATE_KEY_ERROR);
+            if (!$id) {
+                throw new UserException('验证信息已过期或非法输入，请重新激活账户', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
             }
             return ResponseCode::success($id);//todo html
         }

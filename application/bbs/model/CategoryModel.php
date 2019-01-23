@@ -11,5 +11,4 @@ use think\Model;
 
 class CategoryModel extends Model
 {
-
 }

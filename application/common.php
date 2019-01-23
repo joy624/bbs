@@ -13,8 +13,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-function send_mail($toemail, $name, $subject = '', $body = '') {
-
+function send_mail($toemail, $name, $subject = '', $body = '')
+{
     $mail = new PHPMailer();        // 实例化PHPMailer对象
 
     $mail->CharSet = 'UTF-8';       // 设定邮件编码，默认ISO-8859-1，如果发中文此项必须设置，否则乱码
@@ -26,7 +26,7 @@ function send_mail($toemail, $name, $subject = '', $body = '') {
     $mail->Port = 465;                          // SMTP服务器的端口号
     $mail->Username = '18311094611@163.com';    // SMTP服务器用户名
     $mail->Password = 'qiaozhiming183';         // SMTP服务器密码
-    $mail->SetFrom($mail->Username , 'admin');  // 设置发件人信息
+    $mail->SetFrom($mail->Username, 'admin');  // 设置发件人信息
 
     $replyEmail = '';                           // 留空则为发件人EMAIL
     $replyName = '';                            // 回复名称（留空则为发件人名称）
@@ -38,8 +38,3 @@ function send_mail($toemail, $name, $subject = '', $body = '') {
 
     return $mail->Send() ? true : $mail->ErrorInfo;
 }
-
-
-
-
-

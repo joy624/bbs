@@ -11,8 +11,8 @@ class EmailService
     public function sendEmailURL($email, $name, $subject, $body)
     {
         // 向指定账户发送邮件
-        $res = $this->sendEmail($email,$name,$subject,$body);
-        if(!$res){
+        $res = $this->sendEmail($email, $name, $subject, $body);
+        if (!$res) {
             throw new SystemException('邮件发送失败，请重试', ResponseCode::$EMAIL_SEND_FAILED);
         }
     }
@@ -31,7 +31,7 @@ class EmailService
         $mail->Port = 465;                          // SMTP服务器的端口号
         $mail->Username = '18311094611@163.com';    // SMTP服务器用户名
         $mail->Password = 'qiaozhiming183';         // SMTP服务器密码
-        $mail->SetFrom($mail->Username , 'admin');  // 设置发件人信息
+        $mail->SetFrom($mail->Username, 'admin');  // 设置发件人信息
 
         $replyEmail = '';                           // 留空则为发件人EMAIL
         $replyName = '';                            // 回复名称（留空则为发件人名称）

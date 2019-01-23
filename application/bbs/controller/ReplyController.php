@@ -28,7 +28,7 @@ class ReplyController extends Controller
 
         $validate = new ReplyValidate();
         if (!$validate->scene('edit')->check(['id' => $id, 'content' => $content])) {
-            throw new UserException($validate->getError(),ResponseCode::$REPLY_IS_MUST);
+            throw new UserException($validate->getError(), ResponseCode::$REPLY_IS_MUST);
         }
 
         $reply_service = new ReplyService();
@@ -63,5 +63,4 @@ class ReplyController extends Controller
         $topics = $reply_service->getTopicReply($topic_id);
         return  ResponseCode::success($topics);
     }
-
 }
