@@ -1,16 +1,18 @@
 <template>
   <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
     <div class="header-logo">
-      <h4>LightBBS</h4>
+      <h4><a href="#" @click="gotoIndex">LightBBS</a></h4>
     </div>
     <div class="row collapse navbar-collapse dropdown">
       <div class="col">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       </div>
-      <div class="col header-btn">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">首页</button>
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">登录</button>
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">注册</button>
+      <div v-if="user_name != ''">
+        {{ user_name }}
+      </div>
+      <div v-else class="col header-btn">
+        <button class="btn btn-outline-success my-2 my-sm-0" @click="gotoLogin">登录</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" >注册</button>
       </div>
     </div>
     <!--折叠按钮-->
@@ -33,8 +35,7 @@
         id="navbarSupportedContent"
       >
         <a class="dropdown-item" href="#">搜索</a>
-        <a class="dropdown-item" href="#">首页</a>
-        <a class="dropdown-item" href="#">登录</a>
+        <a class="dropdown-item" href="#" @click="gotoLogin">登录</a>
         <a class="dropdown-item" href="#">注册</a>
       </div>
     </div>
@@ -46,8 +47,25 @@ export default {
   name: "TheHeader",
   data() {
     return {
-      name: ""
+      user_name: "",
+      user_id: ""
     };
+  },
+  methods: {
+    gotoLogin () {
+      this.$router.push({ name: 'Login'})
+    },
+    gotoIndex () {
+      this.$router.push({ name: 'Index'})
+    }
+  },
+  mounted () {
+    loginUser().then(res => {
+      if (res.code == 200) {
+        this.user_name = res.data.name
+        this.user_id = res.data.id
+      }
+    })
   }
 };
 </script>
