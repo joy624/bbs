@@ -9,21 +9,34 @@
     <div class="row login-tip">
         {{msg}}
     </div>
-    <form :v-model="form">
-      <input
-        type="text"
-        class="form-control form-group"
-        placeholder="用户名"
-        v-model="form.name"
-        required
-      >
-      <input
-        type="password"
-        class="form-control form-group"
-        placeholder="密码"
-        v-model="form.password"
-        required
-      >
+    <form :v-model="form" data-toggle="validator">
+      <div class="form-group">
+        <div><input
+          type="text"
+          class="form-control"
+          placeholder="用户名"
+          v-model="form.name"
+          pattern="^[a-zA-Z]\w+$"
+          minlength="3"
+          maxlength="25"
+          data-error="名称长度3~25，以英文字母开头，由字母、数字和_组成！"
+        ></div>
+        <div class="help-block with-errors login-validate-data"></div>
+      </div>
+      <div class="form-group">
+        <div><input
+          type="password"
+          class="form-control"
+          placeholder="密码"
+          v-model="form.password"
+          data-toggle="validator"
+          pattern="^[a-zA-Z0-9]\w+$"          
+          minlength="6"
+          maxlength="18"
+          data-error="密码长度6~18，以英文字母和数字开头，由字母、数字和_组成！"
+        ></div>
+        <div class="help-block with-errors login-validate-data"></div>
+      </div>
       <button class="btn btn-success login-sub" type="submit" @click="onSubmit">登录</button>
     </form>
     <div class="row">
@@ -46,22 +59,19 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      //console.info(JSON.stringify(this.form));
-      login(this.form).then(res => {
+      console.info(JSON.stringify(this.form));
+      /*login(this.form).then(res => {
         if (res.code == 200) {
-          this.$router.push({ name: "index" });
+          this.$router.push({ name: "Index" });
         } else {
             this.msg = res.msg;
         }
-      });
+      });*/
     }
   }
 };
 </script>
 <style scoped>
-body {
-  background: #cccccc;
-}
 .login {
   margin-top: 100px;
   margin-bottom: 80px;
@@ -100,5 +110,10 @@ body {
 .login-forget-pwd {
   text-align: left;
   font-size: 12px;
+}
+.login-validate-data{
+    font-size: 12px;
+    color: red;
+    height: 0px;
 }
 </style>

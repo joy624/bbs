@@ -1,10 +1,8 @@
 <template>
   <div id="app">
-    <!--<img src="./assets/logo.png">
-    <router-view></router-view>-->
     <TheHeader></TheHeader>
     <div class="container">
-      <router-view></router-view>
+     <router-view></router-view>
     </div>
     <TheFooter></TheFooter>
   </div>
@@ -23,9 +21,8 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.container{
+  position: relative;
+  top: 4.5em;
 }
 </style>
