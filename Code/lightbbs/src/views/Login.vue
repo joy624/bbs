@@ -59,14 +59,14 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      console.info(JSON.stringify(this.form));
-      /*login(this.form).then(res => {
+      //console.info(JSON.stringify(this.form));
+      login(this.form).then(res => {
         if (res.code == 200) {
           this.$router.push({ name: "Index" });
         } else {
             this.msg = res.msg;
         }
-      });*/
+      });
     }
   }
 };
