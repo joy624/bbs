@@ -7,12 +7,13 @@
         </div>
         <div class="row user-opt">
           <div class="col-6">
-            <a class="btn btn-primary" href="#" role="button" @click="gotoTopic">发布主题</a>
+            <a class="btn btn-primary" href="#" role="button" @click="gotoAddTopic">发布主题</a>
           </div>
           <div class="col-6">
             <a class="btn btn-primary" href="#" role="button" @click="gotoUserInfo">个人中心</a>
           </div>
         </div>
+
       </div>
 
       <div class="model bg-light" v-if="user.role == 'admin'">
@@ -43,7 +44,7 @@
             <div clas="col">
               <div class="row">
                 <h5 class="card-title">
-                  <a href>{{ topic.title }}</a>
+                  <a href="#" @click="gotoTopic(topic.id)">{{ topic.title }}</a>
                 </h5>
               </div>
               <div class="row">
@@ -95,11 +96,14 @@ export default {
     gotoCate() {
       this.$router.push({ name: "Cate" });
     },
-    gotoTopic() {
+    gotoAddTopic() {
       this.$router.push({ name: "addTopic" });
     },
     gotoUserInfo(){
       this.$router.push({ name:"userInfo"});
+    },
+    gotoTopic(id){
+      this.$router.push({name:"Topic",query:{id:id}});
     }
   }
 };
@@ -138,6 +142,9 @@ export default {
 .user-opt {
   margin-left: 20px;
   margin-top: 10px;
+}
+.topic-title{
+  color: #778087;
 }
 </style>
 

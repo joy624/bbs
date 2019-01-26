@@ -4,8 +4,9 @@ import Login from '@/views/Login'
 import Index from '@/views/Index'
 import Register from '@/views/Register'
 import Cate from '@/views/Cate'
-import addTopic from '@/views/addTopic'
+import editAddTopic from '@/views/editAddTopic'
 import userInfo from '@/views/userInfo'
+import Topic from '@/views/Topic'
 
 Vue.use(Router)
 
@@ -27,13 +28,17 @@ export default new Router({
       name: 'Cate',
       component: Cate
     }, {
-      path: '/addtopic',
-      name: 'addTopic',
-      component: addTopic
+      path: '/editaddtopic',
+      name: 'editAddTopic',
+      component: editAddTopic
     }, {
       path: '/userinfo',
       name: 'userInfo',
       component: userInfo
+    }, {
+      path: '/topic',
+      name: 'Topic',
+      component: Topic
     }
   ]
 })

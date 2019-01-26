@@ -13,6 +13,24 @@ export const index =  params => {
 export const addTopic =  params => {
     return axios.post('/bbs/topic/add', params).then(res => res.data)
 }
+// 获取主题
+export const viewTopic =  params => {
+    return axios.get('/bbs/topic/view', {params:{id:params}}).then(res => res.data)
+}
+
+// 获取对应主题的回复
+export const replyIndex = params => {
+    return axios.post('/bbs/reply/index', {topic_id:params}).then(res => res.data)
+}
+// 为对应主题添加回复
+export const addTopicReply = params => {
+    return axios.post('/bbs/reply/add', params).then(res => res.data)
+}
+
+// 删除回复
+export const delTopicReply = params => {
+    return axios.post('/bbs/reply/delete', {id:params}).then(res => res.data)
+}
 
 // 获取分类
 export const list =  params => {
