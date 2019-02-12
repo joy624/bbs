@@ -13,25 +13,25 @@ use think\Validate;
 class TopicValidate extends Validate
 {
     protected $rule = [
-        'id'            => ['require', 'number'],
-        'title'         => ['require'],
-        'category_id'   => ['require', 'number'],
-        'user_id'       => ['require', 'number'],
-        'content'       => ['require']
+        'id' => ['require', 'number'],
+        'title' => ['require'],
+        'category_id' => ['require', 'number'],
+        'user_id' => ['require', 'number'],
+        'content' => ['require']
     ];
 
-    protected $message  =   [
-        'id.require'            => '主题是必须的',
-        'id.number'             => '主题id必须是非负整数',
-        'title.require'         => '标题是必须的',
-        'category_id.require'   => '分类是必须的',
-        'category_id.number'    => '分类id必须是非负整数',
-        'user_id.require'       => '用户是必须的',
-        'user_id.number'        => '用户id必须是非负整数',
-        'content.require'       => '内容是必须的'
+    protected $message = [
+        'id.require' => '主题是必须的',
+        'id.number' => '主题id必须是非负整数',
+        'title.require' => '标题是必须的',
+        'category_id.require' => '分类是必须的',
+        'category_id.number' => '分类id必须是非负整数',
+        'user_id.require' => '用户是必须的',
+        'user_id.number' => '用户id必须是非负整数',
+        'content.require' => '内容是必须的'
     ];
     protected $scene = [
-        'add'   => ['title', 'category_id', 'user_id', 'content'],
-        'edit'  => ['id', 'title', 'category_id', 'user_id', 'content']
+        'add' => ['title', 'category_id', 'user_id', 'content'],
+        'edit' => ['id', 'title', 'category_id', 'user_id', 'content']
     ];
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\bbs\controller;
 
 use think\Controller;
@@ -13,11 +14,11 @@ class ReplyController extends Controller
     public function add()
     {
         $topic_id = $this->request->post('topic_id');
-        $content  = $this->request->post('content');
+        $content = $this->request->post('content');
 
         $reply_service = new ReplyService();
         $reply = $reply_service->addReply($topic_id, $content);
-        return  ResponseCode::success($reply);
+        return ResponseCode::success($reply);
     }
 
     // 编辑回复
@@ -33,7 +34,7 @@ class ReplyController extends Controller
 
         $reply_service = new ReplyService();
         $reply = $reply_service->editReply($id, $content);
-        return  ResponseCode::success($reply);
+        return ResponseCode::success($reply);
     }
 
     // 删除回复
@@ -42,7 +43,7 @@ class ReplyController extends Controller
         $id = $this->request->post('id');
         $reply_service = new ReplyService;
         $reply_service->deleteReply($id);
-        return  ResponseCode::success(true);
+        return ResponseCode::success(true);
     }
 
     // 查看单个回复内容
@@ -61,6 +62,6 @@ class ReplyController extends Controller
 
         $reply_service = new ReplyService();
         $topics = $reply_service->getTopicReply($topic_id);
-        return  ResponseCode::success($topics);
+        return ResponseCode::success($topics);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\bbs\service;
 
 use app\bbs\validate\ReplyValidate;
@@ -19,15 +20,15 @@ class ReplyService
         $user_id = $user->id;
 
         $validate = new ReplyValidate();
-        if (!$validate->scene('add')->check(['topic_id'=>$topic_id,'content'=>$content,'user_id'=>$user_id])) {
+        if (!$validate->scene('add')->check(['topic_id' => $topic_id, 'content' => $content, 'user_id' => $user_id])) {
             throw new UserException($validate->getError(), ResponseCode::$REPLY_IS_MUST);
         }
 
         $reply = ReplyModel::create([
-            'topic_id'  =>  $topic_id,
-            'content'   =>  $content,
-            'user_id'   =>  $user_id
-        ], ['topic_id','content','user_id']);
+            'topic_id' => $topic_id,
+            'content' => $content,
+            'user_id' => $user_id
+        ], ['topic_id', 'content', 'user_id']);
         if (!$reply) {
             throw new ReplyException('添加回复失败', ResponseCode::$REPLY_ADD_FAILED);
         }
@@ -66,14 +67,14 @@ class ReplyService
         }
         // 回复内容is_show设置为0，软删除
         $reply_model = new ReplyModel();
-        if (!$reply_model->save(['is_show'=>0], ['id'=>$id])) {
+        if (!$reply_model->save(['is_show' => 0], ['id' => $id])) {
             throw new UserException('删除回复失败', ResponseCode::$REPLY_DELETE_FAILED);
         }
     }
 
     public function getTopicReply($topic)
     {
-        return ReplyModel::withJoin(['user'    =>    ['name', 'img_url']])
+        return ReplyModel::withJoin(['user' => ['name', 'img_url']])
             ->where('topic_id', '=', $topic)
             ->where('is_show', '=', 1)
             ->order('id', 'DESC')

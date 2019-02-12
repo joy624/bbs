@@ -1,4 +1,5 @@
 <?php
+
 namespace app\bbs\service;
 
 use app\bbs\model\CategoryModel;
@@ -12,7 +13,7 @@ class CategoryService
         if (CategoryModel::whereName('=', $name)->find()) {
             throw new UserException('分类名已经存在，请重新设置', ResponseCode::$CATE_NAME_IS_EXIST);
         }
-        $cate = CategoryModel::create(['name'=>$name], ['name']);
+        $cate = CategoryModel::create(['name' => $name], ['name']);
         if (!$cate) {
             throw new UserException('添加分类失败', ResponseCode::$CATE_FAILED);
         }
@@ -34,10 +35,11 @@ class CategoryService
             $sort = $cate->sort;
         }
         $cate = new CategoryModel;
-        if (!$cate->save(['name'=>$name, 'sort'=>$sort, 'update_time'=>date('Y-m-d H:i:s', time())], ['id'=>$id])) {
+        if (!$cate->save(['name' => $name, 'sort' => $sort, 'update_time' => date('Y-m-d H:i:s', time())], ['id' => $id])) {
             throw new UserException('修改分类失败', ResponseCode::$CATE_FAILED);
         }
     }
+
     public function deleteCate($id)
     {
         if (!CategoryModel::get($id)) {
@@ -47,6 +49,7 @@ class CategoryService
             throw new UserException('删除分类失败', ResponseCode::$CATE_FAILED);
         }
     }
+
     public function listCate()
     {
         return CategoryModel::field('id, name, sort')->order('sort', 'DESC')->select();

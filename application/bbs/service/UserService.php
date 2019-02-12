@@ -1,4 +1,5 @@
 <?php
+
 namespace app\bbs\service;
 
 use app\bbs\model\UserModel;
@@ -24,7 +25,7 @@ class UserService
         $password = md5(md5($password) . $salt);
 
         $user = new UserModel();
-        if (!$user->save(['name'  =>  $name, 'password'=> $password, 'email' =>  $email, 'salt'=>$salt])) {
+        if (!$user->save(['name' => $name, 'password' => $password, 'email' => $email, 'salt' => $salt])) {
             throw new UserException('注册用户出错', ResponseCode::$USER_REGISTER_FAILED);
         }
 
@@ -47,7 +48,7 @@ class UserService
     public function editActiveFlag($id, $flag)
     {
         $user = new UserModel();
-        if (!$user->save(['is_active'  => $flag,], ['id' => $id])) {
+        if (!$user->save(['is_active' => $flag,], ['id' => $id])) {
             throw new UserException('激活账户失败', ResponseCode::$USER_ACTIVATE_FAILED);
         }
         return UserModel::field(UserModel::getSafeAttrs())->get($id);
@@ -73,7 +74,7 @@ class UserService
         $password = md5(md5($new_password) . $salt);
         $user = new UserModel;
         $res = $user->save([
-            'salt'  => $salt,
+            'salt' => $salt,
             'password' => $password
         ], ['id' => $id]);
         if (!$res) {
@@ -89,7 +90,7 @@ class UserService
         }
         $user = new UserModel();
         $res = $user->save([
-            'img_url'  => $thumb_path
+            'img_url' => $thumb_path
         ], ['id' => $id]);
         if (!$res) {
             throw new UserException('上传头像失败', ResponseCode::$USER_SAVE_IMG_FAILED);
@@ -105,8 +106,8 @@ class UserService
         }
         $user = new UserModel;
         $res = $user->save([
-            'email'  => $email,
-            'is_active'=>0
+            'email' => $email,
+            'is_active' => 0
         ], ['id' => $id]);
         if (!$res) {
             throw new UserException('修改错误', ResponseCode::$EDIT_ERROR);
@@ -123,7 +124,7 @@ class UserService
             throw new UserException('此用户名已经存在,请重新设置', ResponseCode::$USER_NOT_EXIST);
         }
         $user = new UserModel;
-        if (! $user->save(['name'  => $name], ['id' => $id])) {
+        if (!$user->save(['name' => $name], ['id' => $id])) {
             throw new UserException('修改错误', ResponseCode::$USER_EDIT_ERROR);
         }
     }

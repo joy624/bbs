@@ -1,4 +1,5 @@
 <?php
+
 namespace app\bbs\controller;
 
 use think\Controller;
@@ -39,6 +40,7 @@ class SiteController extends Controller
         $user = $user_service->getLoginUser();
         return ResponseCode::success($user);
     }
+
     // 退出登录
     public function logout()
     {

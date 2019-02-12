@@ -1,4 +1,5 @@
 <?php
+
 namespace app\bbs\controller;
 
 use think\Controller;
@@ -12,7 +13,7 @@ class TopicController extends Controller
     public function add()
     {
         $data['title'] = $this->request->post('title');
-        $data['category_id']  = $this->request->post('category_id');
+        $data['category_id'] = $this->request->post('category_id');
         $data['user_id'] = $this->request->post('user_id');
         $data['content'] = $this->request->post('content');
 
@@ -23,14 +24,14 @@ class TopicController extends Controller
 
         $topic_service = new TopicService;
         $topic = $topic_service->addTopic($data['title'], $data['category_id'], $data['user_id'], $data['content']);
-        return  ResponseCode::success($topic);
+        return ResponseCode::success($topic);
     }
 
     public function edit()
     {
         $data['id'] = $this->request->post('id');
         $data['title'] = $this->request->post('title');
-        $data['category_id']  = $this->request->post('category_id');
+        $data['category_id'] = $this->request->post('category_id');
         $data['user_id'] = $this->request->post('user_id');
         $data['content'] = $this->request->post('content');
 
@@ -41,7 +42,7 @@ class TopicController extends Controller
 
         $topic_service = new TopicService;
         $topic = $topic_service->editTopic($data['id'], $data['title'], $data['category_id'], $data['user_id'], $data['content']);
-        return  ResponseCode::success($topic);
+        return ResponseCode::success($topic);
     }
 
     public function delete()
@@ -49,7 +50,7 @@ class TopicController extends Controller
         $id = $this->request->post('id');
         $topic_service = new TopicService;
         $topic_service->deleteTopic($id);
-        return  ResponseCode::success(true);
+        return ResponseCode::success(true);
     }
 
     // 根据分类获取主题列表
@@ -60,7 +61,7 @@ class TopicController extends Controller
 
         $topic_service = new TopicService();
         $topics = $topic_service->pageTopic($category_id, $page);
-        return  ResponseCode::success($topics);
+        return ResponseCode::success($topics);
     }
 
     // 获取某个主题信息，点击量加1
