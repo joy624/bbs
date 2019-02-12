@@ -4,7 +4,7 @@
     <div class="alert alert-danger d-none" role="alert">{{ msg }}</div>
     <!--添加分类-->
     <div class="form-row cate-add">
-      <input type="text" class="col-md-5" placeholder="分类名称" ref="cname">
+      <input type="text" class="col-md-5" placeholder="分类名称" v-model="cateName">
       <button type="submit" class="btn btn-primary" @click="add">添加</button>
     </div>
     <!--分类列表-->
@@ -17,16 +17,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="cate in cates">
-           <input type="hidden" :value="cate.id">
+        <tr v-for="(cate,index) in cates" :key="index">
           <th scope="row">
-            <input type="text" :value="cate.sort" class="text-center"  @blur.prevent="edit">
+            <input type="text" v-model="cate.sort" class="text-center"  @blur="edit(index)">
           </th>
           <td>
-            <input type="text" :value="cate.name" class="text-center"  @blur.prevent="edit">
+            <input type="text" v-model="cate.name" class="text-center"  @blur="edit(index)">
           </td>
           <td>
-            <button type="submit" class="btn btn-primary" @click="del(cate.id)">删除</button>
+            <button type="submit" class="btn btn-primary" @click="del(index,cate.id)">删除</button>
           </td>
         </tr>
       </tbody>
@@ -43,7 +42,9 @@ export default {
   data() {
     return {
       cates: "",
-      msg: ""
+      msg: "",
+        cateName:"",
+        sort:""
     };
   },
   mounted() {
@@ -53,9 +54,15 @@ export default {
   },
   methods: {
     add() {
-      addCate(this.$refs.cname.value).then(res => {
+       addCate(this.cateName).then(res => {
         if (res.code == 200) {
-          this.$router.push({ name: "Cate" });
+            // 添加分类成功，为分类设置默认的排序值，并将其添加到分类列表中
+            res.data.sort = 0 ;
+            this.cates.push(res.data);
+            // 添加分类成功后，若之前有提示，则隐藏错误提示信息
+            $(".alert-danger").addClass("d-none");
+            // 将添加分类的输入框重置为空
+           this.cateName = "";
         } else {
           this.msg = res.msg;
           $(".alert-danger")
@@ -64,10 +71,11 @@ export default {
         }
       });
     },
-    del(evt) {
-      delCate(evt).then(res => {
+    del(index,id) {
+     delCate(id).then(res => {
         if (res.code == 200) {
-          this.$router.push({ name: "Cate" });
+            // 删除数据库中的分类成功，同时删除页面中展示的对应分类
+          this.cates.splice(index,1);
         } else {
           this.msg = res.msg;
           $(".alert-danger")
@@ -76,18 +84,19 @@ export default {
         }
       });
     },
-    edit(){
-        //editCate(this.form).then(res => {
-          //console.log(res);
-        /*if (res.code == 200) {
-          this.$router.push({ name: "Cate" });
+    edit(index){
+        editCate(this.cates[index]).then(res => {
+        if (res.code == 200) {
+            list().then(res => {
+                this.cates = res.data;
+            });
         } else {
           this.msg = res.msg;
           $(".alert-danger")
             .removeClass("d-none")
             .addClass("d-show");
-        }*/
-      //});
+        }
+      });
     }
   }
 };
