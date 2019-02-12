@@ -1,4 +1,5 @@
 <?php
+
 namespace app\bbs\model;
 
 use think\Model;

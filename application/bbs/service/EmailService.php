@@ -1,4 +1,5 @@
 <?php
+
 namespace app\bbs\service;
 
 use PHPMailer\PHPMailer\PHPMailer;

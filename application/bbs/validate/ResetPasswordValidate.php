@@ -13,8 +13,8 @@ use think\Validate;
 class ResetPasswordValidate extends Validate
 {
     protected $rule = [
-        'id'  =>  ['require', 'integer'],
-        'old_password' =>  ['require','min'=>6, 'max' => 18, 'regex' => '/^[a-zA-Z0-9]\w+/'],
-        'new_password' => ['require','min'=>6, 'max' => 18, 'regex' => '/^[a-zA-Z0-9]\w+/']
+        'id' => ['require', 'integer'],
+        'old_password' => ['require', 'min' => 6, 'max' => 18, 'regex' => '/^[a-zA-Z0-9]\w+/'],
+        'new_password' => ['require', 'min' => 6, 'max' => 18, 'regex' => '/^[a-zA-Z0-9]\w+/']
     ];
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\bbs\service;
 
 use app\bbs\common\Constants;
@@ -25,11 +26,11 @@ class TopicService
 
         // 添加主题
         $topic = TopicModel::create([
-            'title'         =>  $title,
-            'category_id'   =>  $category_id,
-            'user_id'       =>  $user_id,
-            'content'       =>  $content
-        ], ['title','category_id','user_id','content']);
+            'title' => $title,
+            'category_id' => $category_id,
+            'user_id' => $user_id,
+            'content' => $content
+        ], ['title', 'category_id', 'user_id', 'content']);
         if (!$topic) {
             throw new UserException('添加主题失败', ResponseCode::$TOPIC_ADD_FAILED);
         }
@@ -52,10 +53,10 @@ class TopicService
         }
         // 修改主题
         $topic_model = new TopicModel();
-        if (!$topic_model->save(['title'=>$title, 'category_id'=>$category_id, 'content'=>$content, 'user_id'=>$user_id], ['id'=>$id])) {
+        if (!$topic_model->save(['title' => $title, 'category_id' => $category_id, 'content' => $content, 'user_id' => $user_id], ['id' => $id])) {
             throw new UserException('修改主题失败', ResponseCode::$TOPIC_EDIT_FAILED);
         }
-        $topic->uname =  UserModel::field('name')->get($user_id)->name;
+        $topic->uname = UserModel::field('name')->get($user_id)->name;
         return $topic;
     }
 
@@ -66,7 +67,7 @@ class TopicService
         }
         // 将主题的is_show设置为0，实现软删除
         $topic_model = new TopicModel();
-        if (!$topic_model->save(['is_show'=>0], ['id'=>$id])) {
+        if (!$topic_model->save(['is_show' => 0], ['id' => $id])) {
             throw new UserException('删除主题失败', ResponseCode::$TOPIC_DELETE_FAILED);
         }
     }
@@ -85,7 +86,7 @@ class TopicService
 
     public function pageTopic($category_id, $page)
     {
-        return TopicModel::withJoin(['user' =>  ['name', 'img_url']])
+        return TopicModel::withJoin(['user' => ['name', 'img_url']])
             ->where('category_id', '=', $category_id)
             ->where('is_show', '=', 1)
             ->page($page)

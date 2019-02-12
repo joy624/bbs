@@ -1,4 +1,5 @@
 <?php
+
 namespace app\bbs\service;
 
 use app\bbs\model\UserModel;
@@ -27,7 +28,7 @@ class AuthService
         }
 
         $salt = $user['salt'];
-        $register_password = md5(md5($password).$salt);
+        $register_password = md5(md5($password) . $salt);
 
         // 判断登录密码是否正确
         if ($user['password'] !== $register_password) {
