@@ -79,7 +79,8 @@ class RegisterService
         $email_service = new EmailService();
         $email_service->sendEmailURL($email, '', $subject, $body);
 
-        if (!Cache::set('update_email_url_' . $key, $id, 30 * 60)) {
+        if (!Cache::set('update_email_id_' . $key, $id, 30 * 60) ||
+            !Cache::set('update_email_' . $key, $email, 30 * 60)) {
             throw new SystemException('发送修改链接失败，请重试或联系管理员', ResponseCode::$EMAIL_SEND_FAILED);
         }
     }

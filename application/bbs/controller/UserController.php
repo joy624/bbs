@@ -3,6 +3,7 @@
 namespace app\bbs\controller;
 
 use app\bbs\common\Constants;
+use app\bbs\service\AuthService;
 use app\bbs\service\RegisterService;
 use think\Controller;
 use think\facade\Cache;
@@ -87,13 +88,18 @@ class UserController extends Controller
         $register_service->sendEmailForFindingPass($email);
     }
 
-    // 根据邮件链接更新密码 todo 方法有问题
+    // 根据邮件链接更新密码
     public function updatePwd()
     {
         // get请求，获取邮箱码，重置密码；post请求，重置用户密码
         if ($this->request->isPost()) {
-            $id = $this->request->post('id');
+            $key = $this->request->post('key');
             $password = $this->request->post('password');
+
+            $id = Cache::get('validate_email_url_' . $key);
+            if (!$id) {
+                throw new UserException('验证信息已过期或非法输入，请重新找回密码', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
+            }
 
             // 利用UserValidate验证器验证密码是否符合指定的规范
             $validate = new UserValidate();
@@ -102,8 +108,8 @@ class UserController extends Controller
             }
 
             $user_service = new UserService();
-            // 重置用户密码
             $user_service->updatePassword($id, $password);
+            Cache::set('validate_email_url_' . $key,null);
             return ResponseCode::success(true);
         } else {
             $key = $this->request->get('key');
@@ -111,14 +117,19 @@ class UserController extends Controller
             if (!$id) {
                 throw new UserException('验证信息已过期或非法输入，请重新找回密码', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
             }
-            return ResponseCode::success($id);//todo html
+            return ResponseCode::success($key);//todo html
         }
     }
 
     // 上传头像
     public function headPortrait()
     {
-        $id = $this->request->post('id');
+        $auth_service = new AuthService();
+        $user = $auth_service->getLoginUser();
+        if (empty($user)) {
+            throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
+        }
+        $id = $user->id;
         $portrait = $this->request->file('portrait');
         if (true !== $this->validate(['image' => $portrait], ['image' => 'require|image'])) {
             throw new UserException('请选择图像上传', ResponseCode::$USER_NOT_STANDARD);
@@ -137,7 +148,12 @@ class UserController extends Controller
     // 修改用户名
     public function editName()
     {
-        $id = $this->request->post('id');
+        $auth_service = new AuthService();
+        $user = $auth_service->getLoginUser();
+        if (empty($user)) {
+            throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
+        }
+        $id = $user->id;
         $name = $this->request->post('name');
 
         // 利用UserValidate验证器验证用户名
@@ -155,8 +171,12 @@ class UserController extends Controller
     // 向用户邮箱发送链接修改邮箱
     public function editEmail()
     {
-        $id = $this->request->post('id');
-        // 此邮箱是用户修改前的邮箱
+        $auth_service = new AuthService();
+        $user = $auth_service->getLoginUser();
+        if (empty($user)) {
+            throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
+        }
+        $id = $user->id;
         $email = $this->request->post('email');
 
         // 利用UserValidate验证器验证邮箱
@@ -165,50 +185,25 @@ class UserController extends Controller
             throw new UserException($validate->getError(), ResponseCode::$USER_NOT_STANDARD);
         }
 
-        $regiser_service = new RegisterService();
-        $regiser_service->sendEmailForResetEmail($id, $email);
+        $register_service = new RegisterService();
+        $register_service->sendEmailForResetEmail($id, $email);
     }
 
-    // 验证用户链接，修改用户邮箱并发送激活链接 todo有问题
+    // 验证用户链接，修改用户邮箱并发送激活链接
     public function updateEmail()
     {
-        if ($this->request->isPost()) {
-            $id = $this->request->post('id');
-            $email = $this->request->post('email');
+        $key = $this->request->get('key');
 
-            // 利用UserValidate验证器验证邮箱
-            $validate = new UserValidate();
-            if (!$validate->scene('editEmail')->check(['email' => $email])) {
-                throw new UserException($validate->getError(), ResponseCode::$USER_NOT_STANDARD);
-            }
-
-            // 重置用户邮箱
-            $user_service = new UserService();
-            $user_service->modifyEmail($id, $email);
-
-            // 重置邮箱后激活账户
-            $subject = '用户帐号激活';
-            $secure_service = new SecureService();
-            $key = $secure_service->genRandomString();
-            $body = "亲爱的用户：<br/>请点击链接激活您的帐号。<br/> 
-    <a href='http://my.test.tp/bbs/user/activateAccount?key=" . $key . "' target='_blank'> http://my.test.tp/bbs/user/activateAccount?key=" . $key . "</a><br/> 
-    如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接24小时内有效。";
-
-            $email_service = new EmailService();
-            $email_service->sendEmailURL($email, '', $subject, $body);
-
-            if (!Cache::set('activate_email_url_' . $key, $id, 24 * 60 * 60)) {
-                throw new SystemException('账户激活发送失败，请重试或联系管理员', ResponseCode::$EMAIL_ACTIVATE_KEY_SAVE_FAILED);
-            }
-
-            return ResponseCode::success(true);
-        } else {
-            $key = $this->request->get('key');
-            $id = Cache::get('update_email_url_' . $key);
-            if (!$id) {
-                throw new UserException('验证信息已过期或非法输入，请重新激活账户', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
-            }
-            return ResponseCode::success($id);//todo html
+        $id = Cache::get('update_email_id_' . $key);
+        $email = Cache::get('update_email_' . $key);
+        if (!$id) {
+            throw new UserException('验证信息已过期或非法输入，请重新激活账户', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
         }
+        $user_service = new UserService();
+        $user_service->modifyEmail($id, $email);
+
+        Cache::set('update_email_id_' . $key, null);
+        Cache::set('update_email_' . $key, null);
+        return ResponseCode::success(true); //todo Html
     }
 }
