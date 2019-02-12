@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
 import 'bootstrap-validator/dist/validator.min.js'
 import 'font-awesome/css/font-awesome.min.css'
+import 'simplemde/debug/simplemde.css'
+import 'highlight.js/styles/paraiso-light.css'
 
 Vue.config.productionTip = false
 

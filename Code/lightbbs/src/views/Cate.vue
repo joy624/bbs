@@ -4,21 +4,21 @@
     <div class="alert alert-danger d-none" role="alert">{{ msg }}</div>
     <!--添加分类-->
     <div class="form-row cate-add">
-      <input type="text" class="col-md-5" placeholder="分类名称" v-model="cateName">
+      <input type="text" class="col-5" placeholder="分类名称" v-model="cateName">
       <button type="submit" class="btn btn-primary" @click="add">添加</button>
     </div>
     <!--分类列表-->
-    <table class="table">
+    <table class="table responsive">
       <thead>
         <tr>
-          <th scope="col">排序</th>
-          <th scope="col">分类名</th>
-          <th scope="col">操作</th>
+         <th scope="col">排序</th>
+         <th scope="col">分类名</th>
+         <th scope="col">操作</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(cate,index) in cates" :key="index">
-          <th scope="row">
+          <th>
             <input type="text" v-model="cate.sort" class="text-center"  @blur="edit(index)">
           </th>
           <td>
@@ -33,10 +33,10 @@
   </div>
 </template>
 <script>
-import { list } from "@/api/topic";
-import { delCate } from "@/api/topic";
-import { addCate } from "@/api/topic";
-import { editCate } from "@/api/topic";
+import { list } from "@/api/cate";
+import { delCate } from "@/api/cate";
+import { addCate } from "@/api/cate";
+import { editCate } from "@/api/cate";
 export default {
   name: "Cate",
   data() {

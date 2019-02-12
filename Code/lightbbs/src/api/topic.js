@@ -3,7 +3,6 @@ import axios from 'axios'
 // axios.defaults.baseURL = baseUrl
 
 
-
 // 获取指定分类的主题
 export const index =  params => {
     return axios.get('/bbs/topic/index', {params:{category_id:params}}).then(res => res.data)
@@ -34,7 +33,7 @@ export const delTopicReply = params => {
 
 // 获取分类
 export const list =  params => {
-    return axios.post('/bbs/category/list').then(res => res.data)
+    return axios.post('/bbs/category/index').then(res => res.data)
 }
 
 // 删除分类

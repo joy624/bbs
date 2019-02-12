@@ -7,6 +7,7 @@ import Cate from '@/views/Cate'
 import editAddTopic from '@/views/editAddTopic'
 import userInfo from '@/views/userInfo'
 import Topic from '@/views/Topic'
+import addTopic from '@/views/addTopic'
 
 Vue.use(Router)
 
@@ -40,6 +41,10 @@ export default new Router({
       path: '/topic',
       name: 'Topic',
       component: Topic
-    }
+    }, {
+      path: '/addtopic',
+      name: 'addTopic',
+      component: addTopic
+  }
   ]
 })

@@ -1,6 +1,10 @@
 <template>
   <div class>
     <div class="sidebar">
+      <div class="cate-manager" v-if="user.role == 'admin'">
+        <button type="button" class="btn btn-primary" @click="gotoCate">分类管理</button>
+      </div>
+
       <div class="model bg-light" v-if="user">
         <div class="text-center">
           <img class="user-info" :src="'http://my.test.tp/'+user.img_url" alt>
@@ -16,9 +20,6 @@
 
       </div>
 
-      <div class="model bg-light" v-if="user.role == 'admin'">
-        <button type="button" class="btn btn-info" @click="gotoCate">分类管理</button>
-      </div>
       <div class="model bg-light topic-model">
         <ul class="list-group list-group-flush">
           <li class="list-group-item bg-light" v-for="topic in topics">{{ topic.title }}</li>
@@ -98,6 +99,7 @@ export default {
       this.$router.push({ name: "Cate" });
     },
     gotoAddTopic() {
+        console.log('add');
       this.$router.push({ name: "addTopic" });
     },
     gotoUserInfo(){
@@ -147,5 +149,8 @@ export default {
 .topic-title{
   color: #778087;
 }
+  .cate-manager{
+    margin-bottom: 10px;
+  }
 </style>
 
