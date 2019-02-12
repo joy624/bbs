@@ -48,7 +48,7 @@ class UserService
     public function editActiveFlag($id, $flag)
     {
         $user = new UserModel();
-        if (!$user->save(['is_active' => $flag,], ['id' => $id])) {
+        if (!$user->save(['is_active' => $flag], ['id' => $id])) {
             throw new UserException('激活账户失败', ResponseCode::$USER_ACTIVATE_FAILED);
         }
         return UserModel::field(UserModel::getSafeAttrs())->get($id);

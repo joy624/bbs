@@ -49,7 +49,7 @@ class CategoryController extends Controller
         return ResponseCode::success(true);
     }
 
-    public function list()
+    public function index()
     {
         $cate_service = new CategoryService;
         $data = $cate_service->listCate();
