@@ -2,6 +2,8 @@
   <div id="app">
     <TheHeader></TheHeader>
     <div class="container">
+
+    
      <router-view></router-view>
     </div>
     <TheFooter></TheFooter>

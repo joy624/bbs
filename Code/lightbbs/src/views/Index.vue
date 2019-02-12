@@ -26,6 +26,7 @@
       </div>
     </div>
     <div class="main bg-light">
+
       <ul class="nav">
         <li class="nav-item" v-for="cate in cates">
           <a class="nav-link" @click="cateTopic(cate.id)">{{ cate.name }}</a>
