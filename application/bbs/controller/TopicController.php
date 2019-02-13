@@ -7,6 +7,7 @@ use app\bbs\validate\TopicValidate;
 use app\bbs\service\TopicService;
 use app\bbs\common\ResponseCode;
 use app\bbs\exception\UserException;
+use app\bbs\service\AuthService;
 
 class TopicController extends Controller
 {
@@ -14,8 +15,15 @@ class TopicController extends Controller
     {
         $data['title'] = $this->request->post('title');
         $data['category_id'] = $this->request->post('category_id');
-        $data['user_id'] = $this->request->post('user_id');
+//        $data['user_id'] = $this->request->post('user_id');
         $data['content'] = $this->request->post('content');
+
+        $auth_service = new AuthService();
+        $user = $auth_service->getLoginUser();
+        if (empty($user)) {
+            throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
+        }
+        $data['user_id'] = $user->id;
 
         $validate = new TopicValidate();
         if (!$validate->scene('add')->check($data)) {
@@ -32,8 +40,15 @@ class TopicController extends Controller
         $data['id'] = $this->request->post('id');
         $data['title'] = $this->request->post('title');
         $data['category_id'] = $this->request->post('category_id');
-        $data['user_id'] = $this->request->post('user_id');
         $data['content'] = $this->request->post('content');
+
+        $auth_service = new AuthService();
+        $user = $auth_service->getLoginUser();
+        if (empty($user)) {
+            throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
+        }
+        $data['user_id'] = $user->id;
+
 
         $validate = new TopicValidate();
         if (!$validate->scene('edit')->check($data)) {

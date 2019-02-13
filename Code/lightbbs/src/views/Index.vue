@@ -61,11 +61,20 @@
           </div>
         </li>
       </ul>
+      <div v-if="len > maxnum" class="small">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+          <li class="page-item" v-for="p in pages">
+            <a class="page-link" href="#">{{ p }}</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import { list } from "@/api/topic";
+import { list } from "@/api/cate";
 import { index } from "@/api/topic";
 import { loginUser } from "@/api/user";
 
@@ -75,7 +84,11 @@ export default {
     return {
       cates: "",
       topics: "",
-      user: ""
+      user: "",
+      len:0,
+      maxnum:2,
+      page:1,
+      pages:0
     };
   },
   mounted() {
@@ -93,13 +106,14 @@ export default {
     cateTopic(evt) {
       index(evt).then(res => {
         this.topics = res.data;
+        this.len = this.topics.length;
+        this.pages = Math.ceil(this.len/this.maxnum);
       });
     },
     gotoCate() {
       this.$router.push({ name: "Cate" });
     },
     gotoAddTopic() {
-        console.log('add');
       this.$router.push({ name: "addTopic" });
     },
     gotoUserInfo(){

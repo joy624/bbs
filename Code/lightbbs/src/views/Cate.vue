@@ -66,9 +66,9 @@ export default {
         } else {
           this.msg = res.msg;
           $(".alert-danger")
-            .removeClass("d-none")
-            .addClass("d-show");
-        }
+               .removeClass("d-none")
+               .addClass("d-show");
+       }
       });
     },
     del(index,id) {

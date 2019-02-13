@@ -1,10 +1,10 @@
 <template>
-    <div class="bg-light add-topic">
+    <div class="bg-light edit-topic">
         <!--提示信息-->
         <div class="alert alert-danger d-none" role="alert">{{ msg }}</div>
         <!--标题头-->
         <h5 class="text-center" style="font-weight: bold; color: #636B6F;">
-            <i class="fa fa-paint-brush"></i>新建话题
+            <i class="fa fa-paint-brush"></i>编辑话题
         </h5>
         <form v-model="form">
             <div class="form-group">
@@ -22,8 +22,9 @@
             <div class="form-group">
                 <textarea id="editor"></textarea>
             </div>
+            <input type="hidden" v-model="form.id">
             <!--发布按钮-->
-            <button type="submit" class="btn btn-primary" @click="add">发布话题</button>
+            <input type="button" class="btn btn-primary" @click="edit" value="发布主题">
         </form>
     </div>
 </template>
@@ -31,7 +32,7 @@
     import SimpleMDE from 'simplemde'
     import hljs from 'highlight.js'
     import { list } from "@/api/cate";
-    import { addTopic } from "@/api/topic";
+    import { editTopic } from "@/api/topic";
 
     window.hljs = hljs
 
@@ -41,7 +42,8 @@
             return {
               form:{
                   title:"",
-                  content:""
+                  content:"",
+                  id:""
               },
               cates:"",
               msg:""
@@ -66,6 +68,9 @@
                     codeSyntaxHighlighting: true
                 }
             });
+            this.form = this.$route.params.data;
+            simplemde.value(this.$route.params.data.content);
+
             simplemde.codemirror.on('change', () => {
                 // 将改变后的值赋给文章内容
                 this.form.content = simplemde.value()
@@ -73,8 +78,8 @@
             this.simplemde = simplemde;
         },
         methods:{
-            add(){
-                addTopic(this.form).then(res => {
+            edit(){
+                editTopic(this.form).then(res => {
                     if (res.code == 200) {
                         this.simplemde.value('');
                         this.$router.push({ name: "Index" });
@@ -90,5 +95,5 @@
     }
 </script>
 <style scoped>
-    .add-topic{ padding:20px;}
+    .edit-topic{ padding:20px;}
 </style>

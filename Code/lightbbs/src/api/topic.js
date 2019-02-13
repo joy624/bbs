@@ -17,10 +17,22 @@ export const viewTopic =  params => {
     return axios.get('/bbs/topic/view', {params:{id:params}}).then(res => res.data)
 }
 
+// 删除主题
+export const delTopic = params => {
+    return axios.post('/bbs/topic/delete', {id:params}).then(res => res.data)
+}
+
+
+// 编辑主题
+export const editTopic =  params => {
+    return axios.post('/bbs/topic/edit', params).then(res => res.data)
+}
+
 // 获取对应主题的回复
 export const replyIndex = params => {
     return axios.post('/bbs/reply/index', {topic_id:params}).then(res => res.data)
 }
+
 // 为对应主题添加回复
 export const addTopicReply = params => {
     return axios.post('/bbs/reply/add', params).then(res => res.data)
@@ -30,22 +42,7 @@ export const addTopicReply = params => {
 export const delTopicReply = params => {
     return axios.post('/bbs/reply/delete', {id:params}).then(res => res.data)
 }
-
-// 获取分类
-export const list =  params => {
-    return axios.post('/bbs/category/index').then(res => res.data)
-}
-
-// 删除分类
-export const delCate = params => {
-    return axios.post('/bbs/category/delete', {id:params}).then(res => res.data)
-}
-// 添加分类
-export const addCate = params => {
-    return axios.post('/bbs/category/add', {name:params}).then(res => res.data)
-}
-
-// 编辑分类
-export const editCate = params => {
-    return axios.post('/bbs/category/edit', params).then(res => res.data)
+// 编辑回复
+export const editTopicReply = params => {
+    return axios.post('/bbs/reply/edit', params).then(res => res.data)
 }

@@ -8,6 +8,7 @@ import editAddTopic from '@/views/editAddTopic'
 import userInfo from '@/views/userInfo'
 import Topic from '@/views/Topic'
 import addTopic from '@/views/addTopic'
+import editTopic from '@/views/editTopic'
 
 Vue.use(Router)
 
@@ -45,6 +46,10 @@ export default new Router({
       path: '/addtopic',
       name: 'addTopic',
       component: addTopic
+  }, {
+      path: '/edittopic',
+      name: 'editTopic',
+      component: editTopic
   }
   ]
 })
