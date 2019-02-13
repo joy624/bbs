@@ -7,7 +7,7 @@
       <div class="col login-title">用户名登录</div>
     </div>
     <div class="row login-tip">
-        {{msg}}
+        {{ $store.state.login_error_msg }}
     </div>
     <form :v-model="form" data-toggle="validator">
       <div class="form-group">
@@ -37,7 +37,7 @@
         ></div>
         <div class="help-block with-errors login-validate-data"></div>
       </div>
-      <button class="btn btn-success login-sub" type="submit" @click="onSubmit">登录</button>
+      <input class="btn btn-success login-sub" type="buton" @click="onSubmit" value="登录">
     </form>
     <div class="row">
       <div class="col login-forget-pwd">忘记密码？</div>
@@ -46,22 +46,22 @@
 </template>
 <script>
 import { login } from "@/api/user";
+
 export default {
   data() {
     return {
       form: {
         name: "",
         password: ""
-      },
-      msg:""
+      }
     };
   },
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      //console.info(JSON.stringify(this.form));
       login(this.form).then(res => {
         if (res.code == 200) {
+          this.$store.dispatch('setLoginUser', res.data)
           this.$router.push({ name: "Index" });
         } else {
             this.msg = res.msg;

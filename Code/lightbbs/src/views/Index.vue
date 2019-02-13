@@ -28,13 +28,14 @@
     </div>
     <div class="main bg-light">
 
-      <ul class="nav">
-        <li class="nav-item" v-for="cate in cates">
-          <a class="nav-link" @click="cateTopic(cate.id)">{{ cate.name }}</a>
+      <ul class="nav nav-pills flex-column flex-sm-row">
+        <li class="nav-item" v-for="cate in $store.state.cates">
+          <a v-if="cate.id == $store.state.cate_active" class="nav-link active" @click="changeCate(cate.id)">{{ cate.name }}</a>
+          <a v-else class="nav-link" @click="changeCate(cate.id)">{{ cate.name }}</a>
         </li>
       </ul>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item" v-for="topic in topics">
+        <li class="list-group-item" v-for="topic in $store.state.topics">
           <div class="row">
             <div clas="col">
               <img
@@ -77,25 +78,23 @@
 import { list } from "@/api/cate";
 import { index } from "@/api/topic";
 import { loginUser } from "@/api/user";
+import { mapActions } from 'vuex'
 
 export default {
   name: "Index",
   data() {
     return {
-      cates: "",
       topics: "",
       user: "",
       len:0,
       maxnum:2,
       page:1,
-      pages:0
+      pages:0,
     };
   },
   mounted() {
-    list().then(res => {
-      this.cates = res.data;
-    });
-    this.cateTopic();
+    this.$store.dispatch('loadCates')
+    this.$store.dispatch('loadTopics', this.$store.state.cate_active)
     loginUser().then(res => {
       if(res.code == 200){
       this.user = res.data;
@@ -103,13 +102,6 @@ export default {
     });
   },
   methods: {
-    cateTopic(evt) {
-      index(evt).then(res => {
-        this.topics = res.data;
-        this.len = this.topics.length;
-        this.pages = Math.ceil(this.len/this.maxnum);
-      });
-    },
     gotoCate() {
       this.$router.push({ name: "Cate" });
     },
@@ -121,7 +113,10 @@ export default {
     },
     gotoTopic(id){
       this.$router.push({name:"Topic",query:{id:id}});
-    }
+    },
+    ...mapActions([
+        'changeCate'
+    ])
   }
 };
 </script>

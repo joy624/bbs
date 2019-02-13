@@ -36,6 +36,7 @@ class AuthService
         }
         Session::set('id', $user['id']);
         Session::set('name', $name);
+        return UserModel::field(UserModel::getSafeAttrs())->get($user['id']);
     }
 
     // 用户退出

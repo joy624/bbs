@@ -29,8 +29,8 @@ class SiteController extends Controller
         }
 
         $user_service = new AuthService();
-        $user_service->login($name, $password);
-        return ResponseCode::success(true);
+        $user = $user_service->login($name, $password);
+        return ResponseCode::success($user);
     }
 
     // 获取当前登录人信息

@@ -23,7 +23,8 @@
                 <textarea id="editor"></textarea>
             </div>
             <!--发布按钮-->
-            <button type="submit" class="btn btn-primary" @click="add">发布话题</button>
+            <input type="button" class="btn btn-primary" @click="add" value="发布话题">
+            <!--<button type="submit" class="btn btn-primary" @click="add">发布话题</button>-->
         </form>
     </div>
 </template>

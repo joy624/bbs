@@ -15,8 +15,8 @@
             aria-label="Search"
           >
         </div>
-        <div v-if="user_name != ''">
-          <a href="#">{{ user_name }}</a>
+        <div v-if="$store.getters.login_name != '' && $store.getters.login_name != null">
+          <a href="#">{{ $store.getters.login_name }}</a>
           <a href="#" data-toggle="modal" data-target="#logoutModal">退出</a>
         </div>
         <div v-else class="col header-btn">
@@ -100,7 +100,8 @@ export default {
     gotoLogout() {
       logout().then(res => {
         if (res.code == 200) {
-          //this.$router.push({ name: "TheHeader" });
+          this.$store.dispatch('setLogout')
+          // this.$router.push({ name: "Index" });
         } else {
             this.msg = res.msg;
         }
