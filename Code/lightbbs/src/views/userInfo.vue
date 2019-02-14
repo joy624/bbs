@@ -66,7 +66,7 @@
                                                 <input type="file" ref="file" class="form-control-file" id="FormControlFile">
                                             </div>
                                         </div>
-                                        <input type="button" class="btn btn-primary" value="上传头像" @click="headPortrait">
+                                        <input type="button" class="btn btn-primary" value="上传头像" @click="editPortrait">
                                     </form>
                                 </div>
 
@@ -134,7 +134,7 @@ import { editEmail } from "@/api/user";
 import { logout } from "@/api/user";
 
 export default {
-    name: "Index",
+    name: "userInfo",
     data() {
         return {
             info: [],
@@ -147,7 +147,6 @@ export default {
         };
     },
     mounted() {
-        //console.log(this.$store.getters.login_id);
         loginUser({id:this.$store.getters.login_id}).then(res => {
             if(res.code == 200){
                 this.info = res.data;
@@ -155,19 +154,20 @@ export default {
         });
     },
     methods:{
-        headPortrait(){
-           // console.log(this.$store.getters.login_id);
-           // console.log(this.$refs.file.files[0]);
-            headPortrait({portrait:this.$refs.file.files[0]}).then(res => {
-                console.log(res);
-                /*if (res.code == 200) {
-
+        editPortrait(){
+            let formData = new FormData()
+            let file = this.$refs.file.files[0];
+            formData.append('portrait', file);
+             headPortrait(formData).then(res => {
+                if (res.code == 200) {
+                    this.info.img_url = res.data;
                 } else {
                     this.msg = res.msg;
-                    console.log(this.msg);
-                }*/
+                    $(".alert-danger")
+                        .removeClass("d-none")
+                        .addClass("d-show");
+                }
             });
-
         },
         updateName(){
             editName({name:this.name}).then(res => {

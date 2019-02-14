@@ -40,12 +40,13 @@
       <input class="btn btn-success login-sub" type="buton" @click="onSubmit" value="登录">
     </form>
     <div class="row">
-      <div class="col login-forget-pwd">忘记密码？</div>
+      <div class="col login-forget-pwd" @click="forgetPwd">忘记密码？</div>
     </div>
   </div>
 </template>
 <script>
 import { login } from "@/api/user";
+import { findPwd } from "@/api/user";
 
 export default {
   data() {
@@ -67,6 +68,9 @@ export default {
             this.msg = res.msg;
         }
       });
+    },
+    forgetPwd(){
+        this.$router.push({ name: "findPwd" });
     }
   }
 };

@@ -206,13 +206,19 @@ class UserController extends Controller
         $id = Cache::get('update_email_id_' . $key);
         $email = Cache::get('update_email_' . $key);
         if (!$id) {
-            throw new UserException('验证信息已过期或非法输入，请重新激活账户', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
+            //throw new UserException('验证信息已过期或非法输入，请重新激活账户', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
+            $msg ='验证信息已过期或非法输入，请重新激活账户';
+            $this->assign('msg',$msg);
+            return $this->fetch();
         }
         $user_service = new UserService();
         $user_service->modifyEmail($id, $email);
 
         Cache::set('update_email_id_' . $key, null);
         Cache::set('update_email_' . $key, null);
-        return ResponseCode::success(true); //todo Html
+//        return ResponseCode::success(true); //todo Html
+        $msg ='邮箱修改认证成功，请返回网站继续进行操作';
+        $this->assign('msg',$msg);
+        return $this->fetch();
     }
 }

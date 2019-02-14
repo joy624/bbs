@@ -68,7 +68,7 @@
           </div>
           <div class="modal-body">确定要从 lightBBS 登出？</div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="gotoLogout" >确定</button>
+            <button type="button" id="logoutbtn" class="btn btn-primary" @click="gotoLogout" >确定</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
           </div>
         </div>
@@ -100,8 +100,7 @@ export default {
     gotoLogout() {
       logout().then(res => {
         if (res.code == 200) {
-          this.$store.dispatch('setLogout')
-          // this.$router.push({ name: "Index" });
+          this.$store.dispatch('setLogout');
         } else {
             this.msg = res.msg;
         }

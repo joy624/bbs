@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改邮箱认证提示信息</title>
+    <style>
+        body{background-color: #cccccc;}
+        .msg{
+            width: 450px;
+            height: 100px;
+            background-color: #FFFFFF;
+            border:1px solid #868686;
+            margin: 200px auto;
+            text-align: center;
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <div class="msg">
+        <p>{$msg}</p>
+        <p><a href="http://localhost:8080"><span id="begin">3</span>秒后跳转</a></p>
+    </div>
+    <script>
+        var t=3;
+        var timer=setInterval(time,1000);
+        var spans=document.getElementById("begin");
+        function time(){
+            t--;
+            spans.innerHTML='<span>'+t+'</span>';
+            if (t==0){
+                clearInterval(timer);
+                return window.location.href='http://localhost:8080';
+            };
+        }
+    </script>
+</body>
+</html>

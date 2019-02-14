@@ -9,6 +9,7 @@ import userInfo from '@/views/userInfo'
 import Topic from '@/views/Topic'
 import addTopic from '@/views/addTopic'
 import editTopic from '@/views/editTopic'
+import findPwd from '@/views/findPwd'
 
 Vue.use(Router)
 
@@ -50,6 +51,10 @@ export default new Router({
       path: '/edittopic',
       name: 'editTopic',
       component: editTopic
+  }, {
+      path: '/findpwd',
+      name: 'findPwd',
+      component: findPwd
   }
   ]
 })
