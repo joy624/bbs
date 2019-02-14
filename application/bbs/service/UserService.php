@@ -106,8 +106,7 @@ class UserService
         }
         $user = new UserModel;
         $res = $user->save([
-            'email' => $email,
-            'is_active' => 0
+            'email' => $email
         ], ['id' => $id]);
         if (!$res) {
             throw new UserException('修改错误', ResponseCode::$EDIT_ERROR);

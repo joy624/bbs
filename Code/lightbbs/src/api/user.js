@@ -19,5 +19,22 @@ export const loginUser = params => {
 
 // 用户注册
 export const register = params => {
-    return axios.post('/bbs/user/register', params).then(res => res.data)
+    return axios.post('/bbs/user/register', params,{ headers: {'Content-Type': 'multipart/form-data'}}).then(res => res.data)
+}
+
+// 修改头像
+export const headPortrait = params => {
+    return axios.post('/bbs/user/headPortrait', params).then(res => res.data)
+}
+// 修改用户名
+export const editName = params => {
+    return axios.post('/bbs/user/editName', params).then(res => res.data)
+}
+// 修改密码
+export const editPwd = params => {
+    return axios.post('/bbs/user/resetPassword', params).then(res => res.data)
+}
+// 修改邮箱
+export const editEmail = params => {
+    return axios.post('/bbs/user/editEmail', params).then(res => res.data)
 }

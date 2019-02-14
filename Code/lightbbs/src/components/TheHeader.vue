@@ -106,7 +106,6 @@ export default {
             this.msg = res.msg;
         }
       });
-    
     },
   },
   mounted() {

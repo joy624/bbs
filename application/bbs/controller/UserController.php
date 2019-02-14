@@ -53,8 +53,15 @@ class UserController extends Controller
     // 根据老密码重置密码
     public function resetPassword()
     {
-        // 接收并过滤重置密码的用户id、旧密码、新密码
-        $id = $this->request->post('id');
+        // 接收并过滤重置密码的旧密码、新密码
+//        $id = $this->request->post('id');
+        $auth_service = new AuthService();
+        $user = $auth_service->getLoginUser();
+        if (empty($user)) {
+            throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
+        }
+        $id = $user->id;
+
         $old_password = $this->request->post('old_password');
         $new_password = $this->request->post('new_password');
 
@@ -131,6 +138,7 @@ class UserController extends Controller
         }
         $id = $user->id;
         $portrait = $this->request->file('portrait');
+
         if (true !== $this->validate(['image' => $portrait], ['image' => 'require|image'])) {
             throw new UserException('请选择图像上传', ResponseCode::$USER_NOT_STANDARD);
         }
@@ -187,6 +195,7 @@ class UserController extends Controller
 
         $register_service = new RegisterService();
         $register_service->sendEmailForResetEmail($id, $email);
+        return ResponseCode::success(true);
     }
 
     // 验证用户链接，修改用户邮箱并发送激活链接
