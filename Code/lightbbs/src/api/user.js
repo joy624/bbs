@@ -38,3 +38,9 @@ export const editPwd = params => {
 export const editEmail = params => {
     return axios.post('/bbs/user/editEmail', params).then(res => res.data)
 }
+
+// 忘记密码
+export const findPwd = params => {
+    return axios.post('/bbs/user/findPassword', params).then(res => res.data)
+}
+

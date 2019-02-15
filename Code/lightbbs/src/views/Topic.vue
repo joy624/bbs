@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     gotoEditAddTopic(data) {
-      this.$router.push({ name: "editTopic", params:{data:data} });
+      this.$router.push({ name: "EditTopic", params:{data:data} });
     },
     delTopic(id) {
         delTopic(id).then(res => {

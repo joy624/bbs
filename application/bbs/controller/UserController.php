@@ -79,7 +79,7 @@ class UserController extends Controller
         return ResponseCode::success(true);
     }
 
-    // 忘记密码，发送密码找回邮件
+    // 忘记密码，发送邮件找回密码
     public function findPassword()
     {
         $email = $this->request->post('email');
@@ -93,6 +93,7 @@ class UserController extends Controller
         // 根据邮箱获取用户名
         $register_service = new RegisterService();
         $register_service->sendEmailForFindingPass($email);
+        return ResponseCode::success(true);
     }
 
     // 根据邮件链接更新密码
@@ -100,7 +101,7 @@ class UserController extends Controller
     {
         // get请求，获取邮箱码，重置密码；post请求，重置用户密码
         if ($this->request->isPost()) {
-            $key = $this->request->post('key');
+            $key = $this->request->get('key');
             $password = $this->request->post('password');
 
             $id = Cache::get('validate_email_url_' . $key);
@@ -117,14 +118,16 @@ class UserController extends Controller
             $user_service = new UserService();
             $user_service->updatePassword($id, $password);
             Cache::set('validate_email_url_' . $key,null);
-            return ResponseCode::success(true);
+//            return ResponseCode::success(true);
+            $this->success("找回密码成功","http://localhost:8080/login");
         } else {
             $key = $this->request->get('key');
             $id = Cache::get('validate_email_url_' . $key);
             if (!$id) {
                 throw new UserException('验证信息已过期或非法输入，请重新找回密码', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
             }
-            return ResponseCode::success($key);//todo html
+//            return ResponseCode::success($key);//todo html
+            return $this->fetch();
         }
     }
 

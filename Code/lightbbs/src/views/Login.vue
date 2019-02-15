@@ -37,7 +37,7 @@
         ></div>
         <div class="help-block with-errors login-validate-data"></div>
       </div>
-      <input class="btn btn-success login-sub" type="buton" @click="onSubmit" value="登录">
+      <input class="btn btn-primary login-sub" type="buton" @click="onSubmit" value="登录">
     </form>
     <div class="row">
       <div class="col login-forget-pwd" @click="forgetPwd">忘记密码？</div>
@@ -95,7 +95,7 @@ export default {
 
 .login-logo {
   text-align: left;
-  color: #fd7e14;
+  color: #007BFF;
 }
 .login-title {
   text-align: right;

@@ -30,8 +30,9 @@ class TopicController extends Controller
             throw new UserException($validate->getError(), ResponseCode::$TOPIC_TITLE_CATE_CONTENT_IS_MUST);
         }
 
-        $topic_service = new TopicService;
+        $topic_service = new TopicService();
         $topic = $topic_service->addTopic($data['title'], $data['category_id'], $data['user_id'], $data['content']);
+
         return ResponseCode::success($topic);
     }
 
@@ -49,22 +50,23 @@ class TopicController extends Controller
         }
         $data['user_id'] = $user->id;
 
-
         $validate = new TopicValidate();
         if (!$validate->scene('edit')->check($data)) {
             throw new UserException($validate->getError(), ResponseCode::$TOPIC_TITLE_CATE_CONTENT_IS_MUST);
         }
 
-        $topic_service = new TopicService;
+        $topic_service = new TopicService();
         $topic = $topic_service->editTopic($data['id'], $data['title'], $data['category_id'], $data['user_id'], $data['content']);
+
         return ResponseCode::success($topic);
     }
 
     public function delete()
     {
         $id = $this->request->post('id');
-        $topic_service = new TopicService;
+        $topic_service = new TopicService();
         $topic_service->deleteTopic($id);
+
         return ResponseCode::success(true);
     }
 
@@ -76,6 +78,7 @@ class TopicController extends Controller
 
         $topic_service = new TopicService();
         $topics = $topic_service->pageTopic($category_id, $page);
+
         return ResponseCode::success($topics);
     }
 
@@ -86,6 +89,7 @@ class TopicController extends Controller
         $topic_service = new TopicService();
         $topic = $topic_service->getTopic($id);
         $topic_service->incrHits($id);
+
         return ResponseCode::success($topic);
     }
 
@@ -95,6 +99,7 @@ class TopicController extends Controller
         $id = $this->request->post('id');
         $topic_service = new TopicService();
         $num = $topic_service->incrLike($id);
+
         return ResponseCode::success($num);
     }
 
@@ -104,6 +109,17 @@ class TopicController extends Controller
         $id = $this->request->post('id');
         $topic_service = new TopicService();
         $num = $topic_service->decrLike($id);
+
+        return ResponseCode::success($num);
+    }
+
+    // 获取指定分类的总记录数
+    public function getCateTopicNum()
+    {
+        $category_id = $this->request->get('category_id', 1);
+        $topic_service = new TopicService();
+        $num = $topic_service->getCateTopicNum($category_id);
+
         return ResponseCode::success($num);
     }
 }

@@ -7,6 +7,11 @@ import axios from 'axios'
 export const index =  params => {
     return axios.get('/bbs/topic/index', {params:{category_id:params}}).then(res => res.data)
 }
+// 获取指定分类的主题总记录数
+export const getTopicTotal =  params => {
+    return axios.get('/bbs/topic/getCateTopicNum', {params:{category_id:params}}).then(res => res.data)
+}
+
 
 // 添加主题
 export const addTopic =  params => {

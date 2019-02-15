@@ -29,13 +29,14 @@ class TopicService
             'title' => $title,
             'category_id' => $category_id,
             'user_id' => $user_id,
-            'content' => $content
+            'content' => $content,
         ], ['title', 'category_id', 'user_id', 'content']);
         if (!$topic) {
             throw new UserException('添加主题失败', ResponseCode::$TOPIC_ADD_FAILED);
         }
         $topic = TopicModel::get($topic->id);
         $topic->uname = UserModel::field('name')->get($user_id)->name;
+
         return $topic;
     }
 
@@ -57,6 +58,7 @@ class TopicService
             throw new UserException('修改主题失败', ResponseCode::$TOPIC_EDIT_FAILED);
         }
         $topic->uname = UserModel::field('name')->get($user_id)->name;
+
         return $topic;
     }
 
@@ -81,6 +83,7 @@ class TopicService
         if (!$topic) {
             throw new UserException('获取主题内容失败', ResponseCode::$TOPIC_CONTENT_ERROR);
         }
+
         return $topic;
     }
 
@@ -95,6 +98,11 @@ class TopicService
             ->select();
     }
 
+    public function getCateTopicNum($category_id)
+    {
+        return count(TopicModel::where('category_id', '=', $category_id)->select());
+    }
+
     // 增加点击量
     public function incrHits($id)
     {
@@ -107,6 +115,7 @@ class TopicService
     {
         $topic_model = new TopicModel();
         $topic_model->where('id', '=', $id)->setInc('likenum');
+
         return $topic_model->field('likenum')->where('id', '=', $id)->select();
     }
 
@@ -115,6 +124,7 @@ class TopicService
     {
         $topic_model = new TopicModel();
         $topic_model->where('id', '=', $id)->setDec('likenum');
+
         return $topic_model->field('likenum')->where('id', '=', $id)->select();
     }
 }

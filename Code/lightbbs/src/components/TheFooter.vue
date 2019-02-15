@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed-bottom bg-light footer">
+  <div class="footer bg-light">
       {{msg}}
   </div>
 </template>
@@ -15,10 +15,13 @@ export default {
 </script>
 <style scoped>
 .footer{
-  height: 80px;
-  line-height: 80px;
   text-align: center;
   font-size: 12px;
+  position: relative;
+  margin-top: -80px;/*等于footer的高度*/
+  height: 80px;
+  line-height: 80px;
+  clear:both;
 }
 </style>
 

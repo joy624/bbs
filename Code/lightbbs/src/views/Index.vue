@@ -1,36 +1,14 @@
 <template>
-  <div class>
-    <div class="sidebar">
-      <div class="cate-manager" v-if="user.role == 'admin'">
-        <button type="button" class="btn btn-primary" @click="gotoCate">分类管理</button>
-      </div>
-
-      <div class="model bg-light" v-if="user">
-        <div class="text-center">
-          <img class="user-info" :src="'http://my.test.tp/'+user.img_url" alt>
-        </div>
-        <div class="row user-opt">
-          <div class="col-6">
-            <a class="btn btn-primary" href="#" role="button" @click="gotoAddTopic">发布主题</a>
-          </div>
-          <div class="col-6">
-            <a class="btn btn-primary" href="#" role="button" @click="gotoUserInfo">个人中心</a>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="model bg-light topic-model">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item bg-light" v-for="topic in topics">{{ topic.title }}</li>
-        </ul>
-      </div>
-    </div>
+  <div>
+    <TheSidebar></TheSidebar>
     <div class="main bg-light">
-
       <ul class="nav nav-pills flex-column flex-sm-row">
-        <li class="nav-item" v-for="cate in $store.state.cates">
-          <a v-if="cate.id == $store.state.cate_active" class="nav-link active" @click="changeCate(cate.id)">{{ cate.name }}</a>
+        <li class="nav-item bbs-cate-list" v-for="cate in $store.state.cates">
+          <a
+            v-if="cate.id == $store.state.cate_active"
+            class="nav-link active"
+            @click="changeCate(cate.id)"
+          >{{ cate.name }}</a>
           <a v-else class="nav-link" @click="changeCate(cate.id)">{{ cate.name }}</a>
         </li>
       </ul>
@@ -62,65 +40,78 @@
           </div>
         </li>
       </ul>
-      <div v-if="len > maxnum" class="small">
-        <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-          <li class="page-item" v-for="p in pages">
-            <a class="page-link" href="#">{{ p }}</a>
+    </div>
+    <div class="bbs-pagination">
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
           </li>
-          <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+          <li class="page-item" v-for="page in pages">
+            <a class="page-link" href="#" @click="pageTopic(page)">{{ page }}</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
         </ul>
-      </div>
+      </nav>
     </div>
   </div>
 </template>
 <script>
+import TheSidebar from "@/components/TheSidebar";
 import { list } from "@/api/cate";
 import { index } from "@/api/topic";
-import { loginUser } from "@/api/user";
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
+import { getTopicTotal } from "@/api/topic";
 
 export default {
   name: "Index",
+  components: {
+    TheSidebar
+  },
   data() {
     return {
       topics: "",
-      user: "",
-      len:0,
-      maxnum:2,
-      page:1,
-      pages:0,
+      maxnum: 2,
+      topic_total: 0,
+      pages: 1
     };
   },
   mounted() {
-    this.$store.dispatch('loadCates')
-    this.$store.dispatch('loadTopics', this.$store.state.cate_active)
-    loginUser().then(res => {
-      if(res.code == 200){
-      this.user = res.data;
-      }
+    this.$store.dispatch("loadCates");
+    this.$store.dispatch("loadTopics", this.$store.state.cate_active);
+    getTopicTotal(this.$store.state.cate_active).then(res => {
+      this.topic_total = res.data;
+      this.pages = Math.ceil(this.topic_total / this.maxnum);
     });
   },
   methods: {
-    gotoCate() {
-      this.$router.push({ name: "Cate" });
+    gotoTopic(id) {
+      this.$router.push({ name: "Topic", query: { id: id } });
     },
-    gotoAddTopic() {
-      this.$router.push({ name: "addTopic" });
+    pageTopic(page) {
+      console.log(page);
     },
-    gotoUserInfo(){
-      this.$router.push({ name:"userInfo"});
-    },
-    gotoTopic(id){
-      this.$router.push({name:"Topic",query:{id:id}});
-    },
-    ...mapActions([
-        'changeCate'
-    ])
+    ...mapActions(["changeCate"])
   }
 };
 </script>
 <style scoped>
+.bbs-cate-list {
+  cursor: pointer;
+}
+.bbs-cate-list .active:hover {
+  color: #ffffff;
+}
+.bbs-pagination{
+  margin-top: 20px;
+}
+
 .main {
   width: 70%;
   margin-right: 4.5rem;
@@ -136,10 +127,7 @@ export default {
   height: 44px;
   margin-right: 25px;
 }
-.model {
-  height: 145px;
-  margin-bottom: 8px;
-}
+
 .topic-model .list-group {
   list-style: decimal inside;
 }
@@ -155,11 +143,11 @@ export default {
   margin-left: 20px;
   margin-top: 10px;
 }
-.topic-title{
+.topic-title {
   color: #778087;
 }
-  .cate-manager{
-    margin-bottom: 10px;
-  }
+.cate-manager {
+  margin-bottom: 10px;
+}
 </style>
 

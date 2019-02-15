@@ -3,25 +3,22 @@
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
       <div class="header-logo">
         <h4>
-          <a href="#" @click="gotoIndex">LightBBS</a>
+          <a @click="gotoIndex">LightBBS</a>
         </h4>
       </div>
       <div class="row collapse navbar-collapse dropdown">
         <div class="col">
-          <input
-            class="form-control mr-sm-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-          >
+          <input class="form-control mr-sm-2" type="text" placeholder="Search">
         </div>
-        <div v-if="$store.getters.login_name != '' && $store.getters.login_name != null">
-          <a href="#">{{ $store.getters.login_name }}</a>
+        <div class="col header-btn" v-if="$store.getters.login_name != '' && $store.getters.login_name != null">
+          <a href="#" @click="gotoUserInfo">{{ $store.getters.login_name }}</a>
+          <span></span>
           <a href="#" data-toggle="modal" data-target="#logoutModal">退出</a>
         </div>
         <div v-else class="col header-btn">
-          <button class="btn btn-outline-success my-2 my-sm-0" @click="gotoLogin">登录</button>
-          <button class="btn btn-outline-success my-2 my-sm-0" @click="gotoRegister">注册</button>
+          <a @click="gotoLogin" style="color:#777; cursor:pointer;"><i class="fa fa-sign-in"></i>&nbsp;&nbsp;登录</a>
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <a @click="gotoRegister" style="color:#777; cursor:pointer;"><i class="fa fa-user-plus"></i>&nbsp;注册</a>
         </div>
       </div>
       <!--折叠按钮-->
@@ -43,9 +40,9 @@
           aria-labelledby="navbarDropdown"
           id="navbarSupportedContent"
         >
-          <a class="dropdown-item" href="#">搜索</a>
-          <a class="dropdown-item" href="#" @click="gotoLogin">登录</a>
-          <a class="dropdown-item" href="#">注册</a>
+          <a class="dropdown-item" href="#" >搜索</a>
+          <a class="dropdown-item" style="cursor:pointer;" @click="gotoLogin">登录</a>
+          <a class="dropdown-item" style="cursor:pointer;" @click="gotoRegister">注册</a>
         </div>
       </div>
     </nav>
@@ -97,6 +94,9 @@ export default {
     gotoIndex() {
       this.$router.push({ name: "Index" });
     },
+    gotoUserInfo() {
+      this.$router.push({ name: "UserInfo" });
+    },
     gotoLogout() {
       logout().then(res => {
         if (res.code == 200) {
@@ -120,9 +120,10 @@ export default {
 <style scoped>
 .header-logo {
   text-align: left;
-  color: #fd7e14;
+  color: #007BFF;
   margin-right: 20px;
   margin-top: 10px;
+  cursor: pointer;
 }
 .header-btn {
   text-align: right;
