@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="header-logo">
         <h4>
           <a @click="gotoIndex">LightBBS</a>

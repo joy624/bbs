@@ -69,7 +69,7 @@ class TopicService
         }
         // 将主题的is_show设置为0，实现软删除
         $topic_model = new TopicModel();
-        if (!$topic_model->save(['is_show' => 0], ['id' => $id])) {
+        if (!$topic_model->save(['is_show' => Constants::IS_NOT_SHOW], ['id' => $id])) {
             throw new UserException('删除主题失败', ResponseCode::$TOPIC_DELETE_FAILED);
         }
     }
@@ -87,20 +87,21 @@ class TopicService
         return $topic;
     }
 
-    public function pageTopic($category_id, $page)
+    public function pageTopic($category_id, $page, $pagesize = Constants::PAGE_SIZE)
     {
         return TopicModel::withJoin(['user' => ['name', 'img_url']])
             ->where('category_id', '=', $category_id)
-            ->where('is_show', '=', 1)
+            ->where('is_show', '=', Constants::IS_SHOW)
             ->page($page)
-            ->limit(Constants::PAGE_SIZE)
+            ->limit($pagesize)
             ->order('id', 'DESC')
             ->select();
     }
 
-    public function getCateTopicNum($category_id)
+    public function getCateTopicNum($category_id, $is_show = Constants::IS_SHOW)
     {
-        return count(TopicModel::where('category_id', '=', $category_id)->select());
+        return TopicModel::where('category_id', '=', $category_id)
+            ->where('is_show', '=', $is_show)->count();
     }
 
     // 增加点击量

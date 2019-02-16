@@ -9,19 +9,28 @@ const state = {
     login_name: '',
     login_id: '',
     login_role: '',
+
     cate_active: 1,
     topics: [],
+    topic_page_count: 1,
+    topic_page_current: 1
 }
 const mutations = {
     loadTopics: state => {
-        index(1).then(res => {
-            state.topics = res.data;
+        index({category_id: state.cate_active, page: state.topic_page_current}).then(res => {
+            state.topics = res.data.topic;
+            state.topic_page_current = res.data.page_current;
+            state.topic_page_count = res.data.page_total;
+            console.info('loadTopics', state.topic_page_count, state.topic_page_current)
         });
     },
     changeCate (state, category_id) {
         state.cate_active = category_id
-        index(category_id).then(res => {
-            state.topics = res.data;
+        state.topic_page_current = 1;
+        index({category_id: state.cate_active, page: state.topic_page_current}).then(res => {
+            state.topics = res.data.topic;
+            state.topic_page_current = res.data.page_current;
+            state.topic_page_count = res.data.page_total;
         });
     },
     loadCates: state => {
@@ -44,7 +53,15 @@ const mutations = {
         localStorage.removeItem('login_name')
         localStorage.removeItem('login_id')
         localStorage.removeItem('login_role')
-    }
+    },
+    changeTopicPage (state, page_num) {
+        state.topic_page_current = page_num
+        index({category_id: state.cate_active, page: state.topic_page_current}).then(res => {
+            state.topics = res.data.topic;
+            state.topic_page_current = res.data.page_current;
+            state.topic_page_count = res.data.page_total;
+        });
+    },
 }
 const getters = {
     login_name (state) {
@@ -67,11 +84,12 @@ const getters = {
     }
 }
 const actions = {
-    loadTopics: ({ commit } ) => commit('loadTopics'),
+    loadTopics: ({ commit } ) => commit('loadTopics' ),
     changeCate: ({ commit }, category_id ) => commit('changeCate', category_id),
     loadCates: ({ commit } ) => commit('loadCates'),
     setLoginUser: ({ commit }, args ) => commit('setLoginUser', args),
     setLogout: ({ commit } ) => commit('setLogout'),
+    changeTopicPage: ({ commit }, page_current ) => commit('changeTopicPage', page_current),
  }
 export default new Vuex.Store({
     state,

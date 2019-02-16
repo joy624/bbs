@@ -17,7 +17,7 @@ class UploadService
             // 打开保存到指定位置的图像
             $img = Image::open($filepath . str_replace('\\', '/', $info->getSaveName()));
             // 获取保存到指定static/uploads/目录下，日期目录名和文件名
-            $savename = explode('\\', $info->getSaveName());
+            $savename = explode(DIRECTORY_SEPARATOR, $info->getSaveName());
             // 设置上传图像缩略图保存路径static/uploads/thumb/日期
             $thumb_path = $filepath . 'thumb/' . $savename[0];
             // 创建缩略图保存目录

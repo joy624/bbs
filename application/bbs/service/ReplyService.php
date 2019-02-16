@@ -2,6 +2,7 @@
 
 namespace app\bbs\service;
 
+use app\bbs\common\Constants;
 use app\bbs\validate\ReplyValidate;
 use app\bbs\model\ReplyModel;
 use app\bbs\common\ResponseCode;
@@ -53,7 +54,7 @@ class ReplyService
     public function getReply($id)
     {
         $reply = ReplyModel::withJoin(['user' => ['name', 'img_url']])
-            ->where('is_show', '=', 1)->get($id);
+            ->where('is_show', '=', Constants::IS_SHOW)->get($id);
         if (!$reply) {
             throw new UserException('获取回复内容失败', ResponseCode::$REPLY_CONTENT_ERROR);
         }
@@ -67,7 +68,7 @@ class ReplyService
         }
         // 回复内容is_show设置为0，软删除
         $reply_model = new ReplyModel();
-        if (!$reply_model->save(['is_show' => 0], ['id' => $id])) {
+        if (!$reply_model->save(['is_show' => Constants::IS_NOT_SHOW], ['id' => $id])) {
             throw new UserException('删除回复失败', ResponseCode::$REPLY_DELETE_FAILED);
         }
     }
@@ -76,7 +77,7 @@ class ReplyService
     {
         return ReplyModel::withJoin(['user' => ['name', 'img_url']])
             ->where('topic_id', '=', $topic)
-            ->where('is_show', '=', 1)
+            ->where('is_show', '=', Constants::IS_SHOW)
             ->order('id', 'DESC')
             ->select();
     }

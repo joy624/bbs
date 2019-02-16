@@ -161,6 +161,7 @@ export default {
              headPortrait(formData).then(res => {
                 if (res.code == 200) {
                     this.info.img_url = res.data;
+                    $(".alert-danger").addClass("d-none");
                 } else {
                     this.msg = res.msg;
                     $(".alert-danger")

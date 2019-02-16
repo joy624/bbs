@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <TheSidebar></TheSidebar>
-    <div class="main bg-light">
+  <div class="row">
+    <div class="col-8">
+      <div class="main bg-light">
       <ul class="nav nav-pills flex-column flex-sm-row">
         <li class="nav-item bbs-cate-list" v-for="cate in $store.state.cates">
           <a
@@ -25,7 +25,7 @@
             <div clas="col">
               <div class="row">
                 <h5 class="card-title">
-                  <a href="#" @click="gotoTopic(topic.id)">{{ topic.title }}</a>
+                  <a style="cursor: pointer;" @click="gotoTopic(topic.id)">{{ topic.title }}</a>
                 </h5>
               </div>
               <div class="row">
@@ -41,24 +41,17 @@
         </li>
       </ul>
     </div>
-    <div class="bbs-pagination">
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item" v-for="page in pages">
-            <a class="page-link" href="#" @click="pageTopic(page)">{{ page }}</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <el-pagination v-show="$store.state.topic_page_count > 1"
+      background
+      layout="prev, pager, next"
+      :page-count="$store.state.topic_page_count"
+      :current-page="$store.state.topic_page_current"
+      @current-change="changePage"
+    >
+    </el-pagination>
+    </div>
+    <div class="col-4">
+      <TheSidebar></TheSidebar>
     </div>
   </div>
 </template>
@@ -76,21 +69,17 @@ export default {
   },
   data() {
     return {
-      topics: "",
-      maxnum: 2,
-      topic_total: 0,
-      pages: 1
+      topics: [],
     };
   },
   mounted() {
     this.$store.dispatch("loadCates");
     this.$store.dispatch("loadTopics", this.$store.state.cate_active);
-    getTopicTotal(this.$store.state.cate_active).then(res => {
-      this.topic_total = res.data;
-      this.pages = Math.ceil(this.topic_total / this.maxnum);
-    });
   },
   methods: {
+    changePage(page) {
+      this.$store.dispatch('changeTopicPage', page)
+    },
     gotoTopic(id) {
       this.$router.push({ name: "Topic", query: { id: id } });
     },
@@ -112,16 +101,16 @@ export default {
   margin-top: 20px;
 }
 
-.main {
-  width: 70%;
-  margin-right: 4.5rem;
-  border-radius: 0.25rem;
-}
-.sidebar {
-  float: right;
-  width: 29%;
-  border-radius: 0.25rem;
-}
+/*.main {*/
+  /*width: 70%;*/
+  /*margin-right: 4.5rem;*/
+  /*border-radius: 0.25rem;*/
+/*}*/
+/*.sidebar {*/
+  /*float: right;*/
+  /*width: 29%;*/
+  /*border-radius: 0.25rem;*/
+/*}*/
 .topic-img {
   width: 44px;
   height: 44px;

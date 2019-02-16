@@ -2,6 +2,7 @@
 
 namespace app\bbs\controller;
 
+use app\bbs\common\Constants;
 use think\Controller;
 use app\bbs\validate\TopicValidate;
 use app\bbs\service\TopicService;
@@ -75,11 +76,16 @@ class TopicController extends Controller
     {
         $category_id = $this->request->get('category_id', 1);
         $page = $this->request->get('page', 1);
+        $pagesize = Constants::PAGE_SIZE;
 
         $topic_service = new TopicService();
-        $topics = $topic_service->pageTopic($category_id, $page);
+        $topics = $topic_service->pageTopic($category_id, $page, $pagesize);
+        $nums = $topic_service->getCateTopicNum($category_id);
+        $page_total = ceil($nums / $pagesize);
 
-        return ResponseCode::success($topics);
+        return ResponseCode::success(['topic' => $topics,
+            'page_current' => intval($page),
+            'page_total' => $page_total]);
     }
 
     // 获取某个主题信息，点击量加1
@@ -109,16 +115,6 @@ class TopicController extends Controller
         $id = $this->request->post('id');
         $topic_service = new TopicService();
         $num = $topic_service->decrLike($id);
-
-        return ResponseCode::success($num);
-    }
-
-    // 获取指定分类的总记录数
-    public function getCateTopicNum()
-    {
-        $category_id = $this->request->get('category_id', 1);
-        $topic_service = new TopicService();
-        $num = $topic_service->getCateTopicNum($category_id);
 
         return ResponseCode::success($num);
     }

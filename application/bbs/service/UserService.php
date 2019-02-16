@@ -9,7 +9,7 @@ use app\bbs\exception\UserException;
 class UserService
 {
     // 注册用户
-    public function addUser($name, $password, $email)
+    public function addUser($name, $password, $email, $img_url = '/static/default-photo.jpeg')
     {
         // 判断注册的用户名是否已经存在
         if ($this->getUserByName($name)) {
@@ -25,7 +25,11 @@ class UserService
         $password = md5(md5($password) . $salt);
 
         $user = new UserModel();
-        if (!$user->save(['name' => $name, 'password' => $password, 'email' => $email, 'salt' => $salt])) {
+        if (!$user->save(['name' => $name,
+            'password' => $password,
+            'email' => $email,
+            'salt' => $salt,
+            'img_url' => $img_url])) {
             throw new UserException('注册用户出错', ResponseCode::$USER_REGISTER_FAILED);
         }
 

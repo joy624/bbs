@@ -4,25 +4,24 @@
     <div class="container">
       <router-view></router-view>
     </div>
-    <!-- <TheFooter></TheFooter> -->
+     <TheFooter></TheFooter>
   </div>
 </template>
 
 <script>
 import TheHeader from "@/components/TheHeader";
-// import TheFooter from "@/components/TheFooter";
+import TheFooter from "@/components/TheFooter";
 export default {
   name: "App",
   components: {
-    TheHeader
-    // TheFooter
+    TheHeader,
+    TheFooter
   }
 };
 </script>
 
 <style>
 .container {
-  position: relative;
-  top: 4.5em;
+  margin-top: 20px;
 }
 </style>
