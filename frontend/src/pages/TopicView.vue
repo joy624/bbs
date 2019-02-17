@@ -6,20 +6,25 @@
     </div>
     <div class="col-4">
       <UserInfo />
-      <Recommand />
+      <BestTopic />
+      <NewestTopic />
     </div>
   </div>
 </template>
 
 <script>
   import UserInfo from "../components/UserInfo";
-  import Recommand from "../components/Recommand";
   import Topic from "../components/Topic";
   import Reply from "../components/Reply";
+  import BestTopic from "../components/BestTopic";
+  import NewestTopic from "../components/NewestTopic";
 
   export default {
     name: "TopicView",
-    components: {Reply, Topic, Recommand, UserInfo}
+    components: {NewestTopic, BestTopic, Reply, Topic, UserInfo},
+    mounted () {
+      console.info('topicPage', this.$route.params.id)
+    }
   }
 </script>
 

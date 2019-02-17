@@ -98,6 +98,26 @@ class TopicService
             ->select();
     }
 
+    public function bestTopic($category_id, $count = 5)
+    {
+        return TopicModel::withJoin(['user' => ['name', 'img_url']])
+            ->where('category_id', '=', $category_id)
+            ->where('is_show', '=', Constants::IS_SHOW)
+            ->limit($count)
+            ->order('hits', 'DESC')
+            ->select();
+    }
+
+    public function newestTopic($category_id, $count = 5)
+    {
+        return TopicModel::withJoin(['user' => ['name', 'img_url']])
+            ->where('category_id', '=', $category_id)
+            ->where('is_show', '=', Constants::IS_SHOW)
+            ->limit($count)
+            ->order('id', 'DESC')
+            ->select();
+    }
+
     public function getCateTopicNum($category_id, $is_show = Constants::IS_SHOW)
     {
         return TopicModel::where('category_id', '=', $category_id)

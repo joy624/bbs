@@ -7,7 +7,7 @@
             <div class="modal-header">
               <h5 class="modal-title small">LightBBS是一个关于分享和探索的地方</h5>
             </div>
-            <div class="modal-body row" v-if="user">
+            <div class="modal-body row" v-if="$store.getters.login_id">
               <div class="col-3">
                 <img
                     class="rounded"

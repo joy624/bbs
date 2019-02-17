@@ -118,4 +118,24 @@ class TopicController extends Controller
 
         return ResponseCode::success($num);
     }
+
+    // 点赞最多的n个
+    public function best()
+    {
+        $nums = $this->request->post('num', 3);
+        $category_id = $this->request->post('category', 1);
+        $topic_service = new TopicService();
+        $topics = $topic_service->bestTopic($category_id, $nums);
+        return ResponseCode::success($topics);
+    }
+
+    // 最新发布的n个
+    public function newest()
+    {
+        $nums = $this->request->post('num', 3);
+        $category_id = $this->request->post('category', 1);
+        $topic_service = new TopicService();
+        $topics = $topic_service->newestTopic($category_id, $nums);
+        return ResponseCode::success($topics);
+    }
 }

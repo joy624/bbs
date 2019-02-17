@@ -37,7 +37,7 @@
   import SimpleMDE from 'simplemde'
   import hljs from 'highlight.js'
   import { list } from "@/api/cate";
-  import { editTopic } from "@/api/topic";
+  import { editTopic, viewTopic } from "@/api/topic";
 
   window.hljs = hljs
   export default {
@@ -72,12 +72,14 @@
           codeSyntaxHighlighting: true
         }
       });
-      this.form = this.$route.params.data;
-      simplemde.value(this.$route.params.data.content);
 
-      simplemde.codemirror.on('change', () => {
-        // 将改变后的值赋给文章内容
-        this.form.content = simplemde.value()
+      viewTopic(this.$route.query.id).then(res => {
+        this.form = res.data;
+        simplemde.value(this.form.content);
+        simplemde.codemirror.on('change', () => {
+          // 将改变后的值赋给文章内容
+          this.form.content = simplemde.value()
+        });
       });
       this.simplemde = simplemde;
     },
@@ -86,7 +88,7 @@
         editTopic(this.form).then(res => {
           if (res.code == 200) {
             this.simplemde.value('');
-            this.$router.push({ name: "Index" });
+            this.$router.push({ name: "Home" });
           } else {
             this.msg = res.msg;
             $(".alert-danger")

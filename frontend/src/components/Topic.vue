@@ -5,19 +5,19 @@
         <!--主题详情-->
         <div class="panel bg-light" style="padding:20px;">
           <!-- 标题 -->
-          <h5>{{data.title}}</h5>
+          <h5>{{topic.title}}</h5>
           <span
               class="small panel-subtitle mb-2 text-muted"
-          >创建于：{{ data.create_time }} / 阅读数 {{data.hits}} /点赞数 {{ data.likenum }} / 更新于{{ data.update_time }}</span>
-          <span v-if="data.user_id == $store.getters.login_id">
-        <button type="button" class="btn btn-link opt" @click="gotoEditAddTopic(data)">编辑</button>
-        <button type="button" class="btn btn-link opt" @click="delTopic(data.id)">删除</button>
+          >创建于：{{ topic.create_time }} / 阅读数 {{topic.hits}} /点赞数 {{ topic.likenum }} / 更新于{{ topic.update_time }}</span>
+          <span v-if="topic.user_id == $store.getters.login_id">
+        <button type="button" class="btn btn-link opt" @click="gotoEditAddTopic(topic.id)">编辑</button>
+        <button type="button" class="btn btn-link opt" @click="delTopic(topic.id)">删除</button>
       </span>
           <hr class="simple" color="#D9DADB">
           <!-- 内容 -->
           <!--<div class="panel">{{data.content}}</div>-->
           <!--<div class="panel">{{data.content}}</div>-->
-          <div class="panel"><div class="markdown-body" v-html="data.content"></div></div>
+          <div class="panel"><div class="markdown-body" v-html="topic.content"></div></div>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
     name: "Topic",
     data() {
       return {
-        data: "",
+        topic: "",
         editdata: "",
         replies: "",
         reply_content: "",
@@ -46,21 +46,11 @@
       };
     },
     mounted() {
-      viewTopic(this.$route.query.id).then(res => {
-        if (res.code == 200) {
-          this.data =   res.data;
-          this.data.content = SimpleMDE.prototype.markdown(this.data.content);
-          this.$nextTick(() => {
-            this.$el.querySelectorAll('pre code').forEach((el) => {
-              hljs.highlightBlock(el)
-            })
-          })
-        }
-      });
+      this.loadTopic()
     },
     methods: {
-      gotoEditAddTopic(data) {
-        this.$router.push({ name: "EditTopic", params:{data:data} });
+      gotoEditAddTopic(topic_id) {
+        this.$router.push({ name: "EditTopic", query: {id: topic_id} });
       },
       delTopic(id) {
         delTopic(id).then(res => {
@@ -73,7 +63,23 @@
                 .addClass("d-show");
           }
         });
+      },
+      loadTopic() {
+        viewTopic(this.$route.params.id).then(res => {
+          if (res.code == 200) {
+            this.topic = res.data;
+            this.topic.content = SimpleMDE.prototype.markdown(this.topic.content);
+            this.$nextTick(() => {
+              this.$el.querySelectorAll('pre code').forEach((el) => {
+                hljs.highlightBlock(el)
+              })
+            })
+          }
+        });
       }
+    },
+    watch: {
+      "$route.params": "loadTopic"
     }
   }
 </script>

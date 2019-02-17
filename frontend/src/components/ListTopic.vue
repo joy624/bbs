@@ -62,7 +62,7 @@
     },
     methods: {
       gotoTopic(id) {
-        this.$router.push({ name: "Topic", query: { id: id } });
+        this.$router.push({ path: "/topic/" + id });
       },
       ...mapActions(["changeCate", 'changeTopicPage'])
     }

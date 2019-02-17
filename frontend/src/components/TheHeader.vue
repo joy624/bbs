@@ -13,7 +13,7 @@
         <div class="col header-btn" v-if="$store.getters.login_name != '' && $store.getters.login_name != null">
           <a href="#" @click="personal">{{ $store.getters.login_name }}</a>
           <span></span>
-          <a href="#" data-toggle="modal" data-target="#logoutModal">退出</a>
+          <a href="#" @click="logoutShow = true">退出</a>
         </div>
         <div v-else class="col header-btn">
           <a @click="login" style="color:#777; cursor:pointer;"><i class="fa fa-sign-in"></i>&nbsp;&nbsp;登录</a>
@@ -47,6 +47,17 @@
       </div>
     </nav>
     <!-- 退出用户登录确认框 -->
+    <el-dialog
+        title="提示"
+        :visible.sync="logoutShow"
+        width="30%">
+      <span>确认退出当前账户？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="logoutShow = false">取 消</el-button>
+        <el-button type="primary" @click="handleLogout">确 定</el-button>
+      </span>
+    </el-dialog>
+
     <div
         class="modal fade"
         id="logoutModal"
@@ -54,6 +65,7 @@
         role="dialog"
         aria-labelledby="logoutModal"
         aria-hidden="true"
+        ref="logoutModal"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -79,6 +91,11 @@
 
   export default {
     name: "TheHeader",
+    data () {
+      return {
+        logoutShow: false
+      }
+    },
     methods: {
       home() {
         this.$router.push({ name: "Home" });
@@ -92,10 +109,22 @@
       personal() {
         this.$router.push({ name: "User" });
       },
+      handleLogout () {
+        logout().then(res => {
+          if (res.code == 200) {
+            this.$store.dispatch('setLogout');
+            this.logoutShow = false;
+            this.$router.push({name: 'Home'})
+          } else {
+            this.msg = res.msg;
+          }
+        });
+      },
       logout () {
         logout().then(res => {
           if (res.code == 200) {
             this.$store.dispatch('setLogout');
+            this.$refs.logoutModal.modal('hide');
           } else {
             this.msg = res.msg;
           }

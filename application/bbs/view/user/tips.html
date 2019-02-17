@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>修改邮箱认证提示信息</title>
+    <title>提示信息</title>
     <style>
         body{background-color: #cccccc;}
         .msg{
@@ -19,10 +19,10 @@
 <body>
     <div class="msg">
         <p>{$msg}</p>
-        <p><a href="http://localhost:8080"><span id="begin">3</span>秒后跳转</a></p>
+        <p><a href="http://localhost:8080"><span id="begin">5</span>秒后跳转</a></p>
     </div>
     <script>
-        var t=3;
+        var t=5;
         var timer=setInterval(time,1000);
         var spans=document.getElementById("begin");
         function time(){

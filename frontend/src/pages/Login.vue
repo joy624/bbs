@@ -120,6 +120,7 @@
   .login-validate-data{
     font-size: 12px;
     color: red;
-    height: 0px;
+    /*margin-top: -10px;*/
+    /*margin-bottom: -26px;*/
   }
 </style>

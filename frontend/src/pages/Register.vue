@@ -56,8 +56,8 @@
             <input
                 type="password"
                 class="form-control"
-                id="inputRePassword"
                 placeholder="确认密码"
+                v-model="form.repassword"
                 data-match="#inputPassword"
                 data-error="两次输入的密码不匹配！"
                 required
@@ -81,6 +81,7 @@
         form: {
           name: "",
           password: "",
+          repassword: '',
           email: ""
         },
         msg: ""
@@ -89,13 +90,17 @@
     methods: {
       onSubmit(evt) {
         evt.preventDefault();
-        register(this.form).then(res => {
-          if (res.code == 200) {
-            this.$router.push({ name: "Home" });
-          } else {
-            this.msg = res.msg;
-          }
-        });
+        if (this.form.repassword != this.form.password) {
+          this.msg = '两次密码不正确，请重新输入密码';
+        } else {
+          register(this.form).then(res => {
+            if (res.code == 200) {
+              this.$router.push({ name: "Login" });
+            } else {
+              this.msg = res.msg;
+            }
+          });
+        }
       }
     }
   }

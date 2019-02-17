@@ -35,8 +35,13 @@ export default new Router({
       name: 'Register',
       component: Register
     },
+    // {
+    //   path: '/topic',
+    //   name: 'Topic',
+    //   component: TopicView
+    // },
     {
-      path: '/topic',
+      path: '/topic/:id',
       name: 'Topic',
       component: TopicView
     },

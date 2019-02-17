@@ -5,18 +5,20 @@
     </div>
     <div class="col-4">
       <UserInfo />
-      <Recommand />
+      <BestTopic />
+      <NewestTopic />
     </div>
   </div>
 </template>
 
 <script>
   import UserInfo from "../components/UserInfo";
-  import Recommand from "../components/Recommand";
   import ListTopic from "../components/ListTopic";
+  import BestTopic from "../components/BestTopic";
+  import NewestTopic from "../components/NewestTopic";
   export default {
     name: "Home",
-    components: {ListTopic, Recommand, UserInfo}
+    components: {NewestTopic, BestTopic, ListTopic, UserInfo}
   }
 </script>
 

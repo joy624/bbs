@@ -16,8 +16,8 @@ export const addTopic =  params => {
 }
 
 // 获取主题
-export const viewTopic =  params => {
-  return axios.get('/bbs/topic/view', {params:{id:params}}).then(res => res.data)
+export const viewTopic = topic_id => {
+  return axios.get('/bbs/topic/view', {params:{ id: topic_id}}).then(res => res.data)
 }
 
 // 删除主题
@@ -28,4 +28,14 @@ export const delTopic = params => {
 // 编辑主题
 export const editTopic =  params => {
   return axios.post('/bbs/topic/edit', params).then(res => res.data)
+}
+
+// 最新主题
+export const newestTopic = category_id => {
+  return axios.get('/bbs/topic/newest', {params:{ category_id: category_id}}).then(res => res.data)
+}
+
+// 最受欢迎主题
+export const bestTopic = category_id => {
+  return axios.get('/bbs/topic/best', {params:{ category_id: category_id}}).then(res => res.data)
 }

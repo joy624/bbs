@@ -106,7 +106,10 @@ class UserController extends Controller
 
             $id = Cache::get('validate_email_url_' . $key);
             if (!$id) {
-                throw new UserException('验证信息已过期或非法输入，请重新找回密码', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
+//                throw new UserException('验证信息已过期或非法输入，请重新找回密码', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
+                $msg ='验证信息已过期或非法输入，请重新激活账户';
+                $this->assign('msg',$msg);
+                return $this->fetch('tips');
             }
 
             // 利用UserValidate验证器验证密码是否符合指定的规范
@@ -121,11 +124,14 @@ class UserController extends Controller
 //            return ResponseCode::success(true);
             $this->success("找回密码成功","http://localhost:8080/login");
         } else {
-            $key = $this->request->get('key');
-            $id = Cache::get('validate_email_url_' . $key);
-            if (!$id) {
-                throw new UserException('验证信息已过期或非法输入，请重新找回密码', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
-            }
+//            $key = $this->request->get('key');
+//            $id = Cache::get('validate_email_url_' . $key);
+//            if (!$id) {
+////                throw new UserException('验证信息已过期或非法输入，请重新找回密码', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
+//                $msg ='验证信息已过期或非法输入，请重新激活账户';
+//                $this->assign('msg',$msg);
+//                return $this->fetch('tips');
+//            }
 //            return ResponseCode::success($key);//todo html
             return $this->fetch();
         }
