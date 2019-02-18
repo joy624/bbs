@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="main bg-light">
-      <ul class="nav nav-pills flex-column flex-sm-row">
+      <ul class="nav nav-pills">
         <li class="nav-item bbs-cate-list" v-for="cate in $store.state.cates">
           <a
               v-if="cate.id == $store.state.cate_active"
@@ -23,7 +23,7 @@
             </div>
             <div clas="col">
               <div class="row">
-                <h5 class="card-title">
+                <h5 class="card-title" style="font-size: 16px;">
                   <a style="cursor: pointer;" @click="gotoTopic(topic.id)">{{ topic.title }}</a>
                 </h5>
               </div>

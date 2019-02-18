@@ -41,16 +41,16 @@
           <!-- 发表评论 -->
           <div class="add-reply" v-if="$store.getters.login_id != '' && $store.getters.login_id != null">
             <form>
-          <textarea
-              name="content"
-              maxlength="10000"
-              class="mll"
-              id="reply_content"
-              style="overflow: hidden; word-wrap: break-word; resize: none; height: 112px; width: 100%;"
-              v-model="reply_content"
-          ></textarea>
+              <textarea
+                  name="content"
+                  maxlength="10000"
+                  class="mll"
+                  id="reply_content"
+                  style="overflow: hidden; word-wrap: break-word; resize: none; height: 112px; width: 100%;"
+                  v-model="reply_content"
+              ></textarea>
               <input v-if="reply_id" type="button" style="margin-top: 4px;" class="btn btn-primary" @click="updateReply" value="发布评论"/>
-              <input v-else type="button" style="margin-top: 4px;" class="btn btn-primary" @click="addReply($route.query.id)" value="发布评论"/>
+              <input v-else type="button" style="margin-top: 4px;" class="btn btn-primary" @click="addReply" value="发布评论"/>
             </form>
           </div>
         </div>
@@ -78,7 +78,7 @@
       };
     },
     mounted () {
-      replyIndex(this.$route.query.id).then(res => {
+      replyIndex(this.$route.params.id).then(res => {
         if (res.code == 200) {
           this.replies = res.data;
         }
@@ -119,8 +119,8 @@
           }
         });
       },
-      addReply(id) {
-        addTopicReply({topic_id:id, content:this.reply_content}).then(res => {
+      addReply() {
+        addTopicReply({topic_id:this.$route.params.id, content:this.reply_content}).then(res => {
           if(res.code == 200){
             this.replies.push(res.data);
             $(".alert-danger").addClass("d-none");

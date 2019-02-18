@@ -7,17 +7,16 @@
           <!-- 标题 -->
           <h5>{{topic.title}}</h5>
           <span
-              class="small panel-subtitle mb-2 text-muted"
+                  class="small panel-subtitle mb-2 text-muted"
           >创建于：{{ topic.create_time }} / 阅读数 {{topic.hits}} /点赞数 {{ topic.likenum }} / 更新于{{ topic.update_time }}</span>
           <span v-if="topic.user_id == $store.getters.login_id">
         <button type="button" class="btn btn-link opt" @click="gotoEditAddTopic(topic.id)">编辑</button>
         <button type="button" class="btn btn-link opt" @click="delTopic(topic.id)">删除</button>
       </span>
           <hr class="simple" color="#D9DADB">
-          <!-- 内容 -->
-          <!--<div class="panel">{{data.content}}</div>-->
-          <!--<div class="panel">{{data.content}}</div>-->
-          <div class="panel"><div class="markdown-body" v-html="topic.content"></div></div>
+          <div class="panel">
+            <div class="markdown-body" v-html="topic.content"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -25,11 +24,12 @@
 </template>
 
 <script>
-  import { viewTopic } from "@/api/topic";
-  import { delTopic } from "@/api/topic";
+  import {viewTopic} from "@/api/topic";
+  import {delTopic} from "@/api/topic";
 
   import SimpleMDE from 'simplemde'
   import hljs from 'highlight.js'
+
   window.hljs = hljs
 
   export default {
@@ -50,12 +50,12 @@
     },
     methods: {
       gotoEditAddTopic(topic_id) {
-        this.$router.push({ name: "EditTopic", query: {id: topic_id} });
+        this.$router.push({name: "EditTopic", query: {id: topic_id}});
       },
       delTopic(id) {
         delTopic(id).then(res => {
           if (res.code == 200) {
-            this.$router.push({ name: "Home" });
+            this.$router.push({name: "Home"});
           } else {
             this.msg = res.msg;
             $(".alert-danger")
@@ -92,6 +92,7 @@
   .add-reply button {
     margin-top: 10px;
   }
+
   .opt {
     color: #adadad;
     font-size: 12px;

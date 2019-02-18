@@ -1,10 +1,10 @@
 <template>
   <div class="row">
-    <div class="col-8">
+    <div class="col-md-12 col-lg-8">
       <Topic />
       <reply />
     </div>
-    <div class="col-4">
+    <div class="col-lg-4 d-none d-lg-block">
       <UserInfo />
       <BestTopic />
       <NewestTopic />
@@ -23,7 +23,10 @@
     name: "TopicView",
     components: {NewestTopic, BestTopic, Reply, Topic, UserInfo},
     mounted () {
-      console.info('topicPage', this.$route.params.id)
+      //console.info('topicPage', this.$route.params.id)
+    },
+    watch: {
+        "$route.params": "loadTopic",
     }
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="col-4 offset-4">
+  <div class="col-lg-4 offset-lg-4">
     <div class="login">
       <div class="row">
         <div class="col login-logo">

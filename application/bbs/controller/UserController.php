@@ -47,7 +47,11 @@ class UserController extends Controller
         }
         $user_service = new UserService();
         $user = $user_service->editActiveFlag($id, Constants::USER_ACTIVE);
-        return ResponseCode::success($user);
+
+//        return ResponseCode::success($user);
+        $msg ='用户账号激活成功，请返回网站继续进行操作';
+        $this->assign('msg',$msg);
+        return $this->fetch("tips");
     }
 
     // 根据老密码重置密码
@@ -124,15 +128,15 @@ class UserController extends Controller
 //            return ResponseCode::success(true);
             $this->success("找回密码成功","http://localhost:8080/login");
         } else {
-//            $key = $this->request->get('key');
-//            $id = Cache::get('validate_email_url_' . $key);
-//            if (!$id) {
-////                throw new UserException('验证信息已过期或非法输入，请重新找回密码', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
-//                $msg ='验证信息已过期或非法输入，请重新激活账户';
-//                $this->assign('msg',$msg);
-//                return $this->fetch('tips');
-//            }
-//            return ResponseCode::success($key);//todo html
+            $key = $this->request->get('key');
+            $id = Cache::get('validate_email_url_' . $key);
+            if (!$id) {
+//                throw new UserException('验证信息已过期或非法输入，请重新找回密码', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
+                $msg ='验证信息已过期或非法输入，请重新激活账户';
+                $this->assign('msg',$msg);
+                return $this->fetch('tips');
+            }
+           // return ResponseCode::success($key);//todo html
             return $this->fetch();
         }
     }
@@ -218,7 +222,7 @@ class UserController extends Controller
             //throw new UserException('验证信息已过期或非法输入，请重新激活账户', ResponseCode::$USER_ACTIVATE_KEY_ERROR);
             $msg ='验证信息已过期或非法输入，请重新激活账户';
             $this->assign('msg',$msg);
-            return $this->fetch();
+            return $this->fetch("tips");
         }
         $user_service = new UserService();
         $user_service->modifyEmail($id, $email);
@@ -228,6 +232,6 @@ class UserController extends Controller
 //        return ResponseCode::success(true); //todo Html
         $msg ='邮箱修改认证成功，请返回网站继续进行操作';
         $this->assign('msg',$msg);
-        return $this->fetch();
+        return $this->fetch("tips");
     }
 }

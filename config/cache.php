@@ -16,9 +16,10 @@
 return [
     // 驱动方式
     'type'              => 'redis',
-    'host'              => '127.0.0.1',
+//    'host'              => '127.0.0.1',
+    'host'              => '192.168.127.128',
     'port'			    => 6379, 							   // Redis服务器端口
-    //'password'		    => 'c25e7d03fa17b526c1d82804dbc7c72a', // Redis的认证密码
+    'password'		    => 'c25e7d03fa17b526c1d82804dbc7c72a', // Redis的认证密码
     'prefix'            => 'bbs',
     // 缓存有效期 0表示永久缓存
     'expire'            => 0,

@@ -6,7 +6,7 @@
           <a @click="home">LightBBS</a>
         </h4>
       </div>
-      <div class="row collapse navbar-collapse dropdown">
+      <div class="row collapse navbar-collapse">
         <div class="col">
           <input class="form-control mr-sm-2" type="text" placeholder="Search">
         </div>
@@ -21,25 +21,18 @@
           <a @click="register" style="color:#777; cursor:pointer;"><i class="fa fa-user-plus"></i>&nbsp;注册</a>
         </div>
       </div>
-      <!--折叠按钮-->
-      <div class="nav-item dropdown">
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-        >
+      <!--折叠下拉列表-->
+      <div class="dropdown">
+        <button class="navbar-toggler" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="navbar-toggler-icon small"></span>
         </button>
-        <!--折叠按钮的下拉菜单-->
-        <div
-            class="dropdown-menu header-collapse-menu"
-            aria-labelledby="navbarDropdown"
-            id="navbarSupportedContent"
-        >
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="$store.getters.login_name != '' && $store.getters.login_name != null">
+          <a class="dropdown-item" style="cursor:pointer;" @click="personal">{{ $store.getters.login_name }}</a>
+          <a class="dropdown-item" style="cursor:pointer;" @click="gotoAddTopic">发布主题</a>
+          <a class="dropdown-item" style="cursor:pointer;" @click="gotoCate">分类管理</a>
+          <a class="dropdown-item" style="cursor:pointer;"@click="logoutShow = true">退出</a>
+        </div>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-else>
           <a class="dropdown-item" href="#" >搜索</a>
           <a class="dropdown-item" style="cursor:pointer;" @click="login">登录</a>
           <a class="dropdown-item" style="cursor:pointer;" @click="register">注册</a>
@@ -57,32 +50,6 @@
         <el-button type="primary" @click="handleLogout">确 定</el-button>
       </span>
     </el-dialog>
-
-    <div
-        class="modal fade"
-        id="logoutModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="logoutModal"
-        aria-hidden="true"
-        ref="logoutModal"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">退出登录</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">确定要从 lightBBS 登出？</div>
-          <div class="modal-footer">
-            <button type="button" id="logoutbtn" class="btn btn-primary" @click="logout" >确定</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -129,6 +96,12 @@
             this.msg = res.msg;
           }
         });
+      },
+      gotoAddTopic() {
+        this.$router.push({ name: "AddTopic" });
+      },
+      gotoCate() {
+        this.$router.push({ name: "Cate" });
       }
     }
   }

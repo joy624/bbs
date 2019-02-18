@@ -10,28 +10,52 @@
           <button type="submit" class="btn btn-primary" @click="add">添加</button>
         </div>
         <!--分类列表-->
-        <table class="table responsive">
-          <thead>
-          <tr>
-            <th scope="col">排序</th>
-            <th scope="col">分类名</th>
-            <th scope="col">操作</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(cate,index) in cates" :key="index">
-            <th>
-              <input type="text" v-model="cate.sort" class="text-center"  @blur="edit(index)">
-            </th>
-            <td>
-              <input type="text" v-model="cate.name" class="text-center"  @blur="edit(index)">
-            </td>
-            <td>
-              <button type="submit" class="btn btn-primary" @click="del(index,cate.id)">删除</button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive-lg">
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col">排序</th>
+              <th scope="col">分类名</th>
+              <th scope="col">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(cate,index) in cates" :key="index">
+              <th>
+                <input type="text" v-model="cate.sort" class="text-center"  @blur="edit(index)">
+              </th>
+              <td>
+                <input type="text" v-model="cate.name" class="text-center"  @blur="edit(index)">
+              </td>
+              <td>
+                <button type="submit" class="btn btn-primary" @click="del(index,cate.id)" style="min-width:60px">删除</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!--<table class="table responsive">-->
+          <!--<thead>-->
+          <!--<tr>-->
+            <!--<th scope="col">排序</th>-->
+            <!--<th scope="col">分类名</th>-->
+            <!--<th scope="col">操作</th>-->
+          <!--</tr>-->
+          <!--</thead>-->
+          <!--<tbody>-->
+          <!--<tr v-for="(cate,index) in cates" :key="index">-->
+            <!--<th>-->
+              <!--<input type="text" v-model="cate.sort" class="text-center"  @blur="edit(index)">-->
+            <!--</th>-->
+            <!--<td>-->
+              <!--<input type="text" v-model="cate.name" class="text-center"  @blur="edit(index)">-->
+            <!--</td>-->
+            <!--<td>-->
+              <!--<button type="submit" class="btn btn-primary" @click="del(index,cate.id)">删除</button>-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--</tbody>-->
+        <!--</table>-->
       </div>
     </div>
   </div>

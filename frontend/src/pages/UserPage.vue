@@ -1,21 +1,21 @@
 <template>
   <div class="row">
-    <div class="col-4">
+    <div class="col-md-4">
       <div class="list-group text-center" id="list-tab" role="tablist">
-        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home"><i class="fa fa-list"></i> 个人信息</a>
+        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home"><i class="fa fa-list"></i>个人信息</a>
         <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile"><i class="fa fa-picture-o"></i> 修改头像</a>
         <a class="list-group-item list-group-item-action" id="list-email-list" data-toggle="list" href="#list-email" role="tab" aria-controls="messages"><i class="fa fa-envelope"></i> 修改邮箱</a>
         <a class="list-group-item list-group-item-action" id="list-username-list" data-toggle="list" href="#list-username" role="tab" aria-controls="messages"><i class="fa fa-user"></i> 修改用户名</a>
         <a class="list-group-item list-group-item-action" id="list-password-list" data-toggle="list" href="#list-password" role="tab" aria-controls="settings"><i class="fa fa-lock"></i> 修改密码</a>
       </div>
     </div>
-    <div class="col-8">
+    <div class="col-md-8">
       <div class="row">
         <!--提示信息-->
-        <div class="col-12 alert alert-danger d-none" role="alert">{{ msg }}</div>
+        <div class="col alert alert-danger d-none" role="alert">{{ msg }}</div>
       </div>
       <div class="row">
-        <div class="tab-content col-12" id="nav-tabContent">
+        <div class="tab-content col" id="nav-tabContent">
           <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
             <div class="card border-secondary">
               <h5 class="card-header">个人信息</h5>

@@ -1,9 +1,9 @@
 <template>
   <div class="row">
-    <div class="col-8">
+    <div class="col-md-12 col-lg-8">
       <ListTopic />
     </div>
-    <div class="col-4">
+    <div class="col-lg-4 d-none d-lg-block">
       <UserInfo />
       <BestTopic />
       <NewestTopic />
