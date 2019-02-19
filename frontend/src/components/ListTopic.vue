@@ -14,14 +14,14 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item" v-for="topic in $store.state.topics">
           <div class="row">
-            <div clas="col">
+            <div clas="col-2 col-md-2">
               <img
                   :src="'http://my.test.tp/'+topic.user.img_url"
                   alt
                   class="rounded-circle topic-img"
               >
             </div>
-            <div clas="col">
+            <div clas="col-8 col-md-10">
               <div class="row">
                 <h5 class="card-title" style="font-size: 16px;">
                   <a style="cursor: pointer;" @click="gotoTopic(topic.id)">{{ topic.title }}</a>
@@ -30,7 +30,7 @@
               <div class="row">
                 <span class="small">
                   <strong>{{ topic.user.name}}</strong>
-                  &nbsp;•&nbsp; {{ topic.update_time}} &nbsp;•&nbsp; 点赞数:
+                  &nbsp;•&nbsp; <span class="d-none d-md-inline">{{ topic.update_time}}&nbsp;•&nbsp;</span>  点赞数:
                   <strong>{{ topic.likenum}}</strong> &nbsp;•&nbsp; 点击数：
                   <strong>{{ topic.hits }}</strong>
                 </span>

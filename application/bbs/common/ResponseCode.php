@@ -54,4 +54,8 @@ class ResponseCode
     public static $REPLY_DELETE_FAILED              = 70004;    // 删除回复失败
     public static $REPLY_NOT_EXIST                  = 70005;    // 回复不存在
     public static $REPLY_CONTENT_ERROR              = 70006;    // 获取回复内容失败
+
+    // 点赞相关
+    public static $LIKE_ADD_FAILED                  = 80001;    // 点赞失败
+    public static $LIKE_DEL_FAILED                  = 80002;    // 取消点赞失败
 }

@@ -39,3 +39,16 @@ export const newestTopic = category_id => {
 export const bestTopic = category_id => {
   return axios.get('/bbs/topic/best', {params:{ category_id: category_id}}).then(res => res.data)
 }
+
+// 是否点赞
+export const isLikeTopic = params => {
+  return axios.post('/bbs/like/index', {topic_id:params}).then(res => res.data)
+}
+// 点赞
+export const addLikeTopic = params => {
+  return axios.post('/bbs/like/add', {topic_id:params}).then(res => res.data)
+}
+// 取消点赞
+export const delLikeTopic = params => {
+  return axios.post('/bbs/like/del', {topic_id:params}).then(res => res.data)
+}

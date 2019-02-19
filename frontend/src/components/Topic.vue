@@ -13,6 +13,10 @@
         <button type="button" class="btn btn-link opt" @click="gotoEditAddTopic(topic.id)">编辑</button>
         <button type="button" class="btn btn-link opt" @click="delTopic(topic.id)">删除</button>
       </span>
+          <button v-if="!is_like" type="button" class="btn btn-link opt" @click="likeTopic(topic.id)"><i class="fa fa-thumbs-up"></i>点赞
+          </button>
+          <button v-else type="button" class="btn btn-link opt" @click="cancelLikeTopic(topic.id)"><i class="fa fa-thumbs-up"></i>取消点赞
+          </button>
           <hr class="simple" color="#D9DADB">
           <div class="panel">
             <div class="markdown-body" v-html="topic.content"></div>
@@ -26,6 +30,9 @@
 <script>
   import {viewTopic} from "@/api/topic";
   import {delTopic} from "@/api/topic";
+  import {isLikeTopic} from "@/api/topic";
+  import {addLikeTopic} from "@/api/topic";
+  import {delLikeTopic} from "@/api/topic";
 
   import SimpleMDE from 'simplemde'
   import hljs from 'highlight.js'
@@ -42,11 +49,17 @@
         reply_content: "",
         reply_id: "",
         reply_index: "",
+        is_like:1,
         msg: ""
       };
     },
     mounted() {
-      this.loadTopic()
+      this.loadTopic();
+      isLikeTopic(this.$route.params.id).then(res => {
+        if (res.code == 200) {
+          this.is_like = res.data;
+        }
+      })
     },
     methods: {
       gotoEditAddTopic(topic_id) {
@@ -76,7 +89,23 @@
             })
           }
         });
-      }
+      },
+      cancelLikeTopic(topic_id) {
+        delLikeTopic(topic_id).then(res => {
+          if (res.code == 200) {
+            console.log(res);
+            this.is_like = 0;
+          }
+        });
+      },
+      likeTopic(topic_id) {
+        addLikeTopic(topic_id).then(res => {
+          if (res.code == 200) {
+            console.log(res);
+            this.is_like = 1;
+          }
+        });
+      },
     },
     watch: {
       "$route.params": "loadTopic"

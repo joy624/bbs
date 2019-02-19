@@ -21,7 +21,7 @@
                     <div class="row">
                   <span>
                     <strong>{{ reply.user.name}}</strong>
-                    创建于 {{ reply.create_time}} 更新于 {{ reply.update_time}}
+                    <span class="d-none d-md-inline"> 创建于 {{ reply.create_time}}</span> 更新于 {{ reply.update_time}}
                     <span v-if="$store.getters.login_id == reply.user_id">
                       <button type="button" class="btn btn-link opt" @click="editReply(reply.id,reply.content,index)">编辑</button>
                       <button type="button" class="btn btn-link opt" @click="delReply(index,reply.id)">删除</button>

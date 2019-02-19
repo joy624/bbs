@@ -131,21 +131,21 @@ class TopicService
         $topic_model->where('id', '=', $id)->setInc('hits');
     }
 
-    // 增加点赞量
-    public function incrLike($id)
-    {
-        $topic_model = new TopicModel();
-        $topic_model->where('id', '=', $id)->setInc('likenum');
-
-        return $topic_model->field('likenum')->where('id', '=', $id)->select();
-    }
-
-    // 取消点赞
-    public function decrLike($id)
-    {
-        $topic_model = new TopicModel();
-        $topic_model->where('id', '=', $id)->setDec('likenum');
-
-        return $topic_model->field('likenum')->where('id', '=', $id)->select();
-    }
+//    // 增加点赞量
+//    public function incrLike($id)
+//    {
+//        $topic_model = new TopicModel();
+//        $topic_model->where('id', '=', $id)->setInc('likenum');
+//
+//        return $topic_model->field('likenum')->where('id', '=', $id)->select();
+//}
+//
+//    // 取消点赞
+//    public function decrLike($id)
+//    {
+//        $topic_model = new TopicModel();
+//        $topic_model->where('id', '=', $id)->setDec('likenum');
+//
+//        return $topic_model->field('likenum')->where('id', '=', $id)->select();
+//    }
 }

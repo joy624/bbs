@@ -1,15 +1,15 @@
 <template>
   <div class="row">
-    <div class="col-md-4">
+    <div class=" col-2 col-md-4">
       <div class="list-group text-center" id="list-tab" role="tablist">
-        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home"><i class="fa fa-list"></i>个人信息</a>
-        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile"><i class="fa fa-picture-o"></i> 修改头像</a>
-        <a class="list-group-item list-group-item-action" id="list-email-list" data-toggle="list" href="#list-email" role="tab" aria-controls="messages"><i class="fa fa-envelope"></i> 修改邮箱</a>
-        <a class="list-group-item list-group-item-action" id="list-username-list" data-toggle="list" href="#list-username" role="tab" aria-controls="messages"><i class="fa fa-user"></i> 修改用户名</a>
-        <a class="list-group-item list-group-item-action" id="list-password-list" data-toggle="list" href="#list-password" role="tab" aria-controls="settings"><i class="fa fa-lock"></i> 修改密码</a>
+        <a class="list-group-item list-group-item-action p-2 active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home"  title="个人信息"><i class="fa fa-list"></i><span class="d-none d-md-inline"> &nbsp;&nbsp;&nbsp;个人信息</span></a>
+        <a class="list-group-item list-group-item-action p-2" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile" title="修改头像"><i class="fa fa-picture-o"></i><span class="d-none d-md-inline">&nbsp;&nbsp;修改头像</span></a>
+        <a class="list-group-item list-group-item-action p-2" id="list-email-list" data-toggle="list" href="#list-email" role="tab" aria-controls="messages" title="修改邮箱"><i class="fa fa-envelope"></i><span class="d-none d-md-inline">&nbsp;&nbsp;修改邮箱</span></a>
+        <a class="list-group-item list-group-item-action p-2" id="list-username-list" data-toggle="list" href="#list-username" role="tab" aria-controls="messages" title="修改用户名"><i class="fa fa-user"></i><span class="d-none d-md-inline">&nbsp;&nbsp;修改用户名</span></a>
+        <a class="list-group-item list-group-item-action p-2" id="list-password-list" data-toggle="list" href="#list-password" role="tab" aria-controls="settings" title="修改密码"><i class="fa fa-lock"></i><span class="d-none d-md-inline">&nbsp;&nbsp;修改密码</span></a>
       </div>
     </div>
-    <div class="col-md-8">
+    <div class=" col-10 col-md-8">
       <div class="row">
         <!--提示信息-->
         <div class="col alert alert-danger d-none" role="alert">{{ msg }}</div>
@@ -19,32 +19,32 @@
           <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
             <div class="card border-secondary">
               <h5 class="card-header">个人信息</h5>
-              <div class="card-body text-secondary">
+              <div class="card-body text-secondary container">
                 <div class="row">
-                  <div class="col-7 text-center">
+                  <div class="col-12 col-md-7 text-center">
                     <img :src="'http://my.test.tp/'+info.img_url" alt="" class="img-thumbnail">
                   </div>
                 </div>
                 <div class="card-text row">
-                  <div class="col-3 text-right">用户名：</div>
-                  <div class="col-4">{{ info.name }}</div>
+                  <div class="col-5 col-md-4 col-lg-3 pl-0 pr-0 pl-md-2 pr-md-2 text-right ">用户名：</div>
+                  <div class="col-7 col-md-8 col-lg-4 pl-0 pr-0 pl-md-2 pr-md-2 ">{{ info.name }}</div>
                 </div>
                 <div class="card-text row">
-                  <div  class="col-3 text-right">邮  箱：</div>
-                  <div class="col-4">{{ info.email }}</div>
+                  <div  class="col-5 col-md-4 col-lg-3 pl-0 pr-0 pl-md-2 pr-md-2 text-right">邮  箱：</div>
+                  <div class="col-7 col-md-8 col-lg-4 pl-0 pr-0 pl-md-2 pr-md-2 ">{{ info.email }}</div>
                 </div>
                 <div class="card-text row">
-                  <div  class="col-3 text-right">注册时间：</div>
-                  <div class="col-4">{{ info.reg_time }}</div>
+                  <div  class="col-5 col-md-4 col-lg-3 pl-0 pr-0 pl-md-2 pr-md-2 text-right">注册时间：</div>
+                  <div class="col-7 col-md-8 col-lg-4 pl-0 pr-0 pl-md-2 pr-md-2 ">{{ info.reg_time }}</div>
                 </div>
                 <div class="card-text row">
-                  <div  class="col-3 text-right">最后修改时间：</div>
-                  <div class="col-4">{{ info.update_time }}</div>
+                  <div  class="col-5 col-md-4 col-lg-3 pl-0 pr-0 pl-md-2 pr-md-2 text-right">最后修改时间：</div>
+                  <div class="col-7 col-md-8 col-lg-4 pl-0 pr-0 pl-md-2 pr-md-2 ">{{ info.update_time }}</div>
                 </div>
                 <div class="card-text row">
-                  <div  class="col-3 text-right">是否激活：</div>
-                  <div class="col-4" v-if="info.is_active">已激活</div>
-                  <div class="col-4" v-else>未激活</div>
+                  <div  class="col-5 col-md-4 col-lg-3 pl-0 pr-0 pl-md-2 pr-md-2 text-right">是否激活：</div>
+                  <div class="col-7 col-md-8 col-lg-4 pl-0 pr-0 pl-md-2 pr-md-2 " v-if="info.is_active">已激活</div>
+                  <div class="col-7 col-md-8 col-lg-4 pl-0 pr-0 pl-md-2 pr-md-2 " v-else>未激活</div>
                 </div>
               </div>
             </div>

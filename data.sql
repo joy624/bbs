@@ -40,7 +40,6 @@ CREATE TABLE `bbs_topic` (
   KEY ix_category (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 # 创建回复表
 CREATE TABLE `bbs_reply` (
  `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT '回复id',
@@ -52,6 +51,12 @@ CREATE TABLE `bbs_reply` (
  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+# 创建点赞表
+CREATE TABLE `bbs_like` (
+ `id` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT '点赞id',
+ `topic_id` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '主题id',
+ `user_id` INT UNSIGNED NOT NULL DEFAULT 0  COMMENT '用户id'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `bbs_user`(`name`,`password`,`salt`,`email`,`is_active`,`role`) VALUES
 ('admin',MD5(CONCAT(MD5('123456'), MD5('AXVED'))),MD5('AXVED'),'990198829@qq.com',1 ,'admin');

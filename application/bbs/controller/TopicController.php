@@ -99,25 +99,25 @@ class TopicController extends Controller
         return ResponseCode::success($topic);
     }
 
-    // 点赞操作
-    public function likeNum()
-    {
-        $id = $this->request->post('id');
-        $topic_service = new TopicService();
-        $num = $topic_service->incrLike($id);
-
-        return ResponseCode::success($num);
-    }
-
-    // 取消点赞
-    public function cancelLikeNum()
-    {
-        $id = $this->request->post('id');
-        $topic_service = new TopicService();
-        $num = $topic_service->decrLike($id);
-
-        return ResponseCode::success($num);
-    }
+//    // 点赞操作
+//    public function likeNum()
+//    {
+//        $id = $this->request->post('id');
+//        $topic_service = new TopicService();
+//        $num = $topic_service->incrLike($id);
+//
+//        return ResponseCode::success($num);
+//    }
+//
+//    // 取消点赞
+//    public function cancelLikeNum()
+//    {
+//        $id = $this->request->post('id');
+//        $topic_service = new TopicService();
+//        $num = $topic_service->decrLike($id);
+//
+//        return ResponseCode::success($num);
+//    }
 
     // 点赞最多的n个
     public function best()

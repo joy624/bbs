@@ -26,13 +26,13 @@
         <button class="navbar-toggler" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="navbar-toggler-icon small"></span>
         </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="$store.getters.login_name != '' && $store.getters.login_name != null">
+        <div class="dropdown-menu header-collapse-menu dropdown-menu-right text-center" aria-labelledby="dropdownMenuButton" v-if="$store.getters.login_name != '' && $store.getters.login_name != null">
           <a class="dropdown-item" style="cursor:pointer;" @click="personal">{{ $store.getters.login_name }}</a>
           <a class="dropdown-item" style="cursor:pointer;" @click="gotoAddTopic">发布主题</a>
           <a class="dropdown-item" style="cursor:pointer;" @click="gotoCate">分类管理</a>
           <a class="dropdown-item" style="cursor:pointer;"@click="logoutShow = true">退出</a>
         </div>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-else>
+        <div class="dropdown-menu  header-collapse-menu dropdown-menu-right text-center" aria-labelledby="dropdownMenuButton" v-else>
           <a class="dropdown-item" href="#" >搜索</a>
           <a class="dropdown-item" style="cursor:pointer;" @click="login">登录</a>
           <a class="dropdown-item" style="cursor:pointer;" @click="register">注册</a>
@@ -41,9 +41,10 @@
     </nav>
     <!-- 退出用户登录确认框 -->
     <el-dialog
+        class="w-30"
         title="提示"
         :visible.sync="logoutShow"
-        width="30%">
+       >
       <span>确认退出当前账户？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="logoutShow = false">取 消</el-button>
@@ -119,9 +120,14 @@
     text-align: right;
   }
   .header-collapse-menu {
-    font-size: 12px;
+     font-size: 12px;
   }
-
+  .header-collapse-menu a:active{
+    color:#ffffff;
+  }
+  .dropdown-menu{
+    min-width: 0;
+  }
   @media (max-width: 767px) {
   }
 </style>
