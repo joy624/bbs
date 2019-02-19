@@ -26,6 +26,7 @@ class ResponseCode
     public static $USER_EDIT_ERROR                  = 30013;    // 修改用户名或邮箱失败
     public static $USER_NOT_ACTIVE                  = 30014;    // 用户未激活
     public static $USER_NOT_LOGIN                   = 30015;    // 用户未登录
+    public static $USER_NOT_ADMIN                   = 30016;    // 用户不是管理员admin权限
 
     // 邮件相关
     public static $EMAIL_SEND_FAILED                = 40001;    // 邮件发送失败

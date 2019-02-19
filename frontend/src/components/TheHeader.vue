@@ -29,7 +29,7 @@
         <div class="dropdown-menu header-collapse-menu dropdown-menu-right text-center" aria-labelledby="dropdownMenuButton" v-if="$store.getters.login_name != '' && $store.getters.login_name != null">
           <a class="dropdown-item" style="cursor:pointer;" @click="personal">{{ $store.getters.login_name }}</a>
           <a class="dropdown-item" style="cursor:pointer;" @click="gotoAddTopic">发布主题</a>
-          <a class="dropdown-item" style="cursor:pointer;" @click="gotoCate">分类管理</a>
+          <a v-if="$store.getters.login_role == 'admin'" class="dropdown-item" style="cursor:pointer;" @click="gotoCate">分类管理</a>
           <a class="dropdown-item" style="cursor:pointer;"@click="logoutShow = true">退出</a>
         </div>
         <div class="dropdown-menu  header-collapse-menu dropdown-menu-right text-center" aria-labelledby="dropdownMenuButton" v-else>

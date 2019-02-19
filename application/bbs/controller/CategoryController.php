@@ -5,6 +5,7 @@ namespace app\bbs\controller;
 use think\Controller;
 use app\bbs\validate\CateValidate;
 use app\bbs\service\CategoryService;
+use app\bbs\service\AuthService;
 use app\bbs\common\ResponseCode;
 use app\bbs\exception\UserException;
 
@@ -12,6 +13,15 @@ class CategoryController extends Controller
 {
     public function add()
     {
+        $auth_service = new AuthService();
+        $user = $auth_service->getLoginUser();
+        if (empty($user)) {
+            throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
+        }
+        if($user->role !== 'admin'){
+            throw new UserException('此用户没有操作分类的权限',ResponseCode::$USER_NOT_ADMIN);
+        }
+
         $name = $this->request->post('name');
 
         $validate = new CateValidate();
@@ -26,6 +36,15 @@ class CategoryController extends Controller
 
     public function edit()
     {
+        $auth_service = new AuthService();
+        $user = $auth_service->getLoginUser();
+        if (empty($user)) {
+            throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
+        }
+        if($user->role !== 'admin'){
+            throw new UserException('此用户没有操作分类的权限',ResponseCode::$USER_NOT_ADMIN);
+        }
+
         $id = $this->request->post('id');
         $name = $this->request->post('name');
         $sort = $this->request->post('sort');
@@ -42,6 +61,15 @@ class CategoryController extends Controller
 
     public function delete()
     {
+        $auth_service = new AuthService();
+        $user = $auth_service->getLoginUser();
+        if (empty($user)) {
+            throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
+        }
+        if($user->role !== 'admin'){
+            throw new UserException('此用户没有操作分类的权限',ResponseCode::$USER_NOT_ADMIN);
+        }
+
         $id = $this->request->post('id');
 
         $cate_service = new CategoryService;
