@@ -58,4 +58,5 @@ class ResponseCode
     // 点赞相关
     public static $LIKE_ADD_FAILED                  = 80001;    // 点赞失败
     public static $LIKE_DEL_FAILED                  = 80002;    // 取消点赞失败
+    public static $LIKE_IS_EXISTS                   = 80003;    // 已经点赞
 }

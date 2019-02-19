@@ -49,7 +49,7 @@
         reply_content: "",
         reply_id: "",
         reply_index: "",
-        is_like:1,
+        is_like:0,
         msg: ""
       };
     },
