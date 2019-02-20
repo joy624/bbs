@@ -11,11 +11,7 @@
               <li class="list-group-item bg-light" v-for="(reply,index) in replies" :key="index">
                 <div class="row">
                   <div clas="col">
-                    <img
-                        :src="'http://my.test.tp/'+reply.user.img_url"
-                        alt
-                        class="rounded-circle reply-img"
-                    >
+                    <img :src="'http://my.test.tp/'+reply.user.img_url" alt class="rounded-circle reply-img">
                   </div>
                   <div clas="col">
                     <div class="row">
@@ -24,9 +20,18 @@
                     <span class="d-none d-md-inline"> 创建于 {{ reply.create_time}}</span> 更新于 {{ reply.update_time}}
                     <span v-if="$store.getters.login_id == reply.user_id">
                       <button type="button" class="btn btn-link opt" @click="editReply(reply.id,reply.content,index)">编辑</button>
+                      <!--<button type="button" class="btn btn-link opt" @click="tipShow = true">删除</button>-->
                       <button type="button" class="btn btn-link opt" @click="delReply(index,reply.id)">删除</button>
                     </span>
                   </span>
+                      <!-- 删除回复确认框 -->
+                      <el-dialog class="w-30" title="提示" :visible.sync="tipShow">
+                        <span>确认删除当前回复？</span>
+                        <span slot="footer" class="dialog-footer">
+                          <el-button @click="tipShow = false">取 消</el-button>
+                          <el-button type="primary" @click="delReply(index,reply.id)">确定</el-button>
+                        </span>
+                      </el-dialog>
                     </div>
                     <div class="row card-text">{{ reply.content}}</div>
                   </div>
@@ -69,6 +74,7 @@
     name: "Reply",
     data() {
       return {
+        tipShow: false,
         replies: "",
         msg: "",
         editdata: "",
@@ -108,16 +114,18 @@
         });
       },
       delReply(index,id) {
-        delTopicReply(id).then(res => {
-          if (res.code == 200) {
-            this.replies.splice(index,1);
-          } else {
-            this.msg = res.msg;
-            $(".alert-danger")
-                .removeClass("d-none")
-                .addClass("d-show");
-          }
-        });
+        console.log(index,id);
+        // delTopicReply(id).then(res => {
+        //   if (res.code == 200) {
+        //     this.replies.splice(index,1);
+        //     this.tipShow = false;
+        //   } else {
+        //     this.msg = res.msg;
+        //     $(".alert-danger")
+        //         .removeClass("d-none")
+        //         .addClass("d-show");
+        //   }
+        // });
       },
       addReply() {
         addTopicReply({topic_id:this.$route.params.id, content:this.reply_content}).then(res => {

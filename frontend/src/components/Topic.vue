@@ -10,9 +10,9 @@
                   class="small panel-subtitle mb-2 text-muted"
           >创建于：{{ topic.create_time }} / 阅读数 {{topic.hits}} /点赞数 {{ topic.likenum }} / 更新于{{ topic.update_time }}</span>
           <span v-if="topic.user_id == $store.getters.login_id">
-        <button type="button" class="btn btn-link opt" @click="gotoEditAddTopic(topic.id)">编辑</button>
-        <button type="button" class="btn btn-link opt" @click="delTopic(topic.id)">删除</button>
-      </span>
+            <button type="button" class="btn btn-link opt" @click="gotoEditAddTopic(topic.id)">编辑</button>
+            <button type="button" class="btn btn-link opt" @click="tipShow = true">删除</button>
+          </span>
           <button v-if="!is_like" type="button" class="btn btn-link opt" @click="likeTopic(topic.id)"><i class="fa fa-thumbs-up"></i>点赞
           </button>
           <button v-else type="button" class="btn btn-link opt" @click="cancelLikeTopic(topic.id)"><i class="fa fa-thumbs-up"></i>取消点赞
@@ -24,6 +24,15 @@
         </div>
       </div>
     </div>
+
+    <!-- 删除主题确认框 -->
+    <el-dialog class="w-30" title="提示" :visible.sync="tipShow">
+      <span>确认删除当前主题？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="tipShow = false">取 消</el-button>
+        <el-button type="primary" @click="delTopic(topic.id)">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -43,6 +52,7 @@
     name: "Topic",
     data() {
       return {
+        tipShow: false,
         topic: "",
         editdata: "",
         replies: "",
@@ -93,7 +103,6 @@
       cancelLikeTopic(topic_id) {
         delLikeTopic(topic_id).then(res => {
           if (res.code == 200) {
-            console.log(res);
             this.is_like = 0;
           }
         });
@@ -101,7 +110,6 @@
       likeTopic(topic_id) {
         addLikeTopic(topic_id).then(res => {
           if (res.code == 200) {
-            console.log(res);
             this.is_like = 1;
           }
         });

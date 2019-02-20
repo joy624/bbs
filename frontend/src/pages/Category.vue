@@ -21,6 +21,14 @@
             </thead>
             <tbody>
             <tr v-for="(cate,index) in cates" :key="index">
+              <!-- 删除主题确认框 -->
+              <el-dialog class="w-30" title="提示" :visible.sync="tipShow">
+                <span>确认删除当前分类？</span>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="tipShow = false">取 消</el-button>
+                  <el-button type="primary" @click="del(index,cate.id)">确定</el-button>
+                </span>
+              </el-dialog>
               <th>
                 <input type="text" v-model="cate.sort" class="text-center"  @blur="edit(index)">
               </th>
@@ -28,34 +36,12 @@
                 <input type="text" v-model="cate.name" class="text-center"  @blur="edit(index)">
               </td>
               <td>
-                <button type="submit" class="btn btn-primary" @click="del(index,cate.id)" style="min-width:60px">删除</button>
+                <button type="submit" class="btn btn-primary" @click="tipShow = true" style="min-width:60px">删除</button>
               </td>
             </tr>
             </tbody>
           </table>
         </div>
-        <!--<table class="table responsive">-->
-          <!--<thead>-->
-          <!--<tr>-->
-            <!--<th scope="col">排序</th>-->
-            <!--<th scope="col">分类名</th>-->
-            <!--<th scope="col">操作</th>-->
-          <!--</tr>-->
-          <!--</thead>-->
-          <!--<tbody>-->
-          <!--<tr v-for="(cate,index) in cates" :key="index">-->
-            <!--<th>-->
-              <!--<input type="text" v-model="cate.sort" class="text-center"  @blur="edit(index)">-->
-            <!--</th>-->
-            <!--<td>-->
-              <!--<input type="text" v-model="cate.name" class="text-center"  @blur="edit(index)">-->
-            <!--</td>-->
-            <!--<td>-->
-              <!--<button type="submit" class="btn btn-primary" @click="del(index,cate.id)">删除</button>-->
-            <!--</td>-->
-          <!--</tr>-->
-          <!--</tbody>-->
-        <!--</table>-->
       </div>
     </div>
   </div>
@@ -71,6 +57,7 @@
     name: "Category",
     data() {
       return {
+        tipShow: false,
         cates: "",
         msg: "",
         cateName:"",
@@ -106,6 +93,7 @@
           if (res.code == 200) {
             // 删除数据库中的分类成功，同时删除页面中展示的对应分类
             this.cates.splice(index,1);
+            this.tipShow = false;
           } else {
             this.msg = res.msg;
             $(".alert-danger")

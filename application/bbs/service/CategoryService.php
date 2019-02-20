@@ -5,6 +5,8 @@ namespace app\bbs\service;
 use app\bbs\model\CategoryModel;
 use app\bbs\common\ResponseCode;
 use app\bbs\exception\UserException;
+use app\bbs\model\TopicModel;
+use app\bbs\common\Constants;
 
 class CategoryService
 {
@@ -48,6 +50,12 @@ class CategoryService
         if (!CategoryModel::destroy($id)) {
             throw new UserException('删除分类失败', ResponseCode::$CATE_FAILED);
         }
+        // 将该分类对应的topic的is_show设置为0，实现删除分类时，软删除话题
+        $topic_model = new TopicModel();
+        if (!$topic_model->save(['is_show' => Constants::IS_NOT_SHOW], ['category_id' => $id])) {
+          throw new UserException('删除主题失败', ResponseCode::$TOPIC_DELETE_FAILED);
+        }
+
     }
 
     public function listCate()

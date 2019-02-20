@@ -40,8 +40,11 @@
 
 <style scoped>
   .card-header {
-    font-weight: bold;
-    font-size: 1.1em;
+    /*font-weight: bold;*/
+    /*font-size: 1.1em;*/
+    font-size: 14px;
+    line-height: 120%;
+    color: #cccccc;
   }
   .mb8 {
     margin-bottom: 8px;
