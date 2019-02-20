@@ -1,5 +1,9 @@
 <template>
   <div class="col-lg-4 offset-lg-4">
+    <div class="alert alert-success alert-dismissable d-none">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      您已成功注册，请到邮箱进行激活!
+    </div>
     <div class="register">
       <div class="row">
         <div class="col register-logo">
@@ -95,7 +99,12 @@
         } else {
           register(this.form).then(res => {
             if (res.code == 200) {
-              this.$router.push({ name: "Login" });
+              var reg = this;
+              $('.alert').removeClass('d-none');
+              window.setTimeout(function(){
+                $('[data-dismiss="alert"]').alert('close');
+                reg.$router.push({ name: "Login" });
+              },3000);
             } else {
               this.msg = res.msg;
             }
