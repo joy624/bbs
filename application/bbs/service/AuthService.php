@@ -24,7 +24,7 @@ class AuthService
         }
         // 判断账户是否激活
         if (!$user->is_active) {
-            throw new UserException('账户未激活，请到个人中心激活', ResponseCode::$USER_NOT_ACTIVE);
+            throw new UserException('账户未激活，请到注册邮箱激活', ResponseCode::$USER_NOT_ACTIVE);
         }
 
         $salt = $user['salt'];

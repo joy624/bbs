@@ -138,7 +138,9 @@
     name: "UserPage",
     data() {
       return {
-        info: [],
+        info: {
+          img_url:'/static/default-photo.jpeg',
+        },
         img_url:'',
         name:'',
         old_password:'',

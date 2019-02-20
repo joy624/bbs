@@ -71,7 +71,10 @@
     name: "UserInfo",
     data() {
       return {
-        user: ""
+        user: {
+          img_url:'/static/default-photo.jpeg',
+          role:''
+        }
       };
     },
     mounted () {

@@ -33,7 +33,6 @@ const mutations = {
       state.topics = res.data.topic;
       state.topic_page_current = res.data.page_current;
       state.topic_page_count = res.data.page_total;
-      console.info('loadTopics', state.topic_page_count, state.topic_page_current)
     });
   },
   changeCate (state, category_id) {
