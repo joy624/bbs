@@ -47,6 +47,7 @@ const mutations = {
   loadCates: state => {
     list().then(res => {
       state.cates = res.data;
+      state.cate_active = state.cates[0].id;
     });
   },
   setLoginUser (state, args) {
