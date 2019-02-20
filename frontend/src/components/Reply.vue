@@ -15,23 +15,14 @@
                   </div>
                   <div clas="col">
                     <div class="row">
-                  <span>
-                    <strong>{{ reply.user.name}}</strong>
-                    <span class="d-none d-md-inline"> 创建于 {{ reply.create_time}}</span> 更新于 {{ reply.update_time}}
-                    <span v-if="$store.getters.login_id == reply.user_id">
-                      <button type="button" class="btn btn-link opt" @click="editReply(reply.id,reply.content,index)">编辑</button>
-                      <!--<button type="button" class="btn btn-link opt" @click="tipShow = true">删除</button>-->
-                      <button type="button" class="btn btn-link opt" @click="delReply(index,reply.id)">删除</button>
-                    </span>
-                  </span>
-                      <!-- 删除回复确认框 -->
-                      <el-dialog class="w-30" title="提示" :visible.sync="tipShow">
-                        <span>确认删除当前回复？</span>
-                        <span slot="footer" class="dialog-footer">
-                          <el-button @click="tipShow = false">取 消</el-button>
-                          <el-button type="primary" @click="delReply(index,reply.id)">确定</el-button>
+                      <span>
+                        <strong>{{ reply.user.name}}</strong>
+                        <span class="d-none d-md-inline"> 创建于 {{ reply.create_time}}</span> 更新于 {{ reply.update_time}}
+                        <span v-if="$store.getters.login_id == reply.user_id">
+                          <button type="button" class="btn btn-link opt" @click="editReply(reply.id,reply.content,index)">编辑</button>
+                          <button type="button" class="btn btn-link opt" @click="del(index,reply.id)">删除</button>
                         </span>
-                      </el-dialog>
+                      </span>
                     </div>
                     <div class="row card-text">{{ reply.content}}</div>
                   </div>
@@ -61,6 +52,14 @@
         </div>
       </div>
     </div>
+    <!-- 删除回复确认框 -->
+    <el-dialog class="w-30" title="提示" :visible.sync="tipShow">
+      <span>确认删除当前回复？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="tipShow = false">取 消</el-button>
+        <el-button type="primary" @click="delReply">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -81,6 +80,8 @@
         reply_content: "",
         reply_id: "",
         reply_index: "",
+        del_id:'',
+        del_index:'',
       };
     },
     mounted () {
@@ -91,6 +92,11 @@
       });
     },
     methods: {
+      del(index,id){
+        this.del_index = index;
+        this.del_id = id;
+        this.tipShow = true;
+      },
       editReply(id,content,index) {
         this.reply_content = content;
         this.reply_id = id;
@@ -113,19 +119,19 @@
           }
         });
       },
-      delReply(index,id) {
-        console.log(index,id);
-        // delTopicReply(id).then(res => {
-        //   if (res.code == 200) {
-        //     this.replies.splice(index,1);
-        //     this.tipShow = false;
-        //   } else {
-        //     this.msg = res.msg;
-        //     $(".alert-danger")
-        //         .removeClass("d-none")
-        //         .addClass("d-show");
-        //   }
-        // });
+      delReply() {
+        delTopicReply(this.del_id).then(res => {
+          if (res.code == 200) {
+            this.replies.splice(this.del_index,1);
+            this.tipShow = false;
+            this.del_id = this.del_index = '';
+          } else {
+            this.msg = res.msg;
+            $(".alert-danger")
+                .removeClass("d-none")
+                .addClass("d-show");
+          }
+        });
       },
       addReply() {
         addTopicReply({topic_id:this.$route.params.id, content:this.reply_content}).then(res => {

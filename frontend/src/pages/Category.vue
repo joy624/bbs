@@ -21,14 +21,6 @@
             </thead>
             <tbody>
             <tr v-for="(cate,index) in cates" :key="index">
-              <!-- 删除主题确认框 -->
-              <el-dialog class="w-30" title="提示" :visible.sync="tipShow">
-                <span>确认删除当前分类？</span>
-                <span slot="footer" class="dialog-footer">
-                  <el-button @click="tipShow = false">取 消</el-button>
-                  <el-button type="primary" @click="del(index,cate.id)">确定</el-button>
-                </span>
-              </el-dialog>
               <th>
                 <input type="text" v-model="cate.sort" class="text-center"  @blur="edit(index)">
               </th>
@@ -36,7 +28,7 @@
                 <input type="text" v-model="cate.name" class="text-center"  @blur="edit(index)">
               </td>
               <td>
-                <button type="submit" class="btn btn-primary" @click="tipShow = true" style="min-width:60px">删除</button>
+                <button type="submit" class="btn btn-primary" @click="del(index,cate.id)" style="min-width:60px">删除</button>
               </td>
             </tr>
             </tbody>
@@ -44,6 +36,14 @@
         </div>
       </div>
     </div>
+    <!-- 删除主题确认框 -->
+    <el-dialog class="w-30" title="提示" :visible.sync="tipShow">
+      <span>确认删除当前分类？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="tipShow = false">取 消</el-button>
+        <el-button type="primary" @click="delCate">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -61,7 +61,9 @@
         cates: "",
         msg: "",
         cateName:"",
-        sort:""
+        sort:"",
+        del_index:'',
+        del_id:''
       };
     },
     mounted() {
@@ -70,6 +72,11 @@
       });
     },
     methods: {
+      del(index,id){
+        this.del_index = index;
+        this.del_id = id;
+        this.tipShow = true;
+      },
       add() {
         addCate(this.cateName).then(res => {
           if (res.code == 200) {
@@ -88,12 +95,13 @@
           }
         });
       },
-      del(index,id) {
-        delCate(id).then(res => {
+      delCate() {
+        delCate(this.del_id).then(res => {
           if (res.code == 200) {
             // 删除数据库中的分类成功，同时删除页面中展示的对应分类
-            this.cates.splice(index,1);
+            this.cates.splice(this.del_index,1);
             this.tipShow = false;
+            this.del_id = this.del_index = '';
           } else {
             this.msg = res.msg;
             $(".alert-danger")
