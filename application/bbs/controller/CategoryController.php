@@ -18,8 +18,8 @@ class CategoryController extends Controller
         if (empty($user)) {
             throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
         }
-        if($user->role !== 'admin'){
-            throw new UserException('此用户没有操作分类的权限',ResponseCode::$USER_NOT_ADMIN);
+        if ($user->role !== 'admin') {
+            throw new UserException('此用户没有操作分类的权限', ResponseCode::$USER_NOT_ADMIN);
         }
 
         $name = $this->request->post('name');
@@ -41,8 +41,8 @@ class CategoryController extends Controller
         if (empty($user)) {
             throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
         }
-        if($user->role !== 'admin'){
-            throw new UserException('此用户没有操作分类的权限',ResponseCode::$USER_NOT_ADMIN);
+        if ($user->role !== 'admin') {
+            throw new UserException('此用户没有操作分类的权限', ResponseCode::$USER_NOT_ADMIN);
         }
 
         $id = $this->request->post('id');
@@ -66,8 +66,8 @@ class CategoryController extends Controller
         if (empty($user)) {
             throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
         }
-        if($user->role !== 'admin'){
-            throw new UserException('此用户没有操作分类的权限',ResponseCode::$USER_NOT_ADMIN);
+        if ($user->role !== 'admin') {
+            throw new UserException('此用户没有操作分类的权限', ResponseCode::$USER_NOT_ADMIN);
         }
 
         $id = $this->request->post('id');

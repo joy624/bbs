@@ -3,8 +3,10 @@
 namespace app\bbs\service;
 
 use app\bbs\model\UserModel;
+use think\facade\Cache;
 use app\bbs\common\ResponseCode;
 use app\bbs\exception\UserException;
+use app\bbs\exception\SystemException;
 
 class UserService
 {
@@ -105,16 +107,14 @@ class UserService
     // 修改用户邮箱
     public function modifyEmail($id, $email)
     {
-        if (UserModel::whereEmail('=', $email)->find()) {
-            throw new UserException('已存在，请重新设置', ResponseCode::$USER_NOT_EXIST);
-        }
         $user = new UserModel;
         $res = $user->save([
             'email' => $email
         ], ['id' => $id]);
         if (!$res) {
-            throw new UserException('修改错误', ResponseCode::$EDIT_ERROR);
+            return false;
         }
+        return true;
     }
 
     // 修改用户名
@@ -129,6 +129,45 @@ class UserService
         $user = new UserModel;
         if (!$user->save(['name' => $name], ['id' => $id])) {
             throw new UserException('修改错误', ResponseCode::$USER_EDIT_ERROR);
+        }
+    }
+
+    public function sendEmailForFindingPass($email)
+    {
+        $user = $this->getUserByEmail($email);
+        if (!$user) {
+            throw new UserException('邮箱未注册', ResponseCode::$USER_NOT_EXIST);
+        }
+
+        $subject = '找回密码邮件';
+        $secure_service = new SecureService();
+        $key = $secure_service->genRandomString();
+        $body = "亲爱的" . $user->name . "：<br />请点击下面的链接来重置您的密码。<br />
+ <a href='http://my.test.tp/bbs/user/updatePwd?key=" . $key . "' target='_blank'>http://my.test.tp/bbs/user/updatePwd?key=" . $key . "</a><br/> 
+如果您的邮箱不支持链接点击，请将以上链接地址拷贝到你的浏览器地址栏中。<br />该验证邮件有效期为30分钟，超时请重新发送邮件。";
+
+        $email_service = new EmailService();
+        $email_service->sendEmailURL($email, $user->name, $subject, $body);
+
+        if (!Cache::set('validate_email_url_' . $key, $user->id, 30 * 60)) {
+            throw new SystemException('找回密码失败，请重试或联系管理员', ResponseCode::$FIND_PASSWORD_FAILED);
+        }
+    }
+    public function sendEmailForResetEmail($id, $email)
+    {
+        $subject = '修改用户邮箱链接';
+        $secure_service = new SecureService();
+        $key = $secure_service->genRandomString();
+        $body = "亲爱的用户：<br/>若想要修改邮箱，请点击以下链接。<br/> 
+    <a href='http://my.test.tp/bbs/user/updateEmail?key=" . $key . "' target='_blank'> http://my.test.tp/bbs/user/updateEmail?key=" . $key . "</a><br/> 
+    如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接30分钟内有效。";
+
+        $email_service = new EmailService();
+        $email_service->sendEmailURL($email, '', $subject, $body);
+
+        if (!Cache::set('update_email_id_' . $key, $id, 30 * 60) ||
+          !Cache::set('update_email_' . $key, $email, 30 * 60)) {
+            throw new SystemException('发送修改链接失败，请重试或联系管理员', ResponseCode::$EMAIL_SEND_FAILED);
         }
     }
 }

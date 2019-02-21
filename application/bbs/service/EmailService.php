@@ -44,30 +44,4 @@ class EmailService
 
         return $mail->Send() ? true : $mail->ErrorInfo;
     }
-
-//    // 激活邮箱 todo
-//    public function validateEmail()
-//    {
-//        // 接收激活码
-//        $token = $this->request->get('token');
-//
-//        // 验证激活码
-//        $user_service = new UserService();
-//        $data = $user_service->validateToken($token);
-//        return ResponseCode::success(true);
-//    }
-//
-//    // 向邮箱发送验证码 todo
-//    public function sendEmailCode($email,$name){
-//        $subject='忘记密码的验证码';
-//        $code = mt_rand(100000,999999);
-//        $body='亲爱的'.$name.'用户,您的验证码是：'.$code;
-//        $res=send_mail($email,$name,$subject,$body);
-//        if($res){
-//            session('emailCode',$code);// 记录邮件验证码
-//            return ResponseCode::success(true);
-//        }else{
-//            throw new RegisterException('', ResponseCode::$SEND_EMAIL_CODE_ERROR);
-//        }
-//    }
 }

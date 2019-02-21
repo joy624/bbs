@@ -26,7 +26,7 @@ class ResponseCode
     public static $USER_EDIT_ERROR                  = 30013;    // 修改用户名或邮箱失败
     public static $USER_NOT_ACTIVE                  = 30014;    // 用户未激活
     public static $USER_NOT_LOGIN                   = 30015;    // 用户未登录
-    public static $USER_NOT_ADMIN                   = 30016;    // 用户不是管理员admin权限
+//    public static $USER_NOT_ADMIN                   = 30016;    // 用户不是管理员admin权限
 
     // 邮件相关
     public static $EMAIL_SEND_FAILED                = 40001;    // 邮件发送失败
@@ -34,30 +34,30 @@ class ResponseCode
     public static $FIND_PASSWORD_FAILED             = 40003;    // 找回密码时，在Redis中保存邮箱激活码失败
 
     // 分类相关
-    public static $CATE_NAME_IS_NULL                = 50001;    // 分类名称为空
-    public static $CATE_NAME_IS_EXIST               = 50002;    // 分类名称已经存在
-    public static $CATE_FAILED                      = 50003;    // 操作分类失败
-    public static $CATE_NOT_EXIST                   = 50004;    // 分类不存在
-    public static $CATE_SORT_ERROR                  = 50005;    // 分类名不能为空，排序值必须为非负整数
-
-    // 主题相关
-    public static $TOPIC_TITLE_CATE_CONTENT_IS_MUST = 60001;    // 标题、分类和内容是必须的
-    public static $TOPIC_NOT_EXIST                  = 60002;    // 主题不存在
-    public static $TOPIC_ADD_FAILED                 = 60003;    // 添加主题失败
-    public static $TOPIC_EDIT_FAILED                = 60004;    // 修改主题失败
-    public static $TOPIC_DELETE_FAILED              = 60005;    // 删除主题失败
-    public static $TOPIC_CONTENT_ERROR              = 60006;    // 获取主题内容失败
-
-    // 回复相关
-    public static $REPLY_IS_MUST                    = 70001;    // 回复内容是必须的
-    public static $REPLY_ADD_FAILED                 = 70002;    // 添加回复失败
-    public static $REPLY_EDIT_FAILED                = 70003;    // 修改回复失败
-    public static $REPLY_DELETE_FAILED              = 70004;    // 删除回复失败
-    public static $REPLY_NOT_EXIST                  = 70005;    // 回复不存在
-    public static $REPLY_CONTENT_ERROR              = 70006;    // 获取回复内容失败
-
-    // 点赞相关
-    public static $LIKE_ADD_FAILED                  = 80001;    // 点赞失败
-    public static $LIKE_DEL_FAILED                  = 80002;    // 取消点赞失败
-    public static $LIKE_IS_EXISTS                   = 80003;    // 已经点赞
+//    public static $CATE_NAME_IS_NULL                = 50001;    // 分类名称为空
+//    public static $CATE_NAME_IS_EXIST               = 50002;    // 分类名称已经存在
+//    public static $CATE_FAILED                      = 50003;    // 操作分类失败
+//    public static $CATE_NOT_EXIST                   = 50004;    // 分类不存在
+//    public static $CATE_SORT_ERROR                  = 50005;    // 分类名不能为空，排序值必须为非负整数
+//
+//    // 主题相关
+//    public static $TOPIC_TITLE_CATE_CONTENT_IS_MUST = 60001;    // 标题、分类和内容是必须的
+//    public static $TOPIC_NOT_EXIST                  = 60002;    // 主题不存在
+//    public static $TOPIC_ADD_FAILED                 = 60003;    // 添加主题失败
+//    public static $TOPIC_EDIT_FAILED                = 60004;    // 修改主题失败
+//    public static $TOPIC_DELETE_FAILED              = 60005;    // 删除主题失败
+//    public static $TOPIC_CONTENT_ERROR              = 60006;    // 获取主题内容失败
+//
+//    // 回复相关
+//    public static $REPLY_IS_MUST                    = 70001;    // 回复内容是必须的
+//    public static $REPLY_ADD_FAILED                 = 70002;    // 添加回复失败
+//    public static $REPLY_EDIT_FAILED                = 70003;    // 修改回复失败
+//    public static $REPLY_DELETE_FAILED              = 70004;    // 删除回复失败
+//    public static $REPLY_NOT_EXIST                  = 70005;    // 回复不存在
+//    public static $REPLY_CONTENT_ERROR              = 70006;    // 获取回复内容失败
+//
+//    // 点赞相关
+//    public static $LIKE_ADD_FAILED                  = 80001;    // 点赞失败
+//    public static $LIKE_DEL_FAILED                  = 80002;    // 取消点赞失败
+//    public static $LIKE_IS_EXISTS                   = 80003;    // 已经点赞
 }

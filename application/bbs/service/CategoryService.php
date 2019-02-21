@@ -36,8 +36,8 @@ class CategoryService
         if ($sort === "" or $sort === null) {
             $sort = $cate->sort;
         }
-        $cate = new CategoryModel;
-        if (!$cate->save(['name' => $name, 'sort' => $sort, 'update_time' => date('Y-m-d H:i:s', time())], ['id' => $id])) {
+        $cate_model = new CategoryModel;
+        if (!$cate_model->save(['name' => $name, 'sort' => $sort, 'update_time' => date('Y-m-d H:i:s', time())], ['id' => $id])) {
             throw new UserException('修改分类失败', ResponseCode::$CATE_FAILED);
         }
     }

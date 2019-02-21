@@ -13,9 +13,9 @@ class LikeService
     public function getLike($topic_id, $user_id)
     {
         $id = LikeModel::field('id')
-            ->where('topic_id', '=', $topic_id)
-            ->where('user_id', '=', $user_id)
-            ->find();
+          ->where('topic_id', '=', $topic_id)
+          ->where('user_id', '=', $user_id)
+          ->find();
         return !empty($id);
     }
 
@@ -28,8 +28,8 @@ class LikeService
         Db::startTrans();
         try {
             $newlike = LikeModel::create([
-                'topic_id' => $topic_id,
-                'user_id' => $user_id
+              'topic_id' => $topic_id,
+              'user_id' => $user_id
             ], ['topic_id', 'user_id']);
             if (!$newlike) {
                 throw new UserException('点赞失败', ResponseCode::$LIKE_ADD_FAILED);
