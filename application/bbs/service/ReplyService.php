@@ -31,7 +31,7 @@ class ReplyService
             'user_id' => $user_id
         ], ['topic_id', 'content', 'user_id']);
         if (!$reply) {
-            throw new ReplyException('添加回复失败', ResponseCode::$REPLY_ADD_FAILED);
+            throw new UserException('添加回复失败', ResponseCode::$REPLY_ADD_FAILED);
         }
         $reply = ReplyModel::withJoin(['user' => ['name', 'img_url']])
             ->get($reply->id);
@@ -41,12 +41,18 @@ class ReplyService
     // 编辑回复内容
     public function editReply($id, $content)
     {
+        $validate = new ReplyValidate();
+        if (!$validate->scene('edit')->check(['id' => $id, 'content' => $content])) {
+            throw new UserException($validate->getError(), ResponseCode::$REPLY_IS_MUST);
+        }
         $reply = ReplyModel::get($id);
         // 判断修改的回复是否存在
         if (!$reply) {
             throw new UserException('回复不存在', ResponseCode::$REPLY_NOT_EXIST);
         }
-        $reply->save(['content' => $content], ['id' => $id]);
+       if(!$reply->save(['content' => $content], ['id' => $id])){
+          throw new UserException('',ResponseCode::$REPLY_EDIT_FAILED);
+       }
         return $this->getReply($id);
     }
 

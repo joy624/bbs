@@ -33,7 +33,7 @@ class CategoryService
         }
 
         // 判断sort排序是否为空
-        if ($sort === "" or $sort === null) {
+        if ($sort === "" || $sort === null) {
             $sort = $cate->sort;
         }
         $cate_model = new CategoryModel;

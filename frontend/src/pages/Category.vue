@@ -68,7 +68,14 @@
     },
     mounted() {
       list().then(res => {
-        this.cates = res.data;
+        if(res.code == 200){
+          this.cates = res.data;
+        }else{
+          this.msg = res.msg;
+          $(".alert-danger")
+              .removeClass("d-none")
+              .addClass("d-show");
+        }
       });
     },
     methods: {

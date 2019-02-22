@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: qiaozhiming
- * Date: 2019/1/16
- * Time: 上午12:21
- */
-
 namespace app\bbs\validate;
 
 use think\Validate;

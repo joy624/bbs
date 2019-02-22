@@ -13,12 +13,6 @@ class TopicService
 {
     public function addTopic($title, $category_id, $user_id, $content)
     {
-        $auth_service = new AuthService();
-        $user = $auth_service->getLoginUser();
-        if (empty($user)) {
-            throw new UserException('未登录', ResponseCode::$USER_NOT_LOGIN);
-        }
-
         // 判断分类是否存在
         if (!CategoryModel::get($category_id)) {
             throw new UserException('分类不存在', ResponseCode::$CATE_NOT_EXIST);
@@ -36,7 +30,6 @@ class TopicService
         }
         $topic = TopicModel::get($topic->id);
         $topic->uname = UserModel::field('name')->get($user_id)->name;
-
         return $topic;
     }
 
@@ -76,7 +69,7 @@ class TopicService
     public function getTopic($id)
     {
         $topic = TopicModel::withJoin(['user' => ['name', 'img_url']])
-            ->where('is_show', '=', 1)
+            ->where('is_show', '=', Constants::IS_SHOW)
             ->get($id);
         // 根据id获取主题的对应内容
         if (!$topic) {
