@@ -12,28 +12,34 @@
       </div>
       <form :v-model="form" data-toggle="validator">
         <div class="form-group">
-          <div><input
-              type="text"
-              class="form-control"
-              placeholder="用户名"
-              v-model="form.name"
-              pattern="^[a-zA-Z]\w+$"
-              minlength="3"
-              maxlength="25"
-          ></div>
+          <div>
+            <!--<input-->
+              <!--type="text"-->
+              <!--class="form-control"-->
+              <!--placeholder="用户名"-->
+              <!--v-model="form.name"-->
+              <!--pattern="^[a-zA-Z]\w+$"-->
+              <!--minlength="3"-->
+              <!--maxlength="25"-->
+          <!--&gt;-->
+            <input type="text"class="form-control" placeholder="用户名" v-model="form.name" >
+          </div>
           <!--<div class="help-block with-errors login-validate-data"></div>-->
         </div>
         <div class="form-group">
-          <div><input
-              type="password"
-              class="form-control"
-              placeholder="密码"
-              v-model="form.password"
-              data-toggle="validator"
-              pattern="^[a-zA-Z0-9]\w+$"
-              minlength="6"
-              maxlength="18"
-          ></div>
+          <div>
+            <!--<input-->
+              <!--type="password"-->
+              <!--class="form-control"-->
+              <!--placeholder="密码"-->
+              <!--v-model="form.password"-->
+              <!--data-toggle="validator"-->
+              <!--pattern="^[a-zA-Z0-9]\w+$"-->
+              <!--minlength="6"-->
+              <!--maxlength="18"-->
+          <!--&gt;-->
+            <input type="password" class="form-control" placeholder="密码" v-model="form.password">
+          </div>
           <!--<div class="help-block with-errors login-validate-data"></div>-->
         </div>
         <button class="btn btn-primary login-sub" @click="onSubmit" >登录</button>
@@ -48,7 +54,6 @@
 
 <script>
   import { login } from "@/api/user";
-  import { findPwd } from "@/api/user";
 
   export default {
     name: "Login",

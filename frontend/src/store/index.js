@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { index } from "@/api/topic";
 import { list } from "@/api/cate";
-import { login } from "@/api/user";
 
 Vue.use(Vuex)
 const state = {

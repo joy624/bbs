@@ -66,7 +66,7 @@
           enabled: true,
           uniqueId: 'content'
         },
-        showIcons: ["code", "table"],
+        showIcons: ["code"],
         autofocus:true,
         renderingConfig: {
           codeSyntaxHighlighting: true

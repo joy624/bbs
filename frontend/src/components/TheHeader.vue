@@ -83,18 +83,6 @@
             this.$store.dispatch('setLogout');
             this.logoutShow = false;
             this.$router.push({name: 'Home'})
-          } else {
-            this.msg = res.msg;
-          }
-        });
-      },
-      logout () {
-        logout().then(res => {
-          if (res.code == 200) {
-            this.$store.dispatch('setLogout');
-            this.$refs.logoutModal.modal('hide');
-          } else {
-            this.msg = res.msg;
           }
         });
       },

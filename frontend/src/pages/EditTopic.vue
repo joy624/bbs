@@ -66,16 +66,15 @@
           enabled: true,
           uniqueId: 'content'
         },
-        showIcons: ["code", "table"],
+        showIcons: ["code"],
         autofocus:true,
         renderingConfig: {
           codeSyntaxHighlighting: true
         }
       });
-
       viewTopic(this.$route.query.id).then(res => {
         this.form = res.data;
-        simplemde.value(this.form.content);
+        simplemde.value(escape2Html(this.form.content));
         simplemde.codemirror.on('change', () => {
           // 将改变后的值赋给文章内容
           this.form.content = simplemde.value()
@@ -98,6 +97,10 @@
         });
       }
     }
+  }
+  function escape2Html(str) {
+    var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"','apos':'\''};
+    return str.replace(/&(lt|gt|nbsp|amp|quot|apos);/ig,function(all,t){return arrEntities[t];});
   }
 </script>
 

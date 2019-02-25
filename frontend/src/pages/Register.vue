@@ -11,63 +11,79 @@
         </div>
         <div class="col register-title">用户注册</div>
       </div>
+      <!--<div class="row register-tip">{{msg}}</div>-->
+      <!--<form :v-model="form" data-toggle="validator">-->
+        <!--<div class="form-group">-->
+          <!--<div><input-->
+              <!--type="text"-->
+              <!--class="form-control"-->
+              <!--placeholder="用户名"-->
+              <!--v-model="form.name"-->
+              <!--pattern="^[a-zA-Z]\w+$"-->
+              <!--minlength="3"-->
+              <!--maxlength="25"-->
+              <!--data-error="名称长度3~25，以英文字母开头，由字母、数字和_组成！"-->
+              <!--required-->
+          <!--&gt;</div>-->
+            <!--&lt;!&ndash;<div class="help-block with-errors register-validate-data"></div>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+          <!--<div><input-->
+                <!--type="email"-->
+                <!--class="form-control"-->
+                <!--placeholder="邮箱"-->
+                <!--v-model="form.email"-->
+                <!--data-error="你输入的不是一个有效的邮件地址！"-->
+                <!--required-->
+            <!--&gt;</div>-->
+            <!--&lt;!&ndash;<div class="help-block with-errors register-validate-data"></div>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+          <!--<div>-->
+            <!--<input-->
+                <!--type="password"-->
+                <!--class="form-control"-->
+                <!--id="inputPassword"-->
+                <!--placeholder="密码"-->
+                <!--v-model="form.password"-->
+                <!--pattern="^[a-zA-Z0-9]\w+$"-->
+                <!--minlength="6"-->
+                <!--maxlength="18"-->
+                <!--data-error="密码长度6~18，以英文字母和数字开头，由字母、数字和_组成！"-->
+                <!--required-->
+            <!--&gt;-->
+          <!--</div>-->
+          <!--&lt;!&ndash;<div class="help-block with-errors register-validate-data register-format"></div>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+          <!--<div>-->
+            <!--<input-->
+                <!--type="password"-->
+                <!--class="form-control"-->
+                <!--placeholder="确认密码"-->
+                <!--v-model="form.repassword"-->
+                <!--data-match="#inputPassword"-->
+                <!--data-error="两次输入的密码不匹配！"-->
+                <!--required-->
+            <!--&gt;-->
+          <!--</div>-->
+          <!--&lt;!&ndash;<div class="help-block with-errors register-validate-data register-format"></div>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<button class="btn btn-success register-sub" type="submit" @click="onSubmit">注册</button>-->
+      <!--</form>-->
       <div class="row register-tip">{{msg}}</div>
       <form :v-model="form" data-toggle="validator">
         <div class="form-group">
-          <div><input
-              type="text"
-              class="form-control"
-              placeholder="用户名"
-              v-model="form.name"
-              pattern="^[a-zA-Z]\w+$"
-              minlength="3"
-              maxlength="25"
-              data-error="名称长度3~25，以英文字母开头，由字母、数字和_组成！"
-              required
-          ></div>
-            <!--<div class="help-block with-errors register-validate-data"></div>-->
+          <input type="text" class="form-control" placeholder="用户名" v-model="form.name">
         </div>
         <div class="form-group">
-          <div><input
-                type="email"
-                class="form-control"
-                placeholder="邮箱"
-                v-model="form.email"
-                data-error="你输入的不是一个有效的邮件地址！"
-                required
-            ></div>
-            <!--<div class="help-block with-errors register-validate-data"></div>-->
+          <input type="email" class="form-control" placeholder="邮箱" v-model="form.email">
         </div>
         <div class="form-group">
-          <div>
-            <input
-                type="password"
-                class="form-control"
-                id="inputPassword"
-                placeholder="密码"
-                v-model="form.password"
-                pattern="^[a-zA-Z0-9]\w+$"
-                minlength="6"
-                maxlength="18"
-                data-error="密码长度6~18，以英文字母和数字开头，由字母、数字和_组成！"
-                required
-            >
-          </div>
-          <!--<div class="help-block with-errors register-validate-data register-format"></div>-->
+          <input type="password" class="form-control" placeholder="密码" v-model="form.password">
         </div>
         <div class="form-group">
-          <div>
-            <input
-                type="password"
-                class="form-control"
-                placeholder="确认密码"
-                v-model="form.repassword"
-                data-match="#inputPassword"
-                data-error="两次输入的密码不匹配！"
-                required
-            >
-          </div>
-          <!--<div class="help-block with-errors register-validate-data register-format"></div>-->
+          <input type="password" class="form-control" placeholder="确认密码" v-model="form.repassword">
         </div>
         <button class="btn btn-success register-sub" type="submit" @click="onSubmit">注册</button>
       </form>

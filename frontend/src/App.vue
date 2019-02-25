@@ -21,10 +21,6 @@
 <style>
 #app {
   font-family: 'Microsoft YaHei', '微软雅黑', 'Microsoft Sans Serif', 'Avenir', Helvetica, Arial, sans-serif;
-  /*-webkit-font-smoothing: antialiased;*/
-  /*-moz-osx-font-smoothing: grayscale;*/
-  /*text-align: center;*/
-  /*color: #2c3e50;*/
 }
 .container {
   margin-top: 20px;

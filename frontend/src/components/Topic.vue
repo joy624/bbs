@@ -12,11 +12,13 @@
           <span v-if="topic.user_id == $store.getters.login_id">
             <button type="button" class="btn btn-link opt" @click="gotoEditAddTopic(topic.id)">编辑</button>
             <button type="button" class="btn btn-link opt" @click="tipShow = true">删除</button>
+            <button v-if="!is_like" type="button" class="btn btn-link opt" @click="likeTopic(topic.id)"><i
+                    class="fa fa-thumbs-up"></i>点赞
+            </button>
+            <button v-else type="button" class="btn btn-link opt" @click="cancelLikeTopic(topic.id)"><i
+                    class="fa fa-thumbs-up"></i>取消点赞
+            </button>
           </span>
-          <button v-if="!is_like" type="button" class="btn btn-link opt" @click="likeTopic(topic.id)"><i class="fa fa-thumbs-up"></i>点赞
-          </button>
-          <button v-else type="button" class="btn btn-link opt" @click="cancelLikeTopic(topic.id)"><i class="fa fa-thumbs-up"></i>取消点赞
-          </button>
           <hr class="simple" color="#D9DADB">
           <div class="panel">
             <div class="markdown-body" v-html="topic.content"></div>
@@ -59,7 +61,7 @@
         reply_content: "",
         reply_id: "",
         reply_index: "",
-        is_like:0,
+        is_like: 0,
         msg: ""
       };
     },
