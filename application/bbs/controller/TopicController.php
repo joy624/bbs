@@ -102,9 +102,9 @@ class TopicController extends Controller
     public function best()
     {
         $nums = $this->request->post('num', 3);
-        $category_id = $this->request->post('category', 1);
+//        $category_id = $this->request->get('category_id', 1);
         $topic_service = new TopicService();
-        $topics = $topic_service->bestTopic($category_id, $nums);
+        $topics = $topic_service->bestTopic($nums);
         return ResponseCode::success($topics);
     }
 
@@ -112,9 +112,9 @@ class TopicController extends Controller
     public function newest()
     {
         $nums = $this->request->post('num', 3);
-        $category_id = $this->request->post('category', 1);
+//        $category_id = $this->request->get('category_id', 1);
         $topic_service = new TopicService();
-        $topics = $topic_service->newestTopic($category_id, $nums);
+        $topics = $topic_service->newestTopic($nums);
         return ResponseCode::success($topics);
     }
 }

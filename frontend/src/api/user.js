@@ -6,13 +6,13 @@ export const login = params => {
 }
 
 // 登出用户
-export const logout = params => {
-  return axios.post('/bbs/site/logout').then(res => res.data)
+export const logout = () => {
+  return axios.get('/bbs/site/logout').then(res => res.data)
 }
 
 // 获取当前登录用户
-export const loginUser = params => {
-  return axios.get('/bbs/site/user', params).then(res => res.data)
+export const loginUser = () => {
+  return axios.get('/bbs/site/user').then(res => res.data)
 }
 
 // 用户注册

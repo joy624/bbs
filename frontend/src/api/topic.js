@@ -5,11 +5,6 @@ export const index =  params => {
   return axios.get('/bbs/topic/index', {params:params}).then(res => res.data)
 }
 
-// 获取指定分类的主题总记录数
-export const getTopicTotal =  params => {
-  return axios.get('/bbs/topic/getCateTopicNum', {params:{category_id:params}}).then(res => res.data)
-}
-
 // 添加主题
 export const addTopic =  params => {
   return axios.post('/bbs/topic/add', params).then(res => res.data)
@@ -31,13 +26,13 @@ export const editTopic =  params => {
 }
 
 // 最新主题
-export const newestTopic = category_id => {
-  return axios.get('/bbs/topic/newest', {params:{ category_id: category_id}}).then(res => res.data)
+export const newestTopic = num => {
+  return axios.post('/bbs/topic/newest', {params:{ num: num}}).then(res => res.data)
 }
 
 // 最受欢迎主题
-export const bestTopic = category_id => {
-  return axios.get('/bbs/topic/best', {params:{ category_id: category_id}}).then(res => res.data)
+export const bestTopic = num => {
+  return axios.post('/bbs/topic/best', {params:{ num: num}}).then(res => res.data)
 }
 
 // 是否点赞

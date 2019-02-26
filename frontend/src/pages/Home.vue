@@ -12,10 +12,10 @@
 </template>
 
 <script>
-  import UserInfo from "../components/UserInfo";
-  import ListTopic from "../components/ListTopic";
-  import BestTopic from "../components/BestTopic";
-  import NewestTopic from "../components/NewestTopic";
+  import UserInfo from "@/components/UserInfo";
+  import ListTopic from "@/components/ListTopic";
+  import BestTopic from "@/components/BestTopic";
+  import NewestTopic from "@/components/NewestTopic";
   export default {
     name: "Home",
     components: {NewestTopic, BestTopic, ListTopic, UserInfo}

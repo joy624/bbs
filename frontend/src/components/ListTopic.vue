@@ -81,7 +81,6 @@
     height: 44px;
     margin-right: 25px;
   }
-
   .topic-model .list-group {
     list-style: decimal inside;
   }

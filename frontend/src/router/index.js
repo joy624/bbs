@@ -30,14 +30,24 @@ export default new Router({
       component: Register
     },
     {
-      path: '/topic/:id',
-      name: 'Topic',
-      component: TopicView
+      path: '/user',
+      name: 'User',
+      component: UserPage
+    },
+    {
+      path: '/findpwd',
+      name: 'FindPwd',
+      component: FindPwd
     },
     {
       path: '/cate',
       name: 'Cate',
       component: Category
+    },
+    {
+      path: '/topic/:id',
+      name: 'Topic',
+      component: TopicView
     },
     {
       path: 'addtopic',
@@ -48,16 +58,6 @@ export default new Router({
       path: '/edittopic',
       name: 'EditTopic',
       component: EditTopic
-    },
-    {
-      path: '/user',
-      name: 'User',
-      component: UserPage
-    },
-    {
-      path: '/findpwd',
-      name: 'FindPwd',
-      component: FindPwd
     }
   ]
 })

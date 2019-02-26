@@ -25,7 +25,7 @@
       }
     },
     mounted () {
-      bestTopic(this.$store.state.cate_active).then(res => {
+      bestTopic().then(res => {
         if (res.code == 200)
           this.topics = res.data;
       })

@@ -152,7 +152,6 @@ class UserController extends Controller
         if (true !== $this->validate(['image' => $portrait], ['image' => 'require|image'])) {
             throw new UserException('请选择图像上传', ResponseCode::$USER_NOT_STANDARD);
         }
-
         // 将上传图像生成缩略图，并保存到指定位置
         $upload_service = new UploadService();
         $thumb_path = $upload_service->thumb($portrait);

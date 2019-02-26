@@ -13,11 +13,11 @@
 </template>
 
 <script>
-  import UserInfo from "../components/UserInfo";
-  import Topic from "../components/Topic";
-  import Reply from "../components/Reply";
-  import BestTopic from "../components/BestTopic";
-  import NewestTopic from "../components/NewestTopic";
+  import UserInfo from "@/components/UserInfo";
+  import Topic from "@/components/Topic";
+  import Reply from "@/components/Reply";
+  import BestTopic from "@/components/BestTopic";
+  import NewestTopic from "@/components/NewestTopic";
 
   export default {
     name: "TopicView",

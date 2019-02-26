@@ -90,20 +90,20 @@ class TopicService
             ->select();
     }
 
-    public function bestTopic($category_id, $count = 5)
+    public function bestTopic($count = 5)
     {
         return TopicModel::withJoin(['user' => ['name', 'img_url']])
-            ->where('category_id', '=', $category_id)
+//            ->where('category_id', '=', $category_id)
             ->where('is_show', '=', Constants::IS_SHOW)
             ->limit($count)
             ->order('hits', 'DESC')
             ->select();
     }
 
-    public function newestTopic($category_id, $count = 5)
+    public function newestTopic($count = 5)
     {
         return TopicModel::withJoin(['user' => ['name', 'img_url']])
-            ->where('category_id', '=', $category_id)
+//            ->where('category_id', '=', $category_id)
             ->where('is_show', '=', Constants::IS_SHOW)
             ->limit($count)
             ->order('id', 'DESC')

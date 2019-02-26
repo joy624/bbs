@@ -22,7 +22,7 @@
                   <div class="col-3 bbs-link" @click="gotoUserInfo">
                     <strong>{{ $store.getters.login_name }}</strong>
                   </div>
-                  <div class="col bbs-link" @click="gotoUserInfo">
+                  <div class="col-9 bbs-link" @click="gotoUserInfo">
                     <strong>个人信息</strong>
                   </div>
                 </div>
@@ -52,7 +52,7 @@
       <div class="row">
         <div class="col-12">
           <button
-              v-if="user.role == 'admin'"
+              v-if="$store.getters.login_role == 'admin'"
               type="button"
               class="btn btn-outline-dark btn-lg btn-sm btn-block bbs-cate"
               @click="gotoCate"
